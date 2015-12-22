@@ -29,6 +29,7 @@ Welcome to `Competency-Matrix` with the new release `vX.Y.Z`.
 
 
 #### Additional
+#1 [Screenshots] Add emoticons for the ReadMe.md.
 
 
 
