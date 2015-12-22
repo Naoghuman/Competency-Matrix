@@ -14,18 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.naoghuman.competency.matrix;
+package com.github.naoghuman.cm.application;
 
-import com.airhacks.afterburner.views.FXMLView;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
 
 /**
  *
  * @author PRo
  */
-public class MatrixView extends FXMLView {
-    
-    public MatrixPresenter getRealPresenter() {
-        return (MatrixPresenter) super.getPresenter();
+public class ApplicationPresenter implements Initializable {
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        
     }
     
 }

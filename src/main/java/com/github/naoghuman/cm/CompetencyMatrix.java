@@ -14,10 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.naoghuman.competency.matrix;
+package com.github.naoghuman.cm;
 
 import com.airhacks.afterburner.injection.Injector;
-import com.github.naoghuman.competency.matrix.configuration.api.IConfiguration;
+import com.github.naoghuman.cm.application.ApplicationView;
+import com.github.naoghuman.cm.configuration.api.IConfiguration;
 import de.pro.lib.database.api.DatabaseFacade;
 import de.pro.lib.logger.api.LoggerFacade;
 import de.pro.lib.preferences.api.PreferencesFacade;
@@ -53,7 +54,7 @@ public class CompetencyMatrix extends Application implements IConfiguration {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        final MatrixView view = new MatrixView();
+        final ApplicationView view = new ApplicationView();
         final Scene scene = new Scene(view.getView(), 1280, 720);
         primaryStage.setTitle(this.getProperty(KEY__COMPETENCY_MATRIX__TITLE));
         primaryStage.setScene(scene);
