@@ -1,0 +1,13 @@
+2015-12-22 09:44:14,970  DEBUG Load properties: /com/github/naoghuman/compentency/matrix/CompetencyMatrix.properties     [LibProperties]
+2015-12-22 09:44:14,971  INFO  
+################################################################################
+Start Competency-Matrix v0.1.0-SNAPSHOT. Deep skilling :)
+################################################################################     [LibLogger]
+2015-12-22 09:44:14,971  DEBUG   Init preferences file     [LibPreferences]
+2015-12-22 09:44:14,973  DEBUG Initialize ObjectDB with database: cm     [LibDatabase]
+2015-12-22 09:44:17,540  DEBUG Shutdown ObjectDB     [LibDatabase]
+2015-12-22 09:44:17,541  DEBUG Shutdown EntityManagerFactory     [LibDatabase]
+2015-12-22 09:44:17,541  INFO  
+################################################################################
+Stop Competency-Matrix v0.1.0-SNAPSHOT. Relax and deep integration :)
+################################################################################     [LibLogger]
