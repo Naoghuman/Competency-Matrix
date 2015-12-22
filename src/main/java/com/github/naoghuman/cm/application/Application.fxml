@@ -6,6 +6,23 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: MINTCREAM;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.application.ApplicationPresenter">
 
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: MINTCREAM;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.github.naoghuman.cm.application.ApplicationPresenter">
+   <children>
+      <SplitPane dividerPositions="0.3" layoutX="14.0" layoutY="14.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+        <items>
+            <VBox spacing="7.0">
+               <children>
+                  <ToolBar>
+                    <items>
+                      <Button mnemonicParsing="false" onAction="#onActionCreateNewCompetencyMatrix" text="+" />
+                    </items>
+                  </ToolBar>
+                  <TreeView fx:id="tvCompetencyMatrix" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+            <TabPane fx:id="tpCompetencyMatrix" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" />
+        </items>
+      </SplitPane>
+   </children>
 </AnchorPane>

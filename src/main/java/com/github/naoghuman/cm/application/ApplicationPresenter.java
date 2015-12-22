@@ -16,18 +16,34 @@
  */
 package com.github.naoghuman.cm.application;
 
+import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TreeView;
 
 /**
  *
  * @author PRo
  */
 public class ApplicationPresenter implements Initializable {
+    
+    @FXML private TabPane tpCompetencyMatrix;
+    @FXML private TreeView tvCompetencyMatrix;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        LoggerFacade.INSTANCE.info(this.getClass(), "Initialize ApplicationPresenter"); // NOI18N
+        
+        assert (tpCompetencyMatrix != null) : "fx:id=\"tpCompetencyMatrix\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
+        assert (tvCompetencyMatrix != null) : "fx:id=\"tvCompetencyMatrix\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
+        
+    }
+    
+    public void onActionCreateNewCompetencyMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action create new Competency Matrix"); // NOI18N
         
     }
     
