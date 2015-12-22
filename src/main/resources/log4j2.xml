@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Appenders>
-        <File name="Competency-Matrix" fileName="log/cm.log" append="false">
+        <File name="CompetencyMatrix" fileName="log/cm.log" append="false">
             <PatternLayout pattern="%d  %-5p %m     [%c{1}]%n" />
         </File>
         <Console name="STDOUT" target="SYSTEM_OUT">
@@ -11,7 +11,7 @@
     <Loggers>
         <Root level="debug">
             <AppenderRef ref="STDOUT" />
-            <AppenderRef ref="Competency-Matrix" />
+            <AppenderRef ref="CompetencyMatrix" />
         </Root>
     </Loggers>
 </Configuration>
