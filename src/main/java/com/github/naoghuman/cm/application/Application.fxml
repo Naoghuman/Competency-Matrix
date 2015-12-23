@@ -7,21 +7,22 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: MINTCREAM;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.application.ApplicationPresenter">
-   <children>
-      <SplitPane fx:id="spCompetencyMatrix" dividerPositions="0.3" layoutX="14.0" layoutY="14.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
-        <items>
-            <VBox fx:id="vbCompetencyMatrix" spacing="7.0">
-               <children>
-                  <ToolBar>
-                    <items>
-                      <Button mnemonicParsing="false" onAction="#onActionCreateCompetencyMatrix" text="+" />
-                    </items>
-                  </ToolBar>
-                  <ListView fx:id="lvOverview" VBox.vgrow="ALWAYS" />
-               </children>
-            </VBox>
-            <TabPane fx:id="tpCompetencyMatrix" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" />
-        </items>
-      </SplitPane>
-   </children>
+    <children>
+        <SplitPane fx:id="spCompetencyMatrix" dividerPositions="0.3" layoutX="14.0" layoutY="14.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+            <items>
+                <VBox fx:id="vbCompetencyMatrix" spacing="7.0">
+                    <children>
+                        <ToolBar>
+                            <items>
+                                <Button mnemonicParsing="false" onAction="#onActionCreateCompetencyMatrix" text="+" />
+                                <Button mnemonicParsing="false" onAction="#onActionDeleteCompetencyMatrix" text="-" />
+                            </items>
+                        </ToolBar>
+                        <ListView fx:id="lvOverview" VBox.vgrow="ALWAYS" />
+                    </children>
+                </VBox>
+                <TabPane fx:id="tpCompetencyMatrix" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" />
+            </items>
+        </SplitPane>
+    </children>
 </AnchorPane>

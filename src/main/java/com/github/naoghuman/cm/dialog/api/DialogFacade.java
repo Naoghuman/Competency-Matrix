@@ -16,19 +16,37 @@
  */
 package com.github.naoghuman.cm.dialog.api;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Modality;
 
 /**
+ * TODO use custom dialog / valid input
+ * http://code.makery.ch/blog/javafx-dialogs-official/
+ * https://github.com/Daytron/SimpleDialogFX
+ * or own dialogs like in DreamBetterWorlds
  *
  * @author PRo
  */
 public interface DialogFacade {
     
+    public static Alert getDeleteCompetencyMatrixDialog() {
+        final Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setTitle("Delete Competency-Matrix"); // NOI18N
+        alert.setHeaderText("Really delete your Competency-Matrix?"); // NOI18N
+        
+        ButtonType buttonTypeOne = new ButtonType(ButtonType.YES.getText(), ButtonData.YES);
+        ButtonType buttonTypeCancel = new ButtonType(ButtonType.CANCEL.getText(), ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
+        
+        return alert;
+    }
+    
     public static TextInputDialog getNewCompetencyMatrixDialog() {
-        // TODO use custom dialog / valid input
-        // http://code.makery.ch/blog/javafx-dialogs-official/
-        // https://github.com/Daytron/SimpleDialogFX
         final TextInputDialog dialog = new TextInputDialog(""); // NOI18N
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("New Competency-Matrix"); // NOI18N

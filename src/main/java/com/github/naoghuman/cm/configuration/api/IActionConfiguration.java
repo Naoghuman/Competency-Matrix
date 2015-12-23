@@ -24,8 +24,12 @@ public interface IActionConfiguration {
     
     public static final String ACTION__CREATE__COMPETENCY_MATRIX = "ACTION__CREATE__COMPETENCY_MATRIX"; // NOI18N
     
+    public static final String ACTION__DELETE__COMPETENCY_MATRIX = "ACTION__DELETE__COMPETENCY_MATRIX"; // NOI18N
+    
     public static final String ACTION__OPEN__COMPETENCY_MATRIX = "ACTION__OPEN__COMPETENCY_MATRIX"; // NOI18N
     
     public static final String ACTION__REFRESH__OVERVIEW_COMPETENCY_MATRIX = "ACTION__REFRESH__OVERVIEW_COMPETENCY_MATRIX"; // NOI18N
+    
+    public static final String ACTION__REMOVE__COMPETENCY_MATRIX = "ACTION__REMOVE__COMPETENCY_MATRIX"; // NOI18N
     
 }

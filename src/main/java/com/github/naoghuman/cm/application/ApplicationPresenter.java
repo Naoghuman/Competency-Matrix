@@ -25,12 +25,15 @@ import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
@@ -116,7 +119,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
     }
     
     public void onActionCreateCompetencyMatrix() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "On action create new Competency-Matrix"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action create Competency-Matrix"); // NOI18N
         
         final TextInputDialog dialog = DialogFacade.getNewCompetencyMatrixDialog();
         final Optional<String> result = dialog.showAndWait();
@@ -135,6 +138,31 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
+    public void onActionDeleteCompetencyMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action delete Competency-Matrix"); // NOI18N
+        
+        final MatrixModel matrixModel = (MatrixModel) lvOverview.getSelectionModel().getSelectedItem();
+        if (matrixModel == null) {
+            return;
+        }
+        
+        final Alert alert = DialogFacade.getDeleteCompetencyMatrixDialog();
+        final Optional<ButtonType> result = alert.showAndWait();
+        if (!result.isPresent()) {
+            return;
+        }
+        
+        final ButtonType buttonType = result.get();
+        if (!buttonType.getButtonData().equals(ButtonType.YES.getButtonData())) {
+            return;
+        }
+        
+        final ActionTransferModel actionTransferModel = new ActionTransferModel();
+        actionTransferModel.setActionKey(ACTION__DELETE__COMPETENCY_MATRIX);
+        actionTransferModel.setLong(matrixModel.getId());
+        ActionFacade.INSTANCE.handle(actionTransferModel);
+    }
+    
     private void onActionRefreshListView(MatrixModel matrixModel) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh ListView"); // NOI18N
 
@@ -144,41 +172,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         lvOverview.getSelectionModel().select(matrixModel);
     }
     
-    private void registerOnActionOpenCompetencyMatrix() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action open Competency-Matrix"); // NOI18N
-        
-        ActionFacade.INSTANCE.register(
-                ACTION__OPEN__COMPETENCY_MATRIX,
-                (ActionEvent ae) -> {
-                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
-                    final long matrixModelID = actionTransferModel.getLong();
-                    this.showCompetencyMatrix(matrixModelID);
-                });
-    }
-    
-    private void registerOnActionRefreshOverviewCompetencyMatrix() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action refresh overview Competency-Matrix"); // NOI18N
-        
-        ActionFacade.INSTANCE.register(
-                ACTION__REFRESH__OVERVIEW_COMPETENCY_MATRIX,
-                (ActionEvent ae) -> {
-                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
-                    final MatrixModel matrixModel = (MatrixModel) actionTransferModel.getObject();
-                    this.onActionRefreshListView(matrixModel);
-                });
-    }
-
-    @Override
-    public void registerActions() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in ApplicationPresenter"); // NOI18N
-        
-        SqlFacade.INSTANCE.registerActions();
-        
-        this.registerOnActionOpenCompetencyMatrix();
-        this.registerOnActionRefreshOverviewCompetencyMatrix();
-    }
-    
-    private void showCompetencyMatrix(long matrixModelID) {
+    private void openCompetencyMatrix(long matrixModelID) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Show CompetencyMatrix: " + matrixModelID); // NOI18N
         
         // Check if the CompetencyMatrix is always open
@@ -196,10 +190,10 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         }
         
         // Show the new model
-        this.showCompetencyMatrix(matrixModel);
+        this.openCompetencyMatrix(matrixModel);
     }
     
-    private void showCompetencyMatrix(MatrixModel matrixModel) {
+    private void openCompetencyMatrix(MatrixModel matrixModel) {
         final Tab tab = new Tab();
         tab.setClosable(Boolean.TRUE);
         // load view for tab
@@ -209,6 +203,77 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         
         tpCompetencyMatrix.getTabs().add(tab);
         tpCompetencyMatrix.getSelectionModel().select(tab);
+    }
+    
+    private void registerOnActionOpenCompetencyMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action open Competency-Matrix"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__OPEN__COMPETENCY_MATRIX,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final long matrixModelID = actionTransferModel.getLong();
+                    this.openCompetencyMatrix(matrixModelID);
+                });
+    }
+    
+    private void registerOnActionRefreshOverviewCompetencyMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action refresh overview Competency-Matrix"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__REFRESH__OVERVIEW_COMPETENCY_MATRIX,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final MatrixModel matrixModel = (MatrixModel) actionTransferModel.getObject();
+                    this.onActionRefreshListView(matrixModel);
+                });
+    }
+    
+    private void registerOnActionRemoveCompetencyMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action close Competency-Matrix"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__REMOVE__COMPETENCY_MATRIX,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final long matrixModelID = actionTransferModel.getLong();
+                    this.removeCompetencyMatrix(matrixModelID);
+                });
+    }
+
+    @Override
+    public void registerActions() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in ApplicationPresenter"); // NOI18N
+        
+        SqlFacade.INSTANCE.registerActions();
+        
+        this.registerOnActionOpenCompetencyMatrix();
+        this.registerOnActionRefreshOverviewCompetencyMatrix();
+        this.registerOnActionRemoveCompetencyMatrix();
+    }
+    
+    private void removeCompetencyMatrix(long matrixModelID) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Remove CompetencyMatrix: " + matrixModelID); // NOI18N
+        
+        // Check if the CompetencyMatrix is open
+        for (Iterator<Tab> iterator = tpCompetencyMatrix.getTabs().iterator(); iterator.hasNext();) {
+            final Tab tab = iterator.next();
+            if (tab.getId().equals(String.valueOf(matrixModelID))) {
+                int index = tpCompetencyMatrix.getTabs().indexOf(tab);
+                tpCompetencyMatrix.getTabs().remove(tab);
+                
+                if (tpCompetencyMatrix.getTabs().isEmpty()) {
+                    return;
+                }
+                
+                index = index < tpCompetencyMatrix.getTabs().size() ? index : tpCompetencyMatrix.getTabs().size() - 1;
+                if (index < 0) {
+                    index = 0;
+                }
+                
+                tpCompetencyMatrix.getSelectionModel().select(index);
+            }
+        }
     }
     
 }
