@@ -18,34 +18,52 @@ package com.github.naoghuman.cm.sql.api;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
+import com.github.naoghuman.cm.sql.MatrixSqlProvider;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
+import javafx.util.Duration;
 
 /**
  *
  * @author PRo
  */
-public enum SqlFacade implements IActionConfiguration, IRegisterActions, ISql {
+public enum SqlFacade implements IActionConfiguration, IRegisterActions {
     
     INSTANCE;
 
     @Override
     public void registerActions() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in ApplicationPresenter"); // NOI18N
+        LoggerFacade.INSTANCE.info(this.getClass(), "Register actions in SqlFacade"); // NOI18N
         
-        this.registerOnActionCreateNewCompentencyMatrix();
+        this.registerOnActionCreateCompentencyMatrix();
     }
 
-    private void registerOnActionCreateNewCompentencyMatrix() {
+    private void registerOnActionCreateCompentencyMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register action create Competency-Matrix"); // NOI18N
+        
         ActionFacade.INSTANCE.register(
                 ACTION__CREATE__COMPETENCY_MATRIX,
                 (ActionEvent ae) -> {
-                    final ActionTransferModel transferModel = (ActionTransferModel) ae.getSource();
-                    final String title = transferModel.getString();
-                    System.out.println("titel: " + title);
-//                    this.show(transferModel.getLong());
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final String title = actionTransferModel.getString();
+                    final long matrixModelID = MatrixSqlProvider.getDefault().createCompetencyMatrix(title);
+                    
+                    final PauseTransition pt = new PauseTransition(Duration.millis(50.0d));
+                    pt.setOnFinished((ActionEvent event) -> {
+                        final ActionTransferModel actionTransferModel2 = new ActionTransferModel();
+                        actionTransferModel2.setActionKey(ACTION__REFRESH__OVERVIEW_COMPETENCY_MATRIX);
+                        actionTransferModel2.setLong(matrixModelID);
+                        ActionFacade.INSTANCE.handle(actionTransferModel2);
+
+                        final ActionTransferModel actionTransferModel3 = new ActionTransferModel();
+                        actionTransferModel3.setActionKey(ACTION__OPEN__COMPETENCY_MATRIX);
+                        actionTransferModel3.setLong(matrixModelID);
+                        ActionFacade.INSTANCE.handle(actionTransferModel3);
+                    });
+                    pt.playFromStart();
                 });
     }
     

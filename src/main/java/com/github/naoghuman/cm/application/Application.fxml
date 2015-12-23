@@ -15,7 +15,7 @@
                <children>
                   <ToolBar>
                     <items>
-                      <Button mnemonicParsing="false" onAction="#onActionCreateNewCompetencyMatrix" text="+" />
+                      <Button mnemonicParsing="false" onAction="#onActionCreateCompetencyMatrix" text="+" />
                     </items>
                   </ToolBar>
                   <TreeView fx:id="tvCompetencyMatrix" VBox.vgrow="ALWAYS" />

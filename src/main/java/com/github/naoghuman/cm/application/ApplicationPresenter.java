@@ -26,6 +26,7 @@ import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TabPane;
@@ -51,7 +52,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         this.registerActions();
     }
     
-    public void onActionCreateNewCompetencyMatrix() {
+    public void onActionCreateCompetencyMatrix() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action create new Competency-Matrix"); // NOI18N
         
         final TextInputDialog dialog = DialogFacade.getNewCompetencyMatrixDialog();
@@ -70,12 +71,51 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         actionTransferModel.setString(name);
         ActionFacade.INSTANCE.handle(actionTransferModel);
     }
+    
+    private void registerOnActionOpenCompetencyMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action open Competency-Matrix"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__OPEN__COMPETENCY_MATRIX,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final long matrixModelID = actionTransferModel.getLong();
+                    System.out.println("open in tab: " + matrixModelID);
+                    /*
+                    TODO
+                     - load the model
+                     - create tab.
+                     - show and select it
+                    */
+                });
+    }
+    
+    private void registerOnActionRefreshOverviewCompetencyMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action refresh overview Competency-Matrix"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__REFRESH__OVERVIEW_COMPETENCY_MATRIX,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final long matrixModelID = actionTransferModel.getLong();
+                    System.out.println("refresh and select: " + matrixModelID);
+                    /*
+                    TODO
+                     - refresh the overview
+                        - load all cms with id, title, generationTime
+                     - select id
+                    */
+                });
+    }
 
     @Override
     public void registerActions() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in ApplicationPresenter"); // NOI18N
         
         SqlFacade.INSTANCE.registerActions();
+        
+        this.registerOnActionOpenCompetencyMatrix();
+        this.registerOnActionRefreshOverviewCompetencyMatrix();
     }
     
 }

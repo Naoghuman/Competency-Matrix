@@ -26,10 +26,13 @@ import javafx.stage.Modality;
 public interface DialogFacade {
     
     public static TextInputDialog getNewCompetencyMatrixDialog() {
+        // TODO use custom dialog / valid input
+        // http://code.makery.ch/blog/javafx-dialogs-official/
+        // https://github.com/Daytron/SimpleDialogFX
         final TextInputDialog dialog = new TextInputDialog(""); // NOI18N
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("New Competency-Matrix"); // NOI18N
-        dialog.setHeaderText("New title from the Competency-Matrix"); // NOI18N
+        dialog.setHeaderText("Title from the Competency-Matrix"); // NOI18N
         
         return dialog;
     }

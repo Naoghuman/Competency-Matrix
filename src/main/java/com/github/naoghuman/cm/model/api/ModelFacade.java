@@ -31,7 +31,12 @@ public interface ModelFacade {
     }
     
     public static MatrixModel getDefaultMatrixModel() {
-        return new MatrixModel();
+        final MatrixModel model = new MatrixModel();
+        model.setGenerationTime(System.currentTimeMillis());
+        model.setId(System.currentTimeMillis());
+        model.setMarkAsChanged(Boolean.FALSE);
+        
+        return model;
     }
     
     public static SubCategoryModel getDefaultSubCategoryModel() {
