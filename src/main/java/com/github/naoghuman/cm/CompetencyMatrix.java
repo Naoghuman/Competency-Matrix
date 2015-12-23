@@ -54,8 +54,8 @@ public class CompetencyMatrix extends Application implements IApplicationConfigu
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        final ApplicationView view = new ApplicationView();
-        final Scene scene = new Scene(view.getView(), 1280, 720);
+        final ApplicationView applicationView = new ApplicationView();
+        final Scene scene = new Scene(applicationView.getView(), 1280, 720);
         primaryStage.setTitle(this.getProperty(KEY__COMPETENCY_MATRIX__TITLE));
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest((WindowEvent we) -> {

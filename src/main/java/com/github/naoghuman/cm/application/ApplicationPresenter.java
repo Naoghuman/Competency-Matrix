@@ -19,6 +19,8 @@ package com.github.naoghuman.cm.application;
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.dialog.api.DialogFacade;
+import com.github.naoghuman.cm.matrix.MatrixPresenter;
+import com.github.naoghuman.cm.matrix.MatrixView;
 import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
 import de.pro.lib.action.api.ActionFacade;
@@ -196,10 +198,13 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
     private void openCompetencyMatrix(MatrixModel matrixModel) {
         final Tab tab = new Tab();
         tab.setClosable(Boolean.TRUE);
-        // load view for tab
-//        tab.setContent(null);
         tab.setId(String.valueOf(matrixModel.getId()));
         tab.setText(matrixModel.getTitle());
+        
+        final MatrixView matrixView = new MatrixView();
+        final MatrixPresenter matrixPresenter = matrixView.getRealPresenter();
+        matrixPresenter.initialize(matrixModel);
+        tab.setContent(matrixView.getView());
         
         tpCompetencyMatrix.getTabs().add(tab);
         tpCompetencyMatrix.getSelectionModel().select(tab);
