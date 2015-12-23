@@ -19,19 +19,28 @@ package com.github.naoghuman.cm.application;
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.dialog.api.DialogFacade;
+import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 /**
  *
@@ -39,17 +48,71 @@ import javafx.scene.control.TreeView;
  */
 public class ApplicationPresenter implements Initializable, IActionConfiguration, IRegisterActions {
     
+    @FXML private ListView lvOverview;
+    @FXML private SplitPane spCompetencyMatrix;
     @FXML private TabPane tpCompetencyMatrix;
-    @FXML private TreeView tvCompetencyMatrix;
+    @FXML private VBox vbCompetencyMatrix;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LoggerFacade.INSTANCE.info(this.getClass(), "Initialize ApplicationPresenter"); // NOI18N
         
+        assert (lvOverview != null)         : "fx:id=\"lvOverview\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
+        assert (spCompetencyMatrix != null) : "fx:id=\"spCompetencyMatrix\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
         assert (tpCompetencyMatrix != null) : "fx:id=\"tpCompetencyMatrix\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
-        assert (tvCompetencyMatrix != null) : "fx:id=\"tvCompetencyMatrix\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
+        assert (vbCompetencyMatrix != null) : "fx:id=\"vbCompetencyMatrix\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
+        
+        this.initializeSplitPane();
+        this.initializeListView();
         
         this.registerActions();
+        
+        this.onActionRefreshListView(null);
+    }
+    
+    private void initializeSplitPane() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Initialize SplitPane"); // NOI18N
+        
+        SplitPane.setResizableWithParent(vbCompetencyMatrix, Boolean.FALSE);
+    }
+    
+    private void initializeListView() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Initialize ListView"); // NOI18N
+        
+        lvOverview.setCellFactory(new Callback<ListView<MatrixModel>, ListCell<MatrixModel>>() {
+
+            @Override
+            public ListCell<MatrixModel> call(ListView<MatrixModel> param) {
+                return new ListCell<MatrixModel>() {
+                    @Override
+                    public void updateItem(MatrixModel item, boolean empty) {
+                        super.updateItem(item, empty);
+                        
+                        if (item != null) {
+//                            this.setGraphic(item.getView());
+                            this.setText(item.getTitle());
+                        } else {
+//                            this.setGraphic(null);
+                            this.setText(null);
+                        }
+                    }
+                };
+            }
+        });
+        
+        lvOverview.setOnMouseClicked((MouseEvent event) -> {
+            if (lvOverview.getItems().isEmpty()) {
+                return;
+            }
+            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() >= 2) {
+                final MatrixModel matrixModel = (MatrixModel) lvOverview.getSelectionModel().getSelectedItem();
+                final ActionTransferModel transferModel = new ActionTransferModel();
+                transferModel.setActionKey(ACTION__OPEN__COMPETENCY_MATRIX);
+                transferModel.setLong(matrixModel.getId());
+
+                ActionFacade.INSTANCE.handle(transferModel);
+            }
+        });
     }
     
     public void onActionCreateCompetencyMatrix() {
@@ -72,6 +135,15 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
+    private void onActionRefreshListView(MatrixModel matrixModel) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh ListView"); // NOI18N
+
+        final List<MatrixModel> matrixModels = SqlFacade.INSTANCE.getMatrixSqlProvider().findAll();
+        lvOverview.getItems().clear();
+        lvOverview.getItems().addAll(matrixModels);
+        lvOverview.getSelectionModel().select(matrixModel);
+    }
+    
     private void registerOnActionOpenCompetencyMatrix() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action open Competency-Matrix"); // NOI18N
         
@@ -80,13 +152,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final long matrixModelID = actionTransferModel.getLong();
-                    System.out.println("open in tab: " + matrixModelID);
-                    /*
-                    TODO
-                     - load the model
-                     - create tab.
-                     - show and select it
-                    */
+                    this.showCompetencyMatrix(matrixModelID);
                 });
     }
     
@@ -97,14 +163,8 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                 ACTION__REFRESH__OVERVIEW_COMPETENCY_MATRIX,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
-                    final long matrixModelID = actionTransferModel.getLong();
-                    System.out.println("refresh and select: " + matrixModelID);
-                    /*
-                    TODO
-                     - refresh the overview
-                        - load all cms with id, title, generationTime
-                     - select id
-                    */
+                    final MatrixModel matrixModel = (MatrixModel) actionTransferModel.getObject();
+                    this.onActionRefreshListView(matrixModel);
                 });
     }
 
@@ -116,6 +176,39 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         
         this.registerOnActionOpenCompetencyMatrix();
         this.registerOnActionRefreshOverviewCompetencyMatrix();
+    }
+    
+    private void showCompetencyMatrix(long matrixModelID) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Show CompetencyMatrix: " + matrixModelID); // NOI18N
+        
+        // Check if the CompetencyMatrix is always open
+        for (Tab tab : tpCompetencyMatrix.getTabs()) {
+            if (tab.getId().equals(String.valueOf(matrixModelID))) {
+                tpCompetencyMatrix.getSelectionModel().select(tab);
+                return;
+            }
+        }
+        
+        // Load MatrixModel
+        final MatrixModel matrixModel = SqlFacade.INSTANCE.getMatrixSqlProvider().findById(matrixModelID);
+        if (matrixModel == null) {
+            return;
+        }
+        
+        // Show the new model
+        this.showCompetencyMatrix(matrixModel);
+    }
+    
+    private void showCompetencyMatrix(MatrixModel matrixModel) {
+        final Tab tab = new Tab();
+        tab.setClosable(Boolean.TRUE);
+        // load view for tab
+//        tab.setContent(null);
+        tab.setId(String.valueOf(matrixModel.getId()));
+        tab.setText(matrixModel.getTitle());
+        
+        tpCompetencyMatrix.getTabs().add(tab);
+        tpCompetencyMatrix.getSelectionModel().select(tab);
     }
     
 }

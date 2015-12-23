@@ -16,16 +16,19 @@
  */
 package com.github.naoghuman.cm.sql;
 
+import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import de.pro.lib.database.api.DatabaseFacade;
 import de.pro.lib.logger.api.LoggerFacade;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
  * @author PRo
  */
-public final class MatrixSqlProvider {
+public final class MatrixSqlProvider implements IEntityConfiguration {
     
     private static MatrixSqlProvider instance = null;
     
@@ -39,7 +42,7 @@ public final class MatrixSqlProvider {
     
     private MatrixSqlProvider() {}
 
-    public long createCompetencyMatrix(String title) {
+    public MatrixModel createCompetencyMatrix(String title) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Create Competency-Matrix"); // NOI18N
         
         final MatrixModel matrixModel = ModelFacade.getDefaultMatrixModel();
@@ -47,7 +50,19 @@ public final class MatrixSqlProvider {
         
         DatabaseFacade.INSTANCE.getCrudService().create(matrixModel);
         
-        return matrixModel.getId();
+        return matrixModel;
+    }
+
+    public List<MatrixModel> findAll() {
+        final List<MatrixModel> matrixModels = DatabaseFacade.INSTANCE.getCrudService()
+                .findByNamedQuery(MatrixModel.class, NAMED_QUERY__NAME__MATRIX_FIND_ALL);
+        Collections.sort(matrixModels);
+        
+        return matrixModels;
+    }
+
+    public MatrixModel findById(long matrixModelID) {
+        return DatabaseFacade.INSTANCE.getCrudService().findById(MatrixModel.class, matrixModelID);
     }
     
 }
