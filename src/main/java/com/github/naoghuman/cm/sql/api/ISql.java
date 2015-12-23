@@ -14,14 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.naoghuman.cm.model;
-
-import com.github.naoghuman.cm.model.api.ISubCategory;
+package com.github.naoghuman.cm.sql.api;
 
 /**
  *
  * @author PRo
  */
-public class SubCategory implements ISubCategory {
+public interface ISql {
     
 }

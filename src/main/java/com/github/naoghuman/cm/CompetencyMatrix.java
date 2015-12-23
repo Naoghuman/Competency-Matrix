@@ -18,7 +18,7 @@ package com.github.naoghuman.cm;
 
 import com.airhacks.afterburner.injection.Injector;
 import com.github.naoghuman.cm.application.ApplicationView;
-import com.github.naoghuman.cm.configuration.api.IConfiguration;
+import com.github.naoghuman.cm.configuration.api.IApplicationConfiguration;
 import de.pro.lib.database.api.DatabaseFacade;
 import de.pro.lib.logger.api.LoggerFacade;
 import de.pro.lib.preferences.api.PreferencesFacade;
@@ -35,7 +35,7 @@ import javafx.stage.WindowEvent;
  *
  * @author PRo
  */
-public class CompetencyMatrix extends Application implements IConfiguration {
+public class CompetencyMatrix extends Application implements IApplicationConfiguration {
     
     @Override
     public void init() throws Exception {

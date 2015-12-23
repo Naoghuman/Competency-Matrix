@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.naoghuman.cm.model;
-
-import com.github.naoghuman.cm.model.api.IMatrix;
+package com.github.naoghuman.cm.configuration.api;
 
 /**
  *
  * @author PRo
  */
-public class Matrix implements IMatrix {
+public interface IActionConfiguration {
+    
+    public static final String ACTION__CREATE__COMPETENCY_MATRIX = "ACTION__CREATE__COMPETENCY_MATRIX"; // NOI18N
     
 }

@@ -20,6 +20,6 @@ package com.github.naoghuman.cm.model.api;
  *
  * @author PRo
  */
-public interface ILevel {
+public class LevelModel {
     
 }

@@ -16,19 +16,27 @@
  */
 package com.github.naoghuman.cm.application;
 
+import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
+import com.github.naoghuman.cm.configuration.api.IRegisterActions;
+import com.github.naoghuman.cm.dialog.api.DialogFacade;
+import com.github.naoghuman.cm.sql.api.SqlFacade;
+import de.pro.lib.action.api.ActionFacade;
+import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TreeView;
 
 /**
  *
  * @author PRo
  */
-public class ApplicationPresenter implements Initializable {
+public class ApplicationPresenter implements Initializable, IActionConfiguration, IRegisterActions {
     
     @FXML private TabPane tpCompetencyMatrix;
     @FXML private TreeView tvCompetencyMatrix;
@@ -40,11 +48,34 @@ public class ApplicationPresenter implements Initializable {
         assert (tpCompetencyMatrix != null) : "fx:id=\"tpCompetencyMatrix\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
         assert (tvCompetencyMatrix != null) : "fx:id=\"tvCompetencyMatrix\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
         
+        this.registerActions();
     }
     
     public void onActionCreateNewCompetencyMatrix() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "On action create new Competency Matrix"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action create new Competency-Matrix"); // NOI18N
         
+        final TextInputDialog dialog = DialogFacade.getNewCompetencyMatrixDialog();
+        final Optional<String> result = dialog.showAndWait();
+        if (!result.isPresent()) {
+            return;
+        }
+        
+        final String name = result.get().trim();
+        if (name.isEmpty()) {
+            return;
+        }
+        
+        final ActionTransferModel actionTransferModel = new ActionTransferModel();
+        actionTransferModel.setActionKey(ACTION__CREATE__COMPETENCY_MATRIX);
+        actionTransferModel.setString(name);
+        ActionFacade.INSTANCE.handle(actionTransferModel);
+    }
+
+    @Override
+    public void registerActions() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in ApplicationPresenter"); // NOI18N
+        
+        SqlFacade.INSTANCE.registerActions();
     }
     
 }

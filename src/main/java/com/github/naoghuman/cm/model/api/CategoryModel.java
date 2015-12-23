@@ -20,6 +20,6 @@ package com.github.naoghuman.cm.model.api;
  *
  * @author PRo
  */
-public interface ICategory {
+public class CategoryModel {
     
 }

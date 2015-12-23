@@ -14,12 +14,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.naoghuman.cm.model.api;
+package com.github.naoghuman.cm.dialog.api;
+
+import javafx.scene.control.TextInputDialog;
+import javafx.stage.Modality;
 
 /**
  *
  * @author PRo
  */
-public interface IMatrix {
+public interface DialogFacade {
+    
+    public static TextInputDialog getNewCompetencyMatrixDialog() {
+        final TextInputDialog dialog = new TextInputDialog(""); // NOI18N
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setTitle("New Competency-Matrix"); // NOI18N
+        dialog.setHeaderText("New title from the Competency-Matrix"); // NOI18N
+        
+        return dialog;
+    }
     
 }

@@ -22,7 +22,7 @@ import javafx.util.Duration;
  *
  * @author PRo
  */
-public interface IConfiguration {
+public interface IApplicationConfiguration {
     
     public static final Duration CM__DURATION__125 = Duration.millis(125.0d);
     public static final String CM__RESOURCE_BUNDLE__COMPETENCY_MATRIX = "/com/github/naoghuman/cm/CompetencyMatrix.properties"; // NOI18N

@@ -16,33 +16,26 @@
  */
 package com.github.naoghuman.cm.model.api;
 
-import com.github.naoghuman.cm.model.Category;
-import com.github.naoghuman.cm.model.Level;
-import com.github.naoghuman.cm.model.Matrix;
-import com.github.naoghuman.cm.model.SubCategory;
-
 /**
  *
  * @author PRo
  */
-public enum ModelFacade {
+public interface ModelFacade {
     
-    INSTANCE;
-    
-    public ICategory getDefaultCategory() {
-        return new Category();
+    public static CategoryModel getDefaultCategoryModel() {
+        return new CategoryModel();
     }
     
-    public ILevel getDefaultLevel() {
-        return new Level();
+    public static LevelModel getDefaultLevelModel() {
+        return new LevelModel();
     }
     
-    public IMatrix getDefaultMatrix() {
-        return new Matrix();
+    public static MatrixModel getDefaultMatrixModel() {
+        return new MatrixModel();
     }
     
-    public ISubCategory getDefaultSubCategory() {
-        return new SubCategory();
+    public static SubCategoryModel getDefaultSubCategoryModel() {
+        return new SubCategoryModel();
     }
     
 }
