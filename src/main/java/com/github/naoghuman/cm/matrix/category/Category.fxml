@@ -6,6 +6,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.matrix.category.CategoryPresenter">
-
+<AnchorPane id="AnchorPane" prefHeight="52.0" prefWidth="320.0" style="-fx-background-color: TAN;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.matrix.category.CategoryPresenter">
+   <children>
+      <Button fx:id="btn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Button" />
+   </children>
 </AnchorPane>

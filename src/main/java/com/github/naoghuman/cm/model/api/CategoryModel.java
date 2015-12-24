@@ -16,10 +16,235 @@
  */
 package com.github.naoghuman.cm.model.api;
 
+import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  *
  * @author PRo
  */
-public class CategoryModel {
+@Entity
+@Access(AccessType.PROPERTY)
+@Table(name = IEntityConfiguration.ENTITY__TABLE_NAME__CATEGORY_MODEL)
+@NamedQueries({
+    @NamedQuery(
+            name = IEntityConfiguration.NAMED_QUERY__NAME__CATEGORY_FIND_ALL,
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__CATEGORY_FIND_ALL)
+})
+public class CategoryModel implements Comparable<CategoryModel>, Externalizable, IEntityConfiguration {
+
+    private static final long serialVersionUID = 1L;
+    
+    public CategoryModel() {
+        this.initialize();
+    }
+    
+    private void initialize() {
+        
+    }
+    
+    // START  ID ---------------------------------------------------------------
+    private LongProperty idProperty;
+    private long _id = DEFAULT_ID__CATEGORY_MODEL;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = COLUMN_NAME__ID)
+    public long getId() {
+        if (this.idProperty == null) {
+            return _id;
+        } else {
+            return idProperty.get();
+        }
+    }
+
+    public final void setId(long id) {
+        if (this.idProperty == null) {
+            _id = id;
+        } else {
+            this.idProperty.set(id);
+        }
+    }
+
+    public LongProperty idProperty() {
+        if (idProperty == null) {
+            idProperty = new SimpleLongProperty(this, COLUMN_NAME__ID, _id);
+        }
+        return idProperty;
+    }
+    // END  ID -----------------------------------------------------------------
+    
+    // START  PARENT-ID --------------------------------------------------------
+    private LongProperty parentIdProperty;
+    private long _parentId = DEFAULT_ID__CATEGORY_MODEL;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = COLUMN_NAME__PARENT_ID)
+    public long getParentId() {
+        if (this.parentIdProperty == null) {
+            return _parentId;
+        } else {
+            return parentIdProperty.get();
+        }
+    }
+
+    public final void setParentId(long parentId) {
+        if (this.parentIdProperty == null) {
+            _parentId = parentId;
+        } else {
+            this.parentIdProperty.set(parentId);
+        }
+    }
+
+    public LongProperty parentIdProperty() {
+        if (parentIdProperty == null) {
+            parentIdProperty = new SimpleLongProperty(this, COLUMN_NAME__PARENT_ID, _parentId);
+        }
+        return parentIdProperty;
+    }
+    // END  PARENT-ID ----------------------------------------------------------
+    
+    // START  GENERATIONTIME ---------------------------------------------------
+    private LongProperty generationTimeProperty;
+    private long _generationTime = System.currentTimeMillis();
+
+    @Column(name = COLUMN_NAME__GENERATION_TIME)
+    public long getGenerationTime() {
+        if (this.generationTimeProperty == null) {
+            return _generationTime;
+        } else {
+            return generationTimeProperty.get();
+        }
+    }
+
+    public final void setGenerationTime(long generationTime) {
+        if (this.generationTimeProperty == null) {
+            _generationTime = generationTime;
+        } else {
+            this.generationTimeProperty.set(generationTime);
+        }
+    }
+
+    public LongProperty generationTimeProperty() {
+        if (generationTimeProperty == null) {
+            generationTimeProperty = new SimpleLongProperty(this, COLUMN_NAME__GENERATION_TIME, _generationTime);
+        }
+        return generationTimeProperty;
+    }
+    // END  GENERATIONTIME -----------------------------------------------------
+    
+    // START  TITLE ------------------------------------------------------------
+    private StringProperty titleProperty = null;
+    private String _title = SIGN__EMPTY;
+    
+    @Column(name = COLUMN_NAME__TITLE)
+    public String getTitle() {
+        if (this.titleProperty == null) {
+            return _title;
+        } else {
+            return titleProperty.get();
+        }
+    }
+    
+    public void setTitle(String title) {
+        if (this.titleProperty == null) {
+            _title = title;
+        } else {
+            this.titleProperty.set(title);
+        }
+    }
+    
+    public StringProperty titleProperty() {
+        if (titleProperty == null) {
+            titleProperty = new SimpleStringProperty(this, COLUMN_NAME__TITLE, _title);
+        }
+        return titleProperty;
+    }
+    // END  TITLE --------------------------------------------------------------
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(this.getId())
+                .append(this.getParentId())
+                .append(this.getGenerationTime())
+                .toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || obj == this) {
+            return false;
+        }
+        
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        final CategoryModel other = (CategoryModel) obj;
+        return new EqualsBuilder()
+                .append(this.getId(), other.getId())
+                .append(this.getParentId(), other.getParentId())
+                .append(this.getGenerationTime(), other.getGenerationTime())
+                .isEquals();
+    }
+    
+    @Override
+    public int compareTo(CategoryModel other) {
+        return new CompareToBuilder()
+                .append(other.getTitle(), this.getTitle())
+                .append(other.getGenerationTime(), this.getGenerationTime())
+                .append(other.getParentId(), this.getParentId())
+                .append(other.getId(), this.getId())
+                .toComparison();
+    }
+    
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", this.getId()) // NOI18N
+                .append("parentId", this.getParentId()) // NOI18N
+                .append("title", this.getTitle()) // NOI18N
+                .append("generationTime", this.getGenerationTime()) // NOI18N
+                .toString();
+    }
+    
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeLong(this.getId());
+        out.writeLong(this.getParentId());
+        out.writeLong(this.getGenerationTime());
+        out.writeObject(this.getTitle());
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        this.setId(in.readLong());
+        this.setParentId(in.readLong());
+        this.setGenerationTime(in.readLong());
+        this.setTitle(String.valueOf(in.readObject()));
+    }
     
 }

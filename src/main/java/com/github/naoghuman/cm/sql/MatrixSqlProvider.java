@@ -50,24 +50,22 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
     private MatrixSqlProvider() {}
 
     private MatrixModel createMatrix(String title) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Create Matrix"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Create MatrixModel"); // NOI18N
         
-        final MatrixModel matrixModel = ModelFacade.getDefaultMatrixModel();
-        matrixModel.setTitle(title);
-        
+        final MatrixModel matrixModel = ModelFacade.getDefaultMatrixModel(title);
         DatabaseFacade.INSTANCE.getCrudService().create(matrixModel);
         
         return matrixModel;
     }
     
-    private void deleteMatrix(long matrixModelID) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete Matrix"); // NOI18N
+    private void deleteMatrix(long matrixModelId) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete MatrixModel"); // NOI18N
         
-        DatabaseFacade.INSTANCE.getCrudService().delete(MatrixModel.class, matrixModelID);
+        DatabaseFacade.INSTANCE.getCrudService().delete(MatrixModel.class, matrixModelId);
     }
 
     public List<MatrixModel> findAll() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Find all Matrix"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Find all MatrixModels"); // NOI18N
         
         final List<MatrixModel> matrixModels = DatabaseFacade.INSTANCE.getCrudService()
                 .findByNamedQuery(MatrixModel.class, NAMED_QUERY__NAME__MATRIX_FIND_ALL);
@@ -77,7 +75,7 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
     }
 
     public MatrixModel findById(long matrixModelID) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Find by ID Matrix"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Find by ID MatrixModel"); // NOI18N
         
         return DatabaseFacade.INSTANCE.getCrudService().findById(MatrixModel.class, matrixModelID);
     }
@@ -91,13 +89,14 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
     }
 
     private void registerOnActionCreateMatrix() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register action create Matrix"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action create MatrixModel"); // NOI18N
         
-        ActionFacade.INSTANCE.register(ACTION__CREATE__MATRIX,
+        ActionFacade.INSTANCE.register(
+                ACTION__CREATE__MATRIX,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
-                    final String title = actionTransferModel.getString();
-                    final MatrixModel matrixModel = this.createMatrix(title);
+                    final String name = actionTransferModel.getString();
+                    final MatrixModel matrixModel = this.createMatrix(name);
                     
                     final PauseTransition pt = new PauseTransition(Duration.millis(50.0d));
                     pt.setOnFinished((ActionEvent event) -> {
@@ -116,13 +115,14 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
     }
 
     private void registerOnActionDeleteMatrix() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register action delete Matrix"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action delete MatrixModel"); // NOI18N
         
-        ActionFacade.INSTANCE.register(ACTION__DELETE__MATRIX,
+        ActionFacade.INSTANCE.register(
+                ACTION__DELETE__MATRIX,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
-                    final long matrixModelID = actionTransferModel.getLong();
-                    this.deleteMatrix(matrixModelID);
+                    final long matrixModelId = actionTransferModel.getLong();
+                    this.deleteMatrix(matrixModelId);
                     
                     final PauseTransition pt = new PauseTransition(Duration.millis(100.0d));
                     pt.setOnFinished((ActionEvent event) -> {
@@ -133,7 +133,7 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
 
                         final ActionTransferModel actionTransferModel3 = new ActionTransferModel();
                         actionTransferModel3.setActionKey(ACTION__REMOVE__MATRIX);
-                        actionTransferModel3.setLong(matrixModelID);
+                        actionTransferModel3.setLong(matrixModelId);
                         ActionFacade.INSTANCE.handle(actionTransferModel3);
                     });
                     pt.playFromStart();

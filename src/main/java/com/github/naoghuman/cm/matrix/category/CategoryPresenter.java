@@ -16,18 +16,42 @@
  */
 package com.github.naoghuman.cm.matrix.category;
 
+import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
+import com.github.naoghuman.cm.configuration.api.IRegisterActions;
+import com.github.naoghuman.cm.model.api.CategoryModel;
+import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 
 /**
  *
  * @author PRo
  */
-public class CategoryPresenter implements Initializable {
+public class CategoryPresenter implements Initializable, IActionConfiguration, IRegisterActions {
+    
+    @FXML private Button btn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        LoggerFacade.INSTANCE.info(this.getClass(), "Initialize CategoryPresenter"); // NOI18N
+        
+        assert (btn != null)  : "fx:id=\"btn\" was not injected: check your FXML file 'Category.fxml'."; // NOI18N
+        
+        this.registerActions();
+    }
+    
+    public void initialize(CategoryModel categoryModel) {
+        LoggerFacade.INSTANCE.info(this.getClass(), "Initialize CategoryModel"); // NOI18N
+        
+        btn.setText(categoryModel.getTitle());
+    }
+
+    @Override
+    public void registerActions() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in CategoryPresenter"); // NOI18N
         
     }
     

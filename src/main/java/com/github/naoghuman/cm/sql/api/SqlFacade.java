@@ -18,6 +18,7 @@ package com.github.naoghuman.cm.sql.api;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
+import com.github.naoghuman.cm.sql.CategorySqlProvider;
 import com.github.naoghuman.cm.sql.MatrixSqlProvider;
 import de.pro.lib.logger.api.LoggerFacade;
 
@@ -29,6 +30,10 @@ public enum SqlFacade implements IActionConfiguration, IRegisterActions {
     
     INSTANCE;
     
+    public CategorySqlProvider getCategorySqlProvider() {
+        return CategorySqlProvider.getDefault();
+    }
+    
     public MatrixSqlProvider getMatrixSqlProvider() {
         return MatrixSqlProvider.getDefault();
     }
@@ -37,6 +42,7 @@ public enum SqlFacade implements IActionConfiguration, IRegisterActions {
     public void registerActions() {
         LoggerFacade.INSTANCE.info(this.getClass(), "Register actions in SqlFacade"); // NOI18N
         
+        CategorySqlProvider.getDefault().registerActions();
         MatrixSqlProvider.getDefault().registerActions();
     }
     

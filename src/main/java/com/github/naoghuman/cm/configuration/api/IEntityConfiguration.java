@@ -22,16 +22,21 @@ package com.github.naoghuman.cm.configuration.api;
  */
 public interface IEntityConfiguration {
     
-    public static final Long DEFAULT_ID__MATRIX_MODEL = 1_000_000_000_000L;
+    public static final Long DEFAULT_ID__CATEGORY_MODEL = 1_000_000_000_000L;
+    public static final Long DEFAULT_ID__MATRIX_MODEL = 1_000_000_100_000L;
     
     public static final String COLUMN_NAME__ID = "id"; // NOI18N
     public static final String COLUMN_NAME__GENERATION_TIME = "generationTime"; // NOI18N
+    public static final String COLUMN_NAME__PARENT_ID = "parentId"; // NOI18N
     public static final String COLUMN_NAME__TITLE = "title"; // NOI18N
     
+    public static final String ENTITY__TABLE_NAME__CATEGORY_MODEL = "CategoryModel"; // NOI18N
     public static final String ENTITY__TABLE_NAME__MATRIX_MODEL = "MatrixModel"; // NOI18N
     
+    public static final String NAMED_QUERY__NAME__CATEGORY_FIND_ALL = "CategoryModel.findAll"; // NOI18N
     public static final String NAMED_QUERY__NAME__MATRIX_FIND_ALL = "MatrixModel.findAll"; // NOI18N
     
+    public static final String NAMED_QUERY__QUERY__CATEGORY_FIND_ALL = "SELECT cm FROM CategoryModel cm WHERE cm.parentId = :parentId"; // NOI18N
     public static final String NAMED_QUERY__QUERY__MATRIX_FIND_ALL = "SELECT mm FROM MatrixModel mm"; // NOI18N
     
     public static final String SIGN__EMPTY = ""; // NOI18N

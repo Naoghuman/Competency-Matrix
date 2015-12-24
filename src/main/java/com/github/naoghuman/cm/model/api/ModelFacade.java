@@ -22,21 +22,27 @@ package com.github.naoghuman.cm.model.api;
  */
 public interface ModelFacade {
     
-    public static CategoryModel getDefaultCategoryModel() {
-        return new CategoryModel();
+    public static CategoryModel getDefaultCategoryModel(long parentID, String title) {
+        final CategoryModel categoryModel = new CategoryModel();
+        categoryModel.setId(System.currentTimeMillis());
+        categoryModel.setParentId(parentID);
+        categoryModel.setGenerationTime(System.currentTimeMillis());
+        categoryModel.setTitle(title);
+        
+        return categoryModel;
     }
     
     public static LevelModel getDefaultLevelModel() {
         return new LevelModel();
     }
     
-    public static MatrixModel getDefaultMatrixModel() {
-        final MatrixModel model = new MatrixModel();
-        model.setGenerationTime(System.currentTimeMillis());
-        model.setId(System.currentTimeMillis());
-        model.setMarkAsChanged(Boolean.FALSE);
+    public static MatrixModel getDefaultMatrixModel(String title) {
+        final MatrixModel matrixModel = new MatrixModel();
+        matrixModel.setId(System.currentTimeMillis());
+        matrixModel.setGenerationTime(System.currentTimeMillis());
+        matrixModel.setTitle(title);
         
-        return model;
+        return matrixModel;
     }
     
     public static SubCategoryModel getDefaultSubCategoryModel() {

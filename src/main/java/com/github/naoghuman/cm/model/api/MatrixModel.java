@@ -21,9 +21,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -37,7 +35,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -64,7 +61,7 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
     }
     
     private void initialize() {
-        markAsChangedProperty = new SimpleBooleanProperty(Boolean.FALSE);
+        
     }
     
     // START  ID ---------------------------------------------------------------
@@ -155,25 +152,7 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
         return titleProperty;
     }
     // END  TITLE --------------------------------------------------------------
-    
-    // START  MARK_AS_CHANGED --------------------------------------------------
-    private transient BooleanProperty markAsChangedProperty = null;
 
-    @Transient
-    public Boolean isMarkAsChanged() {
-        return markAsChangedProperty.getValue();
-    }
-    
-    public BooleanProperty markAsChangedProperty() {
-        return markAsChangedProperty;
-    }
-    
-    public void setMarkAsChanged(Boolean isMarkAsChanged) {
-        markAsChangedProperty.setValue(isMarkAsChanged);
-    }
-    // END  MARK_AS_CHANGED ----------------------------------------------------
-    
-    
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
