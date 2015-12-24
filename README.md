@@ -9,7 +9,7 @@ Intention
 `Competency-Matrix` is inspired by [Programmer Competency Matrix] from `Sijin Joseph`.
 
 You want to skill your competency in your projects, hobbies or something else? 
-Create your own `Competency-Matrix` and then **master** your skills.
+Create your own `Matrix` and then **master** your skills.
 
 
 

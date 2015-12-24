@@ -22,14 +22,17 @@ package com.github.naoghuman.cm.configuration.api;
  */
 public interface IActionConfiguration {
     
-    public static final String ACTION__CREATE__COMPETENCY_MATRIX = "ACTION__CREATE__COMPETENCY_MATRIX"; // NOI18N
+    public static final String ACTION__CREATE__CATEGORY = "ACTION__CREATE__CATEGORY"; // NOI18N
+    public static final String ACTION__CREATE__MATRIX = "ACTION__CREATE__MATRIX"; // NOI18N
     
-    public static final String ACTION__DELETE__COMPETENCY_MATRIX = "ACTION__DELETE__COMPETENCY_MATRIX"; // NOI18N
+    public static final String ACTION__DELETE__CATEGORY = "ACTION__DELETE__CATEGORY"; // NOI18N
+    public static final String ACTION__DELETE__MATRIX = "ACTION__DELETE___MATRIX"; // NOI18N
     
-    public static final String ACTION__OPEN__COMPETENCY_MATRIX = "ACTION__OPEN__COMPETENCY_MATRIX"; // NOI18N
+    public static final String ACTION__OPEN__MATRIX = "ACTION__OPEN__COMPETENCY_MATRIX"; // NOI18N
     
-    public static final String ACTION__REFRESH__OVERVIEW_COMPETENCY_MATRIX = "ACTION__REFRESH__OVERVIEW_COMPETENCY_MATRIX"; // NOI18N
+    public static final String ACTION__REFRESH__OVERVIEW_MATRIX = "ACTION__REFRESH__OVERVIEW_MATRIX"; // NOI18N
     
-    public static final String ACTION__REMOVE__COMPETENCY_MATRIX = "ACTION__REMOVE__COMPETENCY_MATRIX"; // NOI18N
+    public static final String ACTION__REMOVE__CATEGORY = "ACTION__REMOVE__CATEGORY"; // NOI18N
+    public static final String ACTION__REMOVE__MATRIX = "ACTION__REMOVE__MATRIX"; // NOI18N
     
 }

@@ -33,11 +33,11 @@ import javafx.stage.Modality;
  */
 public interface DialogFacade {
     
-    public static Alert getDeleteCompetencyMatrixDialog() {
+    public static Alert getDeleteCategoryDialog() {
         final Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.initModality(Modality.APPLICATION_MODAL);
-        alert.setTitle("Delete Competency-Matrix"); // NOI18N
-        alert.setHeaderText("Really delete your Competency-Matrix?"); // NOI18N
+        alert.setTitle("Delete Category"); // NOI18N
+        alert.setHeaderText("Really delete this Category?"); // NOI18N
         
         ButtonType buttonTypeOne = new ButtonType(ButtonType.YES.getText(), ButtonData.YES);
         ButtonType buttonTypeCancel = new ButtonType(ButtonType.CANCEL.getText(), ButtonData.CANCEL_CLOSE);
@@ -46,11 +46,33 @@ public interface DialogFacade {
         return alert;
     }
     
-    public static TextInputDialog getNewCompetencyMatrixDialog() {
+    public static Alert getDeleteMatrixDialog() {
+        final Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setTitle("Delete Matrix"); // NOI18N
+        alert.setHeaderText("Really delete this Matrix?"); // NOI18N
+        
+        ButtonType buttonTypeOne = new ButtonType(ButtonType.YES.getText(), ButtonData.YES);
+        ButtonType buttonTypeCancel = new ButtonType(ButtonType.CANCEL.getText(), ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
+        
+        return alert;
+    }
+    
+    public static TextInputDialog getNewCategoryDialog() {
         final TextInputDialog dialog = new TextInputDialog(""); // NOI18N
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.setTitle("New Competency-Matrix"); // NOI18N
-        dialog.setHeaderText("Title from the Competency-Matrix"); // NOI18N
+        dialog.setTitle("New Category"); // NOI18N
+        dialog.setHeaderText("New name from the Category"); // NOI18N
+        
+        return dialog;
+    }
+    
+    public static TextInputDialog getNewMatrixDialog() {
+        final TextInputDialog dialog = new TextInputDialog(""); // NOI18N
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setTitle("New Matrix"); // NOI18N
+        dialog.setHeaderText("New name from the Matrix"); // NOI18N
         
         return dialog;
     }

@@ -14,8 +14,8 @@
                     <children>
                         <ToolBar>
                             <items>
-                                <Button mnemonicParsing="false" onAction="#onActionCreateCompetencyMatrix" text="+" />
-                                <Button mnemonicParsing="false" onAction="#onActionDeleteCompetencyMatrix" text="-" />
+                                <Button mnemonicParsing="false" onAction="#onActionCreateMatrix" text="+" />
+                                <Button mnemonicParsing="false" onAction="#onActionDeleteMatrix" text="-" />
                             </items>
                         </ToolBar>
                         <ListView fx:id="lvOverview" VBox.vgrow="ALWAYS" />

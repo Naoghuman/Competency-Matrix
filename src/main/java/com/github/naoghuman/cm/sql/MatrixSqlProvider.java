@@ -49,8 +49,8 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
     
     private MatrixSqlProvider() {}
 
-    private MatrixModel createCompetencyMatrix(String title) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Create Competency-Matrix"); // NOI18N
+    private MatrixModel createMatrix(String title) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Create Matrix"); // NOI18N
         
         final MatrixModel matrixModel = ModelFacade.getDefaultMatrixModel();
         matrixModel.setTitle(title);
@@ -60,14 +60,14 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
         return matrixModel;
     }
     
-    private void deleteCompetencyMatrix(long matrixModelID) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete Competency-Matrix"); // NOI18N
+    private void deleteMatrix(long matrixModelID) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete Matrix"); // NOI18N
         
         DatabaseFacade.INSTANCE.getCrudService().delete(MatrixModel.class, matrixModelID);
     }
 
     public List<MatrixModel> findAll() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Find all Competency-Matrix"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Find all Matrix"); // NOI18N
         
         final List<MatrixModel> matrixModels = DatabaseFacade.INSTANCE.getCrudService()
                 .findByNamedQuery(MatrixModel.class, NAMED_QUERY__NAME__MATRIX_FIND_ALL);
@@ -77,7 +77,7 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
     }
 
     public MatrixModel findById(long matrixModelID) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Find by ID Competency-Matrix"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Find by ID Matrix"); // NOI18N
         
         return DatabaseFacade.INSTANCE.getCrudService().findById(MatrixModel.class, matrixModelID);
     }
@@ -86,29 +86,28 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
     public void registerActions() {
         LoggerFacade.INSTANCE.info(this.getClass(), "Register actions in MatrixSqlProvider"); // NOI18N
         
-        this.registerOnActionCreateCompentencyMatrix();
-        this.registerOnActionDeleteCompentencyMatrix();
+        this.registerOnActionCreateMatrix();
+        this.registerOnActionDeleteMatrix();
     }
 
-    private void registerOnActionCreateCompentencyMatrix() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register action create Competency-Matrix"); // NOI18N
+    private void registerOnActionCreateMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register action create Matrix"); // NOI18N
         
-        ActionFacade.INSTANCE.register(
-                ACTION__CREATE__COMPETENCY_MATRIX,
+        ActionFacade.INSTANCE.register(ACTION__CREATE__MATRIX,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final String title = actionTransferModel.getString();
-                    final MatrixModel matrixModel = this.createCompetencyMatrix(title);
+                    final MatrixModel matrixModel = this.createMatrix(title);
                     
                     final PauseTransition pt = new PauseTransition(Duration.millis(50.0d));
                     pt.setOnFinished((ActionEvent event) -> {
                         final ActionTransferModel actionTransferModel2 = new ActionTransferModel();
-                        actionTransferModel2.setActionKey(ACTION__REFRESH__OVERVIEW_COMPETENCY_MATRIX);
+                        actionTransferModel2.setActionKey(ACTION__REFRESH__OVERVIEW_MATRIX);
                         actionTransferModel2.setObject(matrixModel);
                         ActionFacade.INSTANCE.handle(actionTransferModel2);
 
                         final ActionTransferModel actionTransferModel3 = new ActionTransferModel();
-                        actionTransferModel3.setActionKey(ACTION__OPEN__COMPETENCY_MATRIX);
+                        actionTransferModel3.setActionKey(ACTION__OPEN__MATRIX);
                         actionTransferModel3.setLong(matrixModel.getId());
                         ActionFacade.INSTANCE.handle(actionTransferModel3);
                     });
@@ -116,25 +115,24 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
                 });
     }
 
-    private void registerOnActionDeleteCompentencyMatrix() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register action delete Competency-Matrix"); // NOI18N
+    private void registerOnActionDeleteMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register action delete Matrix"); // NOI18N
         
-        ActionFacade.INSTANCE.register(
-                ACTION__DELETE__COMPETENCY_MATRIX,
+        ActionFacade.INSTANCE.register(ACTION__DELETE__MATRIX,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final long matrixModelID = actionTransferModel.getLong();
-                    this.deleteCompetencyMatrix(matrixModelID);
+                    this.deleteMatrix(matrixModelID);
                     
                     final PauseTransition pt = new PauseTransition(Duration.millis(100.0d));
                     pt.setOnFinished((ActionEvent event) -> {
                         final ActionTransferModel actionTransferModel2 = new ActionTransferModel();
-                        actionTransferModel2.setActionKey(ACTION__REFRESH__OVERVIEW_COMPETENCY_MATRIX);
+                        actionTransferModel2.setActionKey(ACTION__REFRESH__OVERVIEW_MATRIX);
                         actionTransferModel2.setObject(null);
                         ActionFacade.INSTANCE.handle(actionTransferModel2);
 
                         final ActionTransferModel actionTransferModel3 = new ActionTransferModel();
-                        actionTransferModel3.setActionKey(ACTION__REMOVE__COMPETENCY_MATRIX);
+                        actionTransferModel3.setActionKey(ACTION__REMOVE__MATRIX);
                         actionTransferModel3.setLong(matrixModelID);
                         ActionFacade.INSTANCE.handle(actionTransferModel3);
                     });
