@@ -17,6 +17,7 @@
 package com.github.naoghuman.cm.matrix;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
+import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__DELETE__MATRIX;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.dialog.api.DialogFacade;
 import com.github.naoghuman.cm.matrix.category.CategoryPresenter;
@@ -35,6 +36,8 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
@@ -49,7 +52,7 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
     @FXML private Label lMatrix;
     @FXML private VBox vbCategories;
     
-    private long id;
+    private long matrixModelId;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -64,10 +67,10 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
     public void initialize(MatrixModel matrixModel) {
         LoggerFacade.INSTANCE.info(this.getClass(), "Initialize MatrixModel"); // NOI18N
         
-        id = matrixModel.getId();
+        matrixModelId = matrixModel.getId();
         lMatrix.setText(matrixModel.getTitle());
         
-        final CategoryModel categoryModel = ModelFacade.getDefaultCategoryModel(id, "dummy"); // NOI18N
+        final CategoryModel categoryModel = ModelFacade.getDefaultCategoryModel(matrixModelId, "dummy"); // NOI18N
         this.onActionRefreshMatrix(categoryModel);
     }
     
@@ -88,7 +91,27 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
         final ActionTransferModel actionTransferModel = new ActionTransferModel();
         actionTransferModel.setActionKey(ACTION__CREATE__CATEGORY);
         actionTransferModel.setString(name);
-        actionTransferModel.setLong(id);
+        actionTransferModel.setLong(matrixModelId);
+        ActionFacade.INSTANCE.handle(actionTransferModel);
+    }
+    
+    public void onActionDeleteMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action delete Matrix"); // NOI18N
+        
+        final Alert alert = DialogFacade.getDeleteMatrixDialog();
+        final Optional<ButtonType> result = alert.showAndWait();
+        if (!result.isPresent()) {
+            return;
+        }
+        
+        final ButtonType buttonType = result.get();
+        if (!buttonType.getButtonData().equals(ButtonType.YES.getButtonData())) {
+            return;
+        }
+        
+        final ActionTransferModel actionTransferModel = new ActionTransferModel();
+        actionTransferModel.setActionKey(ACTION__DELETE__MATRIX);
+        actionTransferModel.setLong(matrixModelId);
         ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
@@ -102,10 +125,7 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
             return;
         }
         
-        System.out.println("cms: " + categoryModels.toString());
-        
         categoryModels.stream().forEach((categoryModel2) -> {
-            System.out.println("  cm: " + categoryModel2.getTitle());
             final CategoryView categoryView = new CategoryView();
             final CategoryPresenter categoryPresenter = categoryView.getRealPresenter();
             categoryPresenter.initialize(categoryModel2);
@@ -130,7 +150,7 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final CategoryModel categoryModel = (CategoryModel) actionTransferModel.getObject();
                     final long parentID = categoryModel.getParentId();
-                    final boolean isEquals = new EqualsBuilder().append(parentID, id).isEquals();
+                    final boolean isEquals = new EqualsBuilder().append(parentID, matrixModelId).isEquals();
                     if (!isEquals) {
                         return;
                     }
