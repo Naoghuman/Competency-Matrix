@@ -30,6 +30,7 @@ import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -47,7 +48,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
  *
  * @author PRo
  */
-public class MatrixPresenter implements Initializable, IActionConfiguration {//, IRegisterActions {
+public class MatrixPresenter implements Initializable, IActionConfiguration, IRegisterActions {
     
     @FXML private Label lMatrix;
     @FXML private VBox vbCategories;
@@ -61,7 +62,7 @@ public class MatrixPresenter implements Initializable, IActionConfiguration {//,
         assert (lMatrix != null)      : "fx:id=\"lMatrix\" was not injected: check your FXML file 'Matrix.fxml'."; // NOI18N
         assert (vbCategories != null) : "fx:id=\"vbCategories\" was not injected: check your FXML file 'Matrix.fxml'."; // NOI18N
         
-//        this.registerActions();
+        this.registerActions();
     }
     
     public void initialize(MatrixModel matrixModel) {
@@ -134,10 +135,10 @@ public class MatrixPresenter implements Initializable, IActionConfiguration {//,
         });
     }
 
-//    @Override
-//    public void registerActions() {
-//        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in MatrixPresenter"); // NOI18N
-//        
-//    }
+    @Override
+    public void registerActions() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in MatrixPresenter"); // NOI18N
+        
+    }
     
 }

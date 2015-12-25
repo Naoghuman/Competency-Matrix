@@ -77,7 +77,7 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
     }
     
     public void delete(long categoryModelId) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete all CategoryModel"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete CategoryModel"); // NOI18N
         
         DatabaseFacade.INSTANCE.getCrudService().delete(CategoryModel.class, categoryModelId);
     }
@@ -128,6 +128,26 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
     private void registerOnActionDeleteCategory() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action delete CategoryModel"); // NOI18N
         
+        ActionFacade.INSTANCE.register(
+                ACTION__DELETE__CATEGORY,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final CategoryModel categoryModel = (CategoryModel) actionTransferModel.getObject();
+                    this.delete(categoryModel.getId());
+                    
+                    final PauseTransition pt = new PauseTransition(Duration.millis(100.0d));
+                    pt.setOnFinished((ActionEvent event) -> {
+                        /*
+                        TODO remove the deleted categorymodel from the matrixview
+                        */
+
+                        final ActionTransferModel actionTransferModel3 = new ActionTransferModel();
+                        actionTransferModel3.setActionKey(ACTION__REMOVE__CATEGORY);
+                        actionTransferModel3.setObject(categoryModel);
+                        ActionFacade.INSTANCE.handle(actionTransferModel3);
+                    });
+                    pt.playFromStart();
+                });
     }
     
 }

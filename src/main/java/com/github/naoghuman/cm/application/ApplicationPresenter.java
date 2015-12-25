@@ -224,6 +224,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         this.registerOnActionOpenMatrix();
         this.registerOnActionRefreshMatrix();
         this.registerOnActionRefreshOverviewMatrix();
+        this.registerOnActionRemoveCategory();
         this.registerOnActionRemoveMatrix();
     }
     
@@ -263,47 +264,71 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
     private void registerOnActionRefreshOverviewMatrix() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action refresh overview Matrix"); // NOI18N
         
-        ActionFacade.INSTANCE.register(ACTION__REFRESH__OVERVIEW_MATRIX,
+        ActionFacade.INSTANCE.register(
+                ACTION__REFRESH__OVERVIEW_MATRIX,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final MatrixModel matrixModel = (MatrixModel) actionTransferModel.getObject();
                     this.onActionRefreshListView(matrixModel);
                 });
     }
+
+    private void registerOnActionRemoveCategory() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action remove CategoryModel"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__REMOVE__CATEGORY,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final CategoryModel categoryModel = (CategoryModel) actionTransferModel.getObject();
+                    final long matrixModelID = categoryModel.getParentId();
+                    
+                    for (Tab tab : tpCompetencyMatrix.getTabs()) {
+                        final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixModelID)).isEquals();
+                        if (!isEquals) {
+                            continue;
+                        }
+                        
+                        final MatrixPresenter matrixPresenter = (MatrixPresenter) tab.getUserData();
+                        matrixPresenter.onActionRefreshMatrix(categoryModel); 
+                    }
+                });
+    }
     
     private void registerOnActionRemoveMatrix() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action close Matrix"); // NOI18N
         
-        ActionFacade.INSTANCE.register(ACTION__REMOVE__MATRIX,
+        ActionFacade.INSTANCE.register(
+                ACTION__REMOVE__MATRIX,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final long matrixModelID = actionTransferModel.getLong();
-                    this.removeMatrix(matrixModelID);
+                    
+                    // Check if the Matrix is open
+                    for (Iterator<Tab> iterator = tpCompetencyMatrix.getTabs().iterator(); iterator.hasNext();) {
+                        final Tab tab = iterator.next();
+                        final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixModelID)).isEquals();
+                        if (!isEquals) {
+                            continue;
+                        }
+
+                        // Remove the tab
+                        int index = tpCompetencyMatrix.getTabs().indexOf(tab);
+                        tpCompetencyMatrix.getTabs().remove(tab);
+
+                        if (tpCompetencyMatrix.getTabs().isEmpty()) {
+                            return;
+                        }
+
+                        // Select new tab
+                        index = index < tpCompetencyMatrix.getTabs().size() ? index : tpCompetencyMatrix.getTabs().size() - 1;
+                        if (index < 0) {
+                            index = 0;
+                        }
+
+                        tpCompetencyMatrix.getSelectionModel().select(index);
+                    }
                 });
-    }
-    
-    private void removeMatrix(long matrixModelID) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Remove Matrix: " + matrixModelID); // NOI18N
-        
-        // Check if the CompetencyMatrix is open
-        for (Iterator<Tab> iterator = tpCompetencyMatrix.getTabs().iterator(); iterator.hasNext();) {
-            final Tab tab = iterator.next();
-            if (tab.getId().equals(String.valueOf(matrixModelID))) {
-                int index = tpCompetencyMatrix.getTabs().indexOf(tab);
-                tpCompetencyMatrix.getTabs().remove(tab);
-                
-                if (tpCompetencyMatrix.getTabs().isEmpty()) {
-                    return;
-                }
-                
-                index = index < tpCompetencyMatrix.getTabs().size() ? index : tpCompetencyMatrix.getTabs().size() - 1;
-                if (index < 0) {
-                    index = 0;
-                }
-                
-                tpCompetencyMatrix.getSelectionModel().select(index);
-            }
-        }
     }
     
 }
