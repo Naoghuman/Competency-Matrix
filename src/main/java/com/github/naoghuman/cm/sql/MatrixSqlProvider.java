@@ -21,6 +21,7 @@ import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
+import com.github.naoghuman.cm.sql.api.SqlFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.database.api.DatabaseFacade;
@@ -49,7 +50,7 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
     
     private MatrixSqlProvider() {}
 
-    private MatrixModel createMatrix(String title) {
+    private MatrixModel create(String title) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Create MatrixModel"); // NOI18N
         
         final MatrixModel matrixModel = ModelFacade.getDefaultMatrixModel(title);
@@ -58,10 +59,17 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
         return matrixModel;
     }
     
-    private void deleteMatrix(long matrixModelId) {
+    private void delete(long matrixModelId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Delete MatrixModel"); // NOI18N
         
         DatabaseFacade.INSTANCE.getCrudService().delete(MatrixModel.class, matrixModelId);
+        
+        // TODO delete all categories
+        final List<Long> categoryModelIds = SqlFacade.INSTANCE.getCategorySqlProvider().deleteAll(matrixModelId);
+        
+        // TODO delete all subcategories from category
+        
+        // TODO delete all levels from subcategory
     }
 
     public List<MatrixModel> findAll() {
@@ -96,7 +104,7 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final String name = actionTransferModel.getString();
-                    final MatrixModel matrixModel = this.createMatrix(name);
+                    final MatrixModel matrixModel = this.create(name);
                     
                     final PauseTransition pt = new PauseTransition(Duration.millis(50.0d));
                     pt.setOnFinished((ActionEvent event) -> {
@@ -122,7 +130,7 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final long matrixModelId = actionTransferModel.getLong();
-                    this.deleteMatrix(matrixModelId);
+                    this.delete(matrixModelId);
                     
                     final PauseTransition pt = new PauseTransition(Duration.millis(100.0d));
                     pt.setOnFinished((ActionEvent event) -> {

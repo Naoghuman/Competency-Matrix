@@ -99,8 +99,8 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     private LongProperty parentIdProperty;
     private long _parentId = DEFAULT_ID__CATEGORY_MODEL;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = COLUMN_NAME__PARENT_ID)
     public long getParentId() {
         if (this.parentIdProperty == null) {

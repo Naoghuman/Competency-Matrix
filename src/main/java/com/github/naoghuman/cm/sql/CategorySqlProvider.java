@@ -59,12 +59,34 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
         
         return categoryModel;
     }
+    
+    public List<Long> deleteAll(long matrixModelId) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete all CategoryModels from: " + matrixModelId); // NOI18N
+        
+        // Find all from parent
+        final List<CategoryModel> categoryModels = this.findAll(matrixModelId);
+        
+        // Delete them
+        final List<Long> categoryModelsIds = FXCollections.observableArrayList();
+        for (CategoryModel categoryModel : categoryModels) {
+            categoryModelsIds.add(categoryModel.getId());
+            this.delete(categoryModel.getId());
+        }
+        
+        return categoryModelsIds;
+    }
+    
+    public void delete(long categoryModelId) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete all CategoryModel"); // NOI18N
+        
+        DatabaseFacade.INSTANCE.getCrudService().delete(CategoryModel.class, categoryModelId);
+    }
 
-    public List<CategoryModel> findAll(long parentId) {
+    public List<CategoryModel> findAll(long matrixModelId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Find all CategoryModels"); // NOI18N
         
         final Map<String, Object> parameters = FXCollections.observableHashMap();
-        parameters.put(COLUMN_NAME__PARENT_ID, parentId);
+        parameters.put(COLUMN_NAME__PARENT_ID, matrixModelId);
         
         final List<CategoryModel> categoryModels = DatabaseFacade.INSTANCE.getCrudService()
                 .findByNamedQuery(CategoryModel.class, NAMED_QUERY__NAME__CATEGORY_FIND_ALL, parameters);

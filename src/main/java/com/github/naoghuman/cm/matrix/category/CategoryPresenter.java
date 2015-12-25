@@ -24,7 +24,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
 /**
  *
@@ -32,13 +33,15 @@ import javafx.scene.control.Button;
  */
 public class CategoryPresenter implements Initializable, IActionConfiguration, IRegisterActions {
     
-    @FXML private Button btn;
+    @FXML private Label lCategory;
+    @FXML private VBox vbSubCategories;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LoggerFacade.INSTANCE.info(this.getClass(), "Initialize CategoryPresenter"); // NOI18N
         
-        assert (btn != null)  : "fx:id=\"btn\" was not injected: check your FXML file 'Category.fxml'."; // NOI18N
+        assert (lCategory != null)  : "fx:id=\"lCategory\" was not injected: check your FXML file 'Category.fxml'."; // NOI18N
+        assert (vbSubCategories != null)  : "fx:id=\"vbSubCategories\" was not injected: check your FXML file 'Category.fxml'."; // NOI18N
         
         this.registerActions();
     }
@@ -46,7 +49,17 @@ public class CategoryPresenter implements Initializable, IActionConfiguration, I
     public void initialize(CategoryModel categoryModel) {
         LoggerFacade.INSTANCE.info(this.getClass(), "Initialize CategoryModel"); // NOI18N
         
-        btn.setText(categoryModel.getTitle());
+        lCategory.setText(categoryModel.getTitle());
+    }
+    
+    public void onActionCreateSubCategory() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action create SubCategory"); // NOI18N
+        
+    }
+    
+    public void onActionDeleteCategory() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action delete Category"); // NOI18N
+        
     }
 
     @Override

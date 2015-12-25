@@ -47,7 +47,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
  *
  * @author PRo
  */
-public class MatrixPresenter implements Initializable, IActionConfiguration, IRegisterActions {
+public class MatrixPresenter implements Initializable, IActionConfiguration {//, IRegisterActions {
     
     @FXML private Label lMatrix;
     @FXML private VBox vbCategories;
@@ -61,7 +61,7 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
         assert (lMatrix != null)      : "fx:id=\"lMatrix\" was not injected: check your FXML file 'Matrix.fxml'."; // NOI18N
         assert (vbCategories != null) : "fx:id=\"vbCategories\" was not injected: check your FXML file 'Matrix.fxml'."; // NOI18N
         
-        this.registerActions();
+//        this.registerActions();
     }
     
     public void initialize(MatrixModel matrixModel) {
@@ -115,7 +115,7 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
         ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
-    private void onActionRefreshMatrix(CategoryModel categoryModel) {
+    public void onActionRefreshMatrix(CategoryModel categoryModel) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh Matrix"); // NOI18N
         //TODO scroll to categoryModel
         final long parentID = categoryModel.getParentId();
@@ -134,29 +134,10 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
         });
     }
 
-    @Override
-    public void registerActions() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in MatrixPresenter"); // NOI18N
-        
-        this.registerOnActionRefreshMatrix();
-    }
-    
-    private void registerOnActionRefreshMatrix() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action refresh MatrixModel"); // NOI18N
-        
-        ActionFacade.INSTANCE.register(
-                ACTION__REFRESH__MATRIX,
-                (ActionEvent ae) -> {
-                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
-                    final CategoryModel categoryModel = (CategoryModel) actionTransferModel.getObject();
-                    final long parentID = categoryModel.getParentId();
-                    final boolean isEquals = new EqualsBuilder().append(parentID, matrixModelId).isEquals();
-                    if (!isEquals) {
-                        return;
-                    }
-                    
-                    this.onActionRefreshMatrix(categoryModel);
-                });
-    }
+//    @Override
+//    public void registerActions() {
+//        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in MatrixPresenter"); // NOI18N
+//        
+//    }
     
 }

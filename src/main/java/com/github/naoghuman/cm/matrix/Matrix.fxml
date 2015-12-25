@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.matrix.MatrixPresenter">
+<AnchorPane id="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.matrix.MatrixPresenter">
     <children>
         <VBox layoutX="14.0" layoutY="14.0" spacing="7.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
             <children>
@@ -16,7 +16,7 @@
                     <children>
                         <ToolBar maxHeight="-Infinity" minHeight="-Infinity" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0">
                             <items>
-                        <Button mnemonicParsing="false" onAction="#onActionDeleteMatrix" text="- Matrix" />
+                                <Button mnemonicParsing="false" onAction="#onActionDeleteMatrix" text="- Matrix" />
                                 <Button mnemonicParsing="false" onAction="#onActionCreateCategory" text="+ Category" />
                             </items>
                         </ToolBar>
@@ -27,7 +27,7 @@
                                         <Font size="30.0" />
                                     </font>
                                 </Label>
-                                <Label fx:id="lMatrix" text="&lt;competency-matrix&gt;">
+                                <Label fx:id="lMatrix" text="&lt;matrix&gt;">
                                     <font>
                                         <Font size="30.0" />
                                     </font>
@@ -42,7 +42,11 @@
                         </HBox>
                     </children>
                 </StackPane>
-                <VBox fx:id="vbCategories" spacing="7.0" VBox.vgrow="ALWAYS" />
+                <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportWidth="236.0" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="vbCategories" spacing="7.0" VBox.vgrow="ALWAYS" />
+                    </content>
+                </ScrollPane>
             </children>
         </VBox>
     </children>

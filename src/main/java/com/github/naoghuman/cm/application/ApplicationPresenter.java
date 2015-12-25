@@ -17,10 +17,12 @@
 package com.github.naoghuman.cm.application;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
+import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__REFRESH__MATRIX;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.dialog.api.DialogFacade;
 import com.github.naoghuman.cm.matrix.MatrixPresenter;
 import com.github.naoghuman.cm.matrix.MatrixView;
+import com.github.naoghuman.cm.model.api.CategoryModel;
 import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
 import de.pro.lib.action.api.ActionFacade;
@@ -46,6 +48,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 /**
  *
@@ -179,7 +182,8 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         
         // Check if the CompetencyMatrix is always open
         for (Tab tab : tpCompetencyMatrix.getTabs()) {
-            if (tab.getId().equals(String.valueOf(matrixModelID))) {
+            final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixModelID)).isEquals();
+            if (isEquals) {
                 tpCompetencyMatrix.getSelectionModel().select(tab);
                 return;
             }
@@ -205,9 +209,22 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         final MatrixPresenter matrixPresenter = matrixView.getRealPresenter();
         matrixPresenter.initialize(matrixModel);
         tab.setContent(matrixView.getView());
+        tab.setUserData(matrixPresenter);
         
         tpCompetencyMatrix.getTabs().add(tab);
         tpCompetencyMatrix.getSelectionModel().select(tab);
+    }
+
+    @Override
+    public void registerActions() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in ApplicationPresenter"); // NOI18N
+        
+        SqlFacade.INSTANCE.registerActions();
+        
+        this.registerOnActionOpenMatrix();
+        this.registerOnActionRefreshMatrix();
+        this.registerOnActionRefreshOverviewMatrix();
+        this.registerOnActionRemoveMatrix();
     }
     
     private void registerOnActionOpenMatrix() {
@@ -218,6 +235,28 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final long matrixModelID = actionTransferModel.getLong();
                     this.openMatrix(matrixModelID);
+                });
+    }
+    
+    private void registerOnActionRefreshMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action refresh MatrixModel"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__REFRESH__MATRIX,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final CategoryModel categoryModel = (CategoryModel) actionTransferModel.getObject();
+                    final long matrixModelID = categoryModel.getParentId();
+                    
+                    for (Tab tab : tpCompetencyMatrix.getTabs()) {
+                        final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixModelID)).isEquals();
+                        if (!isEquals) {
+                            continue;
+                        }
+                        
+                        final MatrixPresenter matrixPresenter = (MatrixPresenter) tab.getUserData();
+                        matrixPresenter.onActionRefreshMatrix(categoryModel); 
+                    }
                 });
     }
     
@@ -241,17 +280,6 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                     final long matrixModelID = actionTransferModel.getLong();
                     this.removeMatrix(matrixModelID);
                 });
-    }
-
-    @Override
-    public void registerActions() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in ApplicationPresenter"); // NOI18N
-        
-        SqlFacade.INSTANCE.registerActions();
-        
-        this.registerOnActionOpenMatrix();
-        this.registerOnActionRefreshOverviewMatrix();
-        this.registerOnActionRemoveMatrix();
     }
     
     private void removeMatrix(long matrixModelID) {
