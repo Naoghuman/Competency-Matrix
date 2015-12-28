@@ -21,6 +21,7 @@ import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.CategoryModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
+import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.database.api.DatabaseFacade;
@@ -37,113 +38,100 @@ import javafx.util.Duration;
  *
  * @author PRo
  */
-public final class CategorySqlProvider implements IActionConfiguration, IEntityConfiguration, IRegisterActions {
+public class SubCategorySqlProvider implements IActionConfiguration, IEntityConfiguration, IRegisterActions {
     
-    private static CategorySqlProvider instance = null;
+    private static SubCategorySqlProvider instance = null;
     
-    public static CategorySqlProvider getDefault() {
+    public static SubCategorySqlProvider getDefault() {
         if (instance == null) {
-            instance = new CategorySqlProvider();
+            instance = new SubCategorySqlProvider();
         }
         
         return instance;
     }
     
-    private CategorySqlProvider() {}
+    private SubCategorySqlProvider() {}
 
-    private CategoryModel create(long matrixId, String title) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Create CategoryModel"); // NOI18N
+    private SubCategoryModel create(long matrixId, long categoryId, String title) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Create SubCategoryModel"); // NOI18N
         
-        final CategoryModel categoryModel = ModelFacade.getDefaultCategoryModel(matrixId, title);
-        DatabaseFacade.INSTANCE.getCrudService().create(categoryModel);
+        final SubCategoryModel subCategoryModel = ModelFacade.getDefaultSubCategoryModel(matrixId, categoryId, title);
+        DatabaseFacade.INSTANCE.getCrudService().create(subCategoryModel);
         
-        return categoryModel;
+        return subCategoryModel;
     }
     
-    public void delete(long categoryId) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete CategoryModel"); // NOI18N
+    public void delete(long subCategoryId) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete SubCategoryModel"); // NOI18N
         
-        DatabaseFacade.INSTANCE.getCrudService().delete(CategoryModel.class, categoryId);
-        
-        // TODO delete all subcategories from categoryIds with matrixId
+        DatabaseFacade.INSTANCE.getCrudService().delete(SubCategoryModel.class, subCategoryId);
         
         // TODO delete all levels from subcategory
     }
-    
-    public List<Long> deleteAll(long matrixId) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete all CategoryModels from: " + matrixId); // NOI18N
-        
-        // Find all from parent
-        final List<CategoryModel> categoryModels = this.findAll(matrixId);
-        
-        // Delete them
-        final List<Long> categoryModelsIds = FXCollections.observableArrayList();
-        for (CategoryModel categoryModel : categoryModels) {
-            categoryModelsIds.add(categoryModel.getId());
-            this.delete(categoryModel.getId());
-        }
-        
-        return categoryModelsIds;
-    }
 
-    public List<CategoryModel> findAll(long matrixId) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Find all CategoryModels"); // NOI18N
+    public List<SubCategoryModel> findAll(long matrixId, long categoryId) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Find all SubCategoryModels"); // NOI18N
         
         final Map<String, Object> parameters = FXCollections.observableHashMap();
         parameters.put(COLUMN_NAME__MATRIX_ID, matrixId);
+        parameters.put(COLUMN_NAME__CATEGORY_ID, categoryId);
         
-        final List<CategoryModel> categoryModels = DatabaseFacade.INSTANCE.getCrudService()
-                .findByNamedQuery(CategoryModel.class, NAMED_QUERY__NAME__CATEGORY_FIND_ALL, parameters);
-        Collections.sort(categoryModels);
+        final List<SubCategoryModel> subCategoryModels = DatabaseFacade.INSTANCE.getCrudService()
+                .findByNamedQuery(SubCategoryModel.class, NAMED_QUERY__NAME__SUBCATEGORY_FIND_ALL, parameters);
+        Collections.sort(subCategoryModels);
         
-        return categoryModels;
+        return subCategoryModels;
     }
-
+    
     @Override
     public void registerActions() {
-        LoggerFacade.INSTANCE.info(this.getClass(), "Register actions in CategorySqlProvider"); // NOI18N
+        LoggerFacade.INSTANCE.info(this.getClass(), "Register actions in SubCategorySqlProvider"); // NOI18N
         
-        this.registerOnActionCreateCategory();
-        this.registerOnActionDeleteCategory();
+        this.registerOnActionCreateSubCategory();
+        this.registerOnActionDeleteSubCategory();
     }
 
-    private void registerOnActionCreateCategory() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action create CategoryModel"); // NOI18N
+    private void registerOnActionCreateSubCategory() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action create SubCategoryModel"); // NOI18N
         
         ActionFacade.INSTANCE.register(
-                ACTION__CREATE__CATEGORY,
+                ACTION__CREATE__SUBCATEGORY,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
-                    final long matrixId = actionTransferModel.getLong();
+                    
+                    final CategoryModel categoryModel = (CategoryModel) actionTransferModel.getObject();
+                    final long matrixId = categoryModel.getMatrixId();
+                    final long categoryId = categoryModel.getId();
+                    
                     final String title = actionTransferModel.getString();
-                    final CategoryModel categoryModel = this.create(matrixId, title);
+                    final SubCategoryModel subCategoryModel = this.create(matrixId, categoryId, title);
                     
                     final PauseTransition pt = new PauseTransition(Duration.millis(50.0d));
                     pt.setOnFinished((ActionEvent event) -> {
                         final ActionTransferModel actionTransferModel2 = new ActionTransferModel();
-                        actionTransferModel2.setActionKey(ACTION__REFRESH__MATRIX);
-                        actionTransferModel2.setObject(categoryModel);
+                        actionTransferModel2.setActionKey(ACTION__REFRESH__CATEGORY);
+                        actionTransferModel2.setObject(subCategoryModel);
                         ActionFacade.INSTANCE.handle(actionTransferModel2);
                     });
                     pt.playFromStart();
                 });
     }
 
-    private void registerOnActionDeleteCategory() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action delete CategoryModel"); // NOI18N
+    private void registerOnActionDeleteSubCategory() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action delete SubCategoryModel"); // NOI18N
         
         ActionFacade.INSTANCE.register(
-                ACTION__DELETE__CATEGORY,
+                ACTION__DELETE__SUBCATEGORY,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
-                    final CategoryModel categoryModel = (CategoryModel) actionTransferModel.getObject();
-                    this.delete(categoryModel.getId());
+                    final SubCategoryModel subCategoryModel = (SubCategoryModel) actionTransferModel.getObject();
+                    this.delete(subCategoryModel.getId());
                     
                     final PauseTransition pt = new PauseTransition(Duration.millis(100.0d));
                     pt.setOnFinished((ActionEvent event) -> {
                         final ActionTransferModel actionTransferModel2 = new ActionTransferModel();
-                        actionTransferModel2.setActionKey(ACTION__REMOVE__CATEGORY);
-                        actionTransferModel2.setObject(categoryModel);
+                        actionTransferModel2.setActionKey(ACTION__REMOVE__SUBCATEGORY);// TODO REMOVE
+                        actionTransferModel2.setObject(subCategoryModel);
                         ActionFacade.INSTANCE.handle(actionTransferModel2);
                     });
                     pt.playFromStart();

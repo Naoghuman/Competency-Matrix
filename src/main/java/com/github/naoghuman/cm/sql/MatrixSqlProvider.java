@@ -59,15 +59,15 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
         return matrixModel;
     }
     
-    private void delete(long matrixModelId) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete MatrixModel"); // NOI18N
+    private void delete(long matrixId) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete MatrixModel with all associated Models"); // NOI18N
         
-        DatabaseFacade.INSTANCE.getCrudService().delete(MatrixModel.class, matrixModelId);
+        DatabaseFacade.INSTANCE.getCrudService().delete(MatrixModel.class, matrixId);
         
         // TODO delete all categories
-        final List<Long> categoryModelIds = SqlFacade.INSTANCE.getCategorySqlProvider().deleteAll(matrixModelId);
+        final List<Long> categoryIds = SqlFacade.INSTANCE.getCategorySqlProvider().deleteAll(matrixId);
         
-        // TODO delete all subcategories from category
+        // TODO delete all subcategories from categoryIds with matrixId
         
         // TODO delete all levels from subcategory
     }
@@ -82,10 +82,10 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
         return matrixModels;
     }
 
-    public MatrixModel findById(long matrixModelID) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Find by ID MatrixModel"); // NOI18N
+    public MatrixModel findById(long matrixId) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Find by Id MatrixModel"); // NOI18N
         
-        return DatabaseFacade.INSTANCE.getCrudService().findById(MatrixModel.class, matrixModelID);
+        return DatabaseFacade.INSTANCE.getCrudService().findById(MatrixModel.class, matrixId);
     }
 
     @Override

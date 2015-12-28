@@ -19,12 +19,13 @@ package com.github.naoghuman.cm.matrix;
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__DELETE__MATRIX;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
-import com.github.naoghuman.cm.dialog.api.DialogFacade;
+import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.matrix.category.CategoryPresenter;
 import com.github.naoghuman.cm.matrix.category.CategoryView;
 import com.github.naoghuman.cm.model.api.CategoryModel;
 import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
+import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
@@ -37,6 +38,8 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -53,7 +56,7 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
     @FXML private Label lMatrix;
     @FXML private VBox vbCategories;
     
-    private long matrixModelId;
+    private long matrixId;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -68,17 +71,17 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
     public void initialize(MatrixModel matrixModel) {
         LoggerFacade.INSTANCE.info(this.getClass(), "Initialize MatrixModel"); // NOI18N
         
-        matrixModelId = matrixModel.getId();
+        matrixId = matrixModel.getId();
         lMatrix.setText(matrixModel.getTitle());
         
-        final CategoryModel categoryModel = ModelFacade.getDefaultCategoryModel(matrixModelId, "dummy"); // NOI18N
+        final CategoryModel categoryModel = ModelFacade.getDefaultCategoryModel(matrixId, "dummy"); // NOI18N
         this.onActionRefreshMatrix(categoryModel);
     }
     
     public void onActionCreateCategory() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action create CategoryModel"); // NOI18N
         
-        final TextInputDialog dialog = DialogFacade.getNewCategoryDialog();
+        final TextInputDialog dialog = DialogProvider.getNewCategoryDialog();
         final Optional<String> result = dialog.showAndWait();
         if (!result.isPresent()) {
             return;
@@ -92,14 +95,14 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
         final ActionTransferModel actionTransferModel = new ActionTransferModel();
         actionTransferModel.setActionKey(ACTION__CREATE__CATEGORY);
         actionTransferModel.setString(name);
-        actionTransferModel.setLong(matrixModelId);
+        actionTransferModel.setLong(matrixId);
         ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
     public void onActionDeleteMatrix() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "On action delete Matrix"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action delete MatrixModel"); // NOI18N
         
-        final Alert alert = DialogFacade.getDeleteMatrixDialog();
+        final Alert alert = DialogProvider.getDeleteMatrixDialog();
         final Optional<ButtonType> result = alert.showAndWait();
         if (!result.isPresent()) {
             return;
@@ -112,15 +115,35 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
         
         final ActionTransferModel actionTransferModel = new ActionTransferModel();
         actionTransferModel.setActionKey(ACTION__DELETE__MATRIX);
-        actionTransferModel.setLong(matrixModelId);
+        actionTransferModel.setLong(matrixId);
         ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
+    public void onActionRefreshCategory(SubCategoryModel subCategoryModel) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh CategoryModel"); // NOI18N
+
+        final long categoryId = subCategoryModel.getCategoryId();
+        for (Node children : vbCategories.getChildren()) {
+            if (!(children instanceof Parent)) {
+                continue;
+            }
+            
+            final Parent view = (Parent) children;
+            final String viewCategoryId = view.getId();
+            final boolean isEquals = new EqualsBuilder().append(viewCategoryId, String.valueOf(categoryId)).isEquals();
+            if (!isEquals) {
+                continue;
+            }
+            
+            final CategoryPresenter categoryPresenter = (CategoryPresenter) view.getUserData();
+            categoryPresenter.onActionRefreshCategory(subCategoryModel);
+        }
+    }
+    
     public void onActionRefreshMatrix(CategoryModel categoryModel) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh Matrix"); // NOI18N
-        //TODO scroll to categoryModel
-        final long parentID = categoryModel.getParentId();
-        final List<CategoryModel> categoryModels = SqlFacade.INSTANCE.getCategorySqlProvider().findAll(parentID);
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh MatrixModel"); // NOI18N
+        
+        final List<CategoryModel> categoryModels = SqlFacade.INSTANCE.getCategorySqlProvider().findAll(matrixId);
         vbCategories.getChildren().clear();
         if (categoryModels.isEmpty()) {
             return;
@@ -131,8 +154,14 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
             final CategoryPresenter categoryPresenter = categoryView.getRealPresenter();
             categoryPresenter.initialize(categoryModel2);
             
-            vbCategories.getChildren().add(categoryView.getView());
+            final Parent view = categoryView.getView();
+            view.setId(String.valueOf(categoryModel2.getId()));
+            view.setUserData(categoryPresenter);
+            
+            vbCategories.getChildren().add(view);
         });
+        
+        //TODO scroll to categoryModel
     }
 
     @Override

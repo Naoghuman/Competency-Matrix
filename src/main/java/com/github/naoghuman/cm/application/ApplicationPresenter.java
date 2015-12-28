@@ -17,13 +17,13 @@
 package com.github.naoghuman.cm.application;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
-import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__REFRESH__MATRIX;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
-import com.github.naoghuman.cm.dialog.api.DialogFacade;
+import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.matrix.MatrixPresenter;
 import com.github.naoghuman.cm.matrix.MatrixView;
 import com.github.naoghuman.cm.model.api.CategoryModel;
 import com.github.naoghuman.cm.model.api.MatrixModel;
+import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
@@ -126,7 +126,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
     public void onActionCreateMatrix() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action create Matrix"); // NOI18N
         
-        final TextInputDialog dialog = DialogFacade.getNewMatrixDialog();
+        final TextInputDialog dialog = DialogProvider.getNewMatrixDialog();
         final Optional<String> result = dialog.showAndWait();
         if (!result.isPresent()) {
             return;
@@ -151,7 +151,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
             return;
         }
         
-        final Alert alert = DialogFacade.getDeleteMatrixDialog();
+        final Alert alert = DialogProvider.getDeleteMatrixDialog();
         final Optional<ButtonType> result = alert.showAndWait();
         if (!result.isPresent()) {
             return;
@@ -177,12 +177,12 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         lvOverview.getSelectionModel().select(matrixModel);
     }
     
-    private void openMatrix(long matrixModelID) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Show Matrix: " + matrixModelID); // NOI18N
+    private void openMatrix(long matrixId) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Show Matrix: " + matrixId); // NOI18N
         
         // Check if the CompetencyMatrix is always open
         for (Tab tab : tpCompetencyMatrix.getTabs()) {
-            final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixModelID)).isEquals();
+            final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixId)).isEquals();
             if (isEquals) {
                 tpCompetencyMatrix.getSelectionModel().select(tab);
                 return;
@@ -190,7 +190,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         }
         
         // Load MatrixModel
-        final MatrixModel matrixModel = SqlFacade.INSTANCE.getMatrixSqlProvider().findById(matrixModelID);
+        final MatrixModel matrixModel = SqlFacade.INSTANCE.getMatrixSqlProvider().findById(matrixId);
         if (matrixModel == null) {
             return;
         }
@@ -222,10 +222,12 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         SqlFacade.INSTANCE.registerActions();
         
         this.registerOnActionOpenMatrix();
+        this.registerOnActionRefreshCategory();
         this.registerOnActionRefreshMatrix();
         this.registerOnActionRefreshOverviewMatrix();
         this.registerOnActionRemoveCategory();
         this.registerOnActionRemoveMatrix();
+        this.registerOnActionRemoveSubCategory();
     }
     
     private void registerOnActionOpenMatrix() {
@@ -234,8 +236,30 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         ActionFacade.INSTANCE.register(ACTION__OPEN__MATRIX,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
-                    final long matrixModelID = actionTransferModel.getLong();
-                    this.openMatrix(matrixModelID);
+                    final long matrixId = actionTransferModel.getLong();
+                    this.openMatrix(matrixId);
+                });
+    }
+    
+    private void registerOnActionRefreshCategory() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action refresh CategoryModel"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__REFRESH__CATEGORY,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final SubCategoryModel subCategoryModel = (SubCategoryModel) actionTransferModel.getObject();
+                    final long matrixId = subCategoryModel.getMatrixId();
+                    
+                    for (Tab tab : tpCompetencyMatrix.getTabs()) {
+                        final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixId)).isEquals();
+                        if (!isEquals) {
+                            continue;
+                        }
+                        
+                        final MatrixPresenter matrixPresenter = (MatrixPresenter) tab.getUserData();
+                        matrixPresenter.onActionRefreshCategory(subCategoryModel); 
+                    }
                 });
     }
     
@@ -247,10 +271,10 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final CategoryModel categoryModel = (CategoryModel) actionTransferModel.getObject();
-                    final long matrixModelID = categoryModel.getParentId();
+                    final long matrixId = categoryModel.getMatrixId();
                     
                     for (Tab tab : tpCompetencyMatrix.getTabs()) {
-                        final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixModelID)).isEquals();
+                        final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixId)).isEquals();
                         if (!isEquals) {
                             continue;
                         }
@@ -281,10 +305,10 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final CategoryModel categoryModel = (CategoryModel) actionTransferModel.getObject();
-                    final long matrixModelID = categoryModel.getParentId();
+                    final long matrixId = categoryModel.getMatrixId();
                     
                     for (Tab tab : tpCompetencyMatrix.getTabs()) {
-                        final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixModelID)).isEquals();
+                        final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixId)).isEquals();
                         if (!isEquals) {
                             continue;
                         }
@@ -302,12 +326,12 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                 ACTION__REMOVE__MATRIX,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
-                    final long matrixModelID = actionTransferModel.getLong();
+                    final long matrixId = actionTransferModel.getLong();
                     
                     // Check if the Matrix is open
                     for (Iterator<Tab> iterator = tpCompetencyMatrix.getTabs().iterator(); iterator.hasNext();) {
                         final Tab tab = iterator.next();
-                        final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixModelID)).isEquals();
+                        final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixId)).isEquals();
                         if (!isEquals) {
                             continue;
                         }
@@ -327,6 +351,28 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                         }
 
                         tpCompetencyMatrix.getSelectionModel().select(index);
+                    }
+                });
+    }
+
+    private void registerOnActionRemoveSubCategory() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action remove SubCategoryModel"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__REMOVE__SUBCATEGORY,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final SubCategoryModel subCategoryModel = (SubCategoryModel) actionTransferModel.getObject();
+                    final long matrixId = subCategoryModel.getMatrixId();
+                    
+                    for (Tab tab : tpCompetencyMatrix.getTabs()) {
+                        final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixId)).isEquals();
+                        if (!isEquals) {
+                            continue;
+                        }
+                        
+                        final MatrixPresenter matrixPresenter = (MatrixPresenter) tab.getUserData();
+                        matrixPresenter.onActionRefreshCategory(subCategoryModel); 
                     }
                 });
     }

@@ -20,6 +20,7 @@ import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.sql.CategorySqlProvider;
 import com.github.naoghuman.cm.sql.MatrixSqlProvider;
+import com.github.naoghuman.cm.sql.SubCategorySqlProvider;
 import de.pro.lib.logger.api.LoggerFacade;
 
 /**
@@ -37,6 +38,10 @@ public enum SqlFacade implements IActionConfiguration, IRegisterActions {
     public MatrixSqlProvider getMatrixSqlProvider() {
         return MatrixSqlProvider.getDefault();
     }
+    
+    public SubCategorySqlProvider getSubCategorySqlProvider() {
+        return SubCategorySqlProvider.getDefault();
+    }
 
     @Override
     public void registerActions() {
@@ -44,6 +49,7 @@ public enum SqlFacade implements IActionConfiguration, IRegisterActions {
         
         CategorySqlProvider.getDefault().registerActions();
         MatrixSqlProvider.getDefault().registerActions();
+        SubCategorySqlProvider.getDefault().registerActions();
     }
     
 }

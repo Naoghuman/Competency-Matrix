@@ -22,10 +22,10 @@ package com.github.naoghuman.cm.model.api;
  */
 public interface ModelFacade {
     
-    public static CategoryModel getDefaultCategoryModel(long parentID, String title) {
+    public static CategoryModel getDefaultCategoryModel(long matrixId, String title) {
         final CategoryModel categoryModel = new CategoryModel();
         categoryModel.setId(System.currentTimeMillis());
-        categoryModel.setParentId(parentID);
+        categoryModel.setMatrixId(matrixId);
         categoryModel.setGenerationTime(System.currentTimeMillis());
         categoryModel.setTitle(title);
         
@@ -45,8 +45,15 @@ public interface ModelFacade {
         return matrixModel;
     }
     
-    public static SubCategoryModel getDefaultSubCategoryModel() {
-        return new SubCategoryModel();
+    public static SubCategoryModel getDefaultSubCategoryModel(long matrixId, long categoryId, String title) {
+        final SubCategoryModel subCategoryModel = new SubCategoryModel();
+        subCategoryModel.setId(System.currentTimeMillis());
+        subCategoryModel.setMatrixId(matrixId);
+        subCategoryModel.setCategoryId(categoryId);
+        subCategoryModel.setGenerationTime(System.currentTimeMillis());
+        subCategoryModel.setTitle(title);
+        
+        return subCategoryModel;
     }
     
 }

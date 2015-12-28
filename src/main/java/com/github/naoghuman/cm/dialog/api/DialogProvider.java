@@ -31,7 +31,7 @@ import javafx.stage.Modality;
  *
  * @author PRo
  */
-public interface DialogFacade {
+public interface DialogProvider {
     
     public static Alert getDeleteCategoryDialog() {
         final Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -39,8 +39,8 @@ public interface DialogFacade {
         alert.setTitle("Delete Category"); // NOI18N
         alert.setHeaderText("Really delete this Category?"); // NOI18N
         
-        ButtonType buttonTypeOne = new ButtonType(ButtonType.YES.getText(), ButtonData.YES);
-        ButtonType buttonTypeCancel = new ButtonType(ButtonType.CANCEL.getText(), ButtonData.CANCEL_CLOSE);
+        final ButtonType buttonTypeOne = new ButtonType(ButtonType.YES.getText(), ButtonData.YES);
+        final ButtonType buttonTypeCancel = new ButtonType(ButtonType.CANCEL.getText(), ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
         
         return alert;
@@ -52,8 +52,21 @@ public interface DialogFacade {
         alert.setTitle("Delete Matrix"); // NOI18N
         alert.setHeaderText("Really delete this Matrix?"); // NOI18N
         
-        ButtonType buttonTypeOne = new ButtonType(ButtonType.YES.getText(), ButtonData.YES);
-        ButtonType buttonTypeCancel = new ButtonType(ButtonType.CANCEL.getText(), ButtonData.CANCEL_CLOSE);
+        final ButtonType buttonTypeOne = new ButtonType(ButtonType.YES.getText(), ButtonData.YES);
+        final ButtonType buttonTypeCancel = new ButtonType(ButtonType.CANCEL.getText(), ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
+        
+        return alert;
+    }
+    
+    public static Alert getDeleteSubCategoryDialog() {
+        final Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setTitle("Delete Subcategory"); // NOI18N
+        alert.setHeaderText("Really delete this Subcategory?"); // NOI18N
+        
+        final ButtonType buttonTypeOne = new ButtonType(ButtonType.YES.getText(), ButtonData.YES);
+        final ButtonType buttonTypeCancel = new ButtonType(ButtonType.CANCEL.getText(), ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
         
         return alert;
@@ -73,6 +86,15 @@ public interface DialogFacade {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("New Matrix"); // NOI18N
         dialog.setHeaderText("New name from the Matrix"); // NOI18N
+        
+        return dialog;
+    }
+    
+    public static TextInputDialog getNewSubCategoryDialog() {
+        final TextInputDialog dialog = new TextInputDialog(""); // NOI18N
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setTitle("New Subcategory"); // NOI18N
+        dialog.setHeaderText("New name from the Subcategory"); // NOI18N
         
         return dialog;
     }

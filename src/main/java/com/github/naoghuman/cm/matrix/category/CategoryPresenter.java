@@ -17,21 +17,28 @@
 package com.github.naoghuman.cm.matrix.category;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
-import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__DELETE__MATRIX;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
-import com.github.naoghuman.cm.dialog.api.DialogFacade;
+import com.github.naoghuman.cm.dialog.api.DialogProvider;
+import com.github.naoghuman.cm.matrix.category.subcategory.SubCategoryPresenter;
+import com.github.naoghuman.cm.matrix.category.subcategory.SubCategoryView;
 import com.github.naoghuman.cm.model.api.CategoryModel;
+import com.github.naoghuman.cm.model.api.ModelFacade;
+import com.github.naoghuman.cm.model.api.SubCategoryModel;
+import com.github.naoghuman.cm.sql.api.SqlFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 
 /**
@@ -61,17 +68,38 @@ public class CategoryPresenter implements Initializable, IActionConfiguration, I
         this.categoryModel = categoryModel;
         
         lCategory.setText(categoryModel.getTitle());
+        
+        final long matrixId = this.categoryModel.getMatrixId();
+        final long categoryId = this.categoryModel.getId();
+        final SubCategoryModel subCategoryModel = ModelFacade.getDefaultSubCategoryModel(matrixId, categoryId, "dummy"); // NOI18N
+        this.onActionRefreshCategory(subCategoryModel);
     }
     
     public void onActionCreateSubCategory() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action create SubCategory"); // NOI18N
         
+        final TextInputDialog dialog = DialogProvider.getNewSubCategoryDialog();
+        final Optional<String> result = dialog.showAndWait();
+        if (!result.isPresent()) {
+            return;
+        }
+        
+        final String name = result.get().trim();
+        if (name.isEmpty()) {
+            return;
+        }
+        
+        final ActionTransferModel actionTransferModel = new ActionTransferModel();
+        actionTransferModel.setActionKey(ACTION__CREATE__SUBCATEGORY);
+        actionTransferModel.setString(name);
+        actionTransferModel.setObject(categoryModel);
+        ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
     public void onActionDeleteCategory() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action delete Category"); // NOI18N
         
-        final Alert alert = DialogFacade.getDeleteCategoryDialog();
+        final Alert alert = DialogProvider.getDeleteCategoryDialog();
         final Optional<ButtonType> result = alert.showAndWait();
         if (!result.isPresent()) {
             return;
@@ -86,6 +114,30 @@ public class CategoryPresenter implements Initializable, IActionConfiguration, I
         actionTransferModel.setActionKey(ACTION__DELETE__CATEGORY);
         actionTransferModel.setObject(categoryModel);
         ActionFacade.INSTANCE.handle(actionTransferModel);
+    }
+
+    public void onActionRefreshCategory(SubCategoryModel subCategoryModel) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh CategoryModel"); // NOI18N
+        final List<SubCategoryModel> subCategoryModels = SqlFacade.INSTANCE.getSubCategorySqlProvider().findAll(
+                subCategoryModel.getMatrixId(), subCategoryModel.getCategoryId());
+        vbSubCategories.getChildren().clear();
+        if (subCategoryModels.isEmpty()) {
+            return;
+        }
+        
+        subCategoryModels.stream().forEach((subCategoryModel2) -> {
+            final SubCategoryView subCategoryView = new SubCategoryView();
+            final SubCategoryPresenter subCategoryPresenter = subCategoryView.getRealPresenter();
+            subCategoryPresenter.initialize(subCategoryModel2);
+            
+            final Parent view = subCategoryView.getView();
+            view.setId(String.valueOf(subCategoryModel2.getId()));
+            view.setUserData(subCategoryPresenter);
+            
+            vbSubCategories.getChildren().add(view);
+        });
+        
+        //TODO scroll to subCategoryModel (or previous if scm==dummy)
     }
 
     @Override

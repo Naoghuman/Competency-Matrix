@@ -95,36 +95,36 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     }
     // END  ID -----------------------------------------------------------------
     
-    // START  PARENT-ID --------------------------------------------------------
-    private LongProperty parentIdProperty;
-    private long _parentId = DEFAULT_ID__CATEGORY_MODEL;
+    // START  MATRIX-ID --------------------------------------------------------
+    private LongProperty matrixIdProperty;
+    private long _matrixId = DEFAULT_ID__MATRIX_MODEL;
 
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = COLUMN_NAME__PARENT_ID)
-    public long getParentId() {
-        if (this.parentIdProperty == null) {
-            return _parentId;
+    @Column(name = COLUMN_NAME__MATRIX_ID)
+    public long getMatrixId() {
+        if (this.matrixIdProperty == null) {
+            return _matrixId;
         } else {
-            return parentIdProperty.get();
+            return matrixIdProperty.get();
         }
     }
 
-    public final void setParentId(long parentId) {
-        if (this.parentIdProperty == null) {
-            _parentId = parentId;
+    public final void setMatrixId(long parentId) {
+        if (this.matrixIdProperty == null) {
+            _matrixId = parentId;
         } else {
-            this.parentIdProperty.set(parentId);
+            this.matrixIdProperty.set(parentId);
         }
     }
 
-    public LongProperty parentIdProperty() {
-        if (parentIdProperty == null) {
-            parentIdProperty = new SimpleLongProperty(this, COLUMN_NAME__PARENT_ID, _parentId);
+    public LongProperty matrixIdProperty() {
+        if (matrixIdProperty == null) {
+            matrixIdProperty = new SimpleLongProperty(this, COLUMN_NAME__MATRIX_ID, _matrixId);
         }
-        return parentIdProperty;
+        return matrixIdProperty;
     }
-    // END  PARENT-ID ----------------------------------------------------------
+    // END  MATRIX-ID ----------------------------------------------------------
     
     // START  GENERATIONTIME ---------------------------------------------------
     private LongProperty generationTimeProperty;
@@ -188,7 +188,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(this.getId())
-                .append(this.getParentId())
+                .append(this.getMatrixId())
                 .append(this.getGenerationTime())
                 .toHashCode();
     }
@@ -206,7 +206,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
         final CategoryModel other = (CategoryModel) obj;
         return new EqualsBuilder()
                 .append(this.getId(), other.getId())
-                .append(this.getParentId(), other.getParentId())
+                .append(this.getMatrixId(), other.getMatrixId())
                 .append(this.getGenerationTime(), other.getGenerationTime())
                 .isEquals();
     }
@@ -216,7 +216,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
         return new CompareToBuilder()
                 .append(other.getTitle(), this.getTitle())
                 .append(other.getGenerationTime(), this.getGenerationTime())
-                .append(other.getParentId(), this.getParentId())
+                .append(other.getMatrixId(), this.getMatrixId())
                 .append(other.getId(), this.getId())
                 .toComparison();
     }
@@ -225,7 +225,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     public String toString() {
         return new ToStringBuilder(this)
                 .append("id", this.getId()) // NOI18N
-                .append("parentId", this.getParentId()) // NOI18N
+                .append("matrixId", this.getMatrixId()) // NOI18N
                 .append("title", this.getTitle()) // NOI18N
                 .append("generationTime", this.getGenerationTime()) // NOI18N
                 .toString();
@@ -234,7 +234,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeLong(this.getId());
-        out.writeLong(this.getParentId());
+        out.writeLong(this.getMatrixId());
         out.writeLong(this.getGenerationTime());
         out.writeObject(this.getTitle());
     }
@@ -242,7 +242,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         this.setId(in.readLong());
-        this.setParentId(in.readLong());
+        this.setMatrixId(in.readLong());
         this.setGenerationTime(in.readLong());
         this.setTitle(String.valueOf(in.readObject()));
     }
