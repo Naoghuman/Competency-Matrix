@@ -22,7 +22,7 @@
                         </ToolBar>
                         <HBox mouseTransparent="true" spacing="7.0">
                             <children>
-                                <Label text="Category">
+                                <Label text="Category:">
                                     <font>
                                         <Font size="30.0" />
                                     </font>
