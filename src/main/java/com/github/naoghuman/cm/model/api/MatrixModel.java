@@ -181,9 +181,9 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
     @Override
     public int compareTo(MatrixModel other) {
         return new CompareToBuilder()
-                .append(other.getGenerationTime(), this.getGenerationTime())
-                .append(other.getTitle(), this.getTitle())
-                .append(other.getId(), this.getId())
+                .append(this.getGenerationTime(), other.getGenerationTime())
+                .append(this.getTitle(), other.getTitle())
+                .append(this.getId(), other.getId())
                 .toComparison();
     }
     
