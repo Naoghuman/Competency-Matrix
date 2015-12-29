@@ -243,11 +243,11 @@ public class SubCategoryModel implements Comparable<SubCategoryModel>, Externali
     @Override
     public int compareTo(SubCategoryModel other) {
         return new CompareToBuilder()
-                .append(other.getTitle(), this.getTitle())
-                .append(other.getGenerationTime(), this.getGenerationTime())
-                .append(other.getId(), this.getId())
-                .append(other.getMatrixId(), this.getMatrixId())
-                .append(other.getCategoryId(), this.getCategoryId())
+                .append(this.getTitle(), other.getTitle())
+                .append(this.getGenerationTime(), other.getGenerationTime())
+                .append(this.getId(), other.getId())
+                .append(this.getMatrixId(), other.getMatrixId())
+                .append(this.getCategoryId(), other.getCategoryId())
                 .toComparison();
     }
     
