@@ -56,6 +56,22 @@ public class LevelSqlProvider implements IActionConfiguration, IEntityConfigurat
         final LevelModel levelModel = ModelFacade.getDefaultLevel(id, matrixId, categoryId, subCategoryId, level);
         DatabaseFacade.INSTANCE.getCrudService().create(levelModel);
     }
+    
+    public void delete(long levelId) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete LevelModel: " + levelId); // NOI18N
+        
+        DatabaseFacade.INSTANCE.getCrudService().delete(LevelModel.class, levelId);
+    }
+
+    public void deleteAll(long matrixId, long categoryId, long subCategoryId) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete all LevelModels"); // NOI18N
+        
+        // Find all from parent
+        final List<LevelModel> levelModels = this.findAll(matrixId, categoryId, subCategoryId);
+        for (LevelModel levelModel : levelModels) {
+            this.delete(levelModel.getId());
+        }
+    }
 
     public List<LevelModel> findAll(long matrixId, long categoryId, long subCategoryId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Find all LevelModels"); // NOI18N
@@ -77,4 +93,5 @@ public class LevelSqlProvider implements IActionConfiguration, IEntityConfigurat
         LoggerFacade.INSTANCE.info(this.getClass(), "Register actions in LevelSqlProvider"); // NOI18N
         
     }
+    
 }

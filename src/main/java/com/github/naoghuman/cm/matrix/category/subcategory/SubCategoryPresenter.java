@@ -22,7 +22,6 @@ import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.matrix.category.subcategory.levelthumbnail.LevelThumbnailPresenter;
 import com.github.naoghuman.cm.matrix.category.subcategory.levelthumbnail.LevelThumbnailView;
 import com.github.naoghuman.cm.model.api.LevelModel;
-import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
 import de.pro.lib.action.api.ActionFacade;

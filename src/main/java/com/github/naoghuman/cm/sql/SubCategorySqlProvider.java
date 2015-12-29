@@ -20,7 +20,6 @@ import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.CategoryModel;
-import com.github.naoghuman.cm.model.api.LevelModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
@@ -72,12 +71,14 @@ public class SubCategorySqlProvider implements IActionConfiguration, IEntityConf
         return subCategoryModel;
     }
     
-    public void delete(long subCategoryId) {
+    public void delete(long matrixId, long categoryId, long subCategoryId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Delete SubCategoryModel"); // NOI18N
         
+        // Delete SubCategoryModel
         DatabaseFacade.INSTANCE.getCrudService().delete(SubCategoryModel.class, subCategoryId);
         
-        // TODO delete all levels from subcategory
+        // Delete LevelModels
+        SqlFacade.INSTANCE.getLevelSqlProvider().deleteAll(matrixId, categoryId, subCategoryId);
     }
 
     public List<SubCategoryModel> findAll(long matrixId, long categoryId) {
@@ -136,12 +137,15 @@ public class SubCategorySqlProvider implements IActionConfiguration, IEntityConf
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final SubCategoryModel subCategoryModel = (SubCategoryModel) actionTransferModel.getObject();
-                    this.delete(subCategoryModel.getId());
+                    final long matrixId = subCategoryModel.getMatrixId();
+                    final long categoryId = subCategoryModel.getCategoryId();
+                    final long subCategoryId = subCategoryModel.getId();
+                    this.delete(matrixId, categoryId, subCategoryId);
                     
                     final PauseTransition pt = new PauseTransition(Duration.millis(100.0d));
                     pt.setOnFinished((ActionEvent event) -> {
                         final ActionTransferModel actionTransferModel2 = new ActionTransferModel();
-                        actionTransferModel2.setActionKey(ACTION__REMOVE__SUBCATEGORY);// TODO REMOVE
+                        actionTransferModel2.setActionKey(ACTION__REMOVE__SUBCATEGORY);
                         actionTransferModel2.setObject(subCategoryModel);
                         ActionFacade.INSTANCE.handle(actionTransferModel2);
                     });
