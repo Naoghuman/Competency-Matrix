@@ -21,6 +21,7 @@ import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.CategoryModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
+import com.github.naoghuman.cm.sql.api.SqlFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.database.api.DatabaseFacade;
@@ -60,17 +61,17 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
         return categoryModel;
     }
     
-    public void delete(long categoryId) {
+    public void delete(long matrixId, long categoryId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Delete CategoryModel"); // NOI18N
         
+        // Delete CategoryModel
         DatabaseFacade.INSTANCE.getCrudService().delete(CategoryModel.class, categoryId);
         
-        // TODO delete all subcategories from categoryIds with matrixId
-        
-        // TODO delete all levels from subcategory
+        // Delete all SubCategoryModels
+        SqlFacade.INSTANCE.getSubCategorySqlProvider().deleteAll(matrixId, categoryId);
     }
     
-    public List<Long> deleteAll(long matrixId) {
+    public List<Long> deleteAll(long matrixId) {// XXX List<Long> wird benötigt?
         LoggerFacade.INSTANCE.debug(this.getClass(), "Delete all CategoryModels from: " + matrixId); // NOI18N
         
         // Find all from parent
@@ -79,8 +80,9 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
         // Delete them
         final List<Long> categoryModelsIds = FXCollections.observableArrayList();
         for (CategoryModel categoryModel : categoryModels) {
-            categoryModelsIds.add(categoryModel.getId());
-            this.delete(categoryModel.getId());
+            final long categoryId = categoryModel.getId();
+            categoryModelsIds.add(categoryId);
+            this.delete(matrixId, categoryId);
         }
         
         return categoryModelsIds;
@@ -137,7 +139,9 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final CategoryModel categoryModel = (CategoryModel) actionTransferModel.getObject();
-                    this.delete(categoryModel.getId());
+                    final long matrixId = categoryModel.getMatrixId();
+                    final long categoryId = categoryModel.getId();
+                    this.delete(matrixId, categoryId);
                     
                     final PauseTransition pt = new PauseTransition(Duration.millis(100.0d));
                     pt.setOnFinished((ActionEvent event) -> {

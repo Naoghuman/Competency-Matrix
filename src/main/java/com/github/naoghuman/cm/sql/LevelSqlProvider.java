@@ -66,7 +66,7 @@ public class LevelSqlProvider implements IActionConfiguration, IEntityConfigurat
     public void deleteAll(long matrixId, long categoryId, long subCategoryId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Delete all LevelModels"); // NOI18N
         
-        // Find all from parent
+        // Find all and delete them
         final List<LevelModel> levelModels = this.findAll(matrixId, categoryId, subCategoryId);
         for (LevelModel levelModel : levelModels) {
             this.delete(levelModel.getId());
