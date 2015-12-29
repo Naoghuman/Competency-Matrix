@@ -22,7 +22,7 @@ package com.github.naoghuman.cm.model.api;
  */
 public interface ModelFacade {
     
-    public static CategoryModel getDefaultCategoryModel(long matrixId, String title) {
+    public static CategoryModel getDefaultCategory(long matrixId, String title) {
         final CategoryModel categoryModel = new CategoryModel();
         categoryModel.setId(System.currentTimeMillis());
         categoryModel.setMatrixId(matrixId);
@@ -32,11 +32,19 @@ public interface ModelFacade {
         return categoryModel;
     }
     
-    public static LevelModel getDefaultLevelModel() {
-        return new LevelModel();
+    public static LevelModel getDefaultLevel(long id, long matrixId, long categoryId, long subCategoryId, int level) {
+        final LevelModel levelModel = new LevelModel();
+        levelModel.setId(id);
+        levelModel.setMatrixId(matrixId);
+        levelModel.setCategoryId(categoryId);
+        levelModel.setSubCategoryId(subCategoryId);
+        levelModel.setGenerationTime(System.currentTimeMillis());
+        levelModel.setLevel(level);
+        
+        return levelModel;
     }
     
-    public static MatrixModel getDefaultMatrixModel(String title) {
+    public static MatrixModel getDefaultMatrix(String title) {
         final MatrixModel matrixModel = new MatrixModel();
         matrixModel.setId(System.currentTimeMillis());
         matrixModel.setGenerationTime(System.currentTimeMillis());
@@ -45,7 +53,7 @@ public interface ModelFacade {
         return matrixModel;
     }
     
-    public static SubCategoryModel getDefaultSubCategoryModel(long matrixId, long categoryId, String title) {
+    public static SubCategoryModel getDefaultSubCategory(long matrixId, long categoryId, String title) {
         final SubCategoryModel subCategoryModel = new SubCategoryModel();
         subCategoryModel.setId(System.currentTimeMillis());
         subCategoryModel.setMatrixId(matrixId);

@@ -71,7 +71,7 @@ public class CategoryPresenter implements Initializable, IActionConfiguration, I
         
         final long matrixId = this.categoryModel.getMatrixId();
         final long categoryId = this.categoryModel.getId();
-        final SubCategoryModel subCategoryModel = ModelFacade.getDefaultSubCategoryModel(matrixId, categoryId, "dummy"); // NOI18N
+        final SubCategoryModel subCategoryModel = ModelFacade.getDefaultSubCategory(matrixId, categoryId, "dummy"); // NOI18N
         this.onActionRefreshCategory(subCategoryModel);
     }
     
@@ -118,6 +118,7 @@ public class CategoryPresenter implements Initializable, IActionConfiguration, I
 
     public void onActionRefreshCategory(SubCategoryModel subCategoryModel) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh CategoryModel"); // NOI18N
+        
         final List<SubCategoryModel> subCategoryModels = SqlFacade.INSTANCE.getSubCategorySqlProvider().findAll(
                 subCategoryModel.getMatrixId(), subCategoryModel.getCategoryId());
         vbSubCategories.getChildren().clear();

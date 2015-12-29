@@ -99,8 +99,6 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     private LongProperty matrixIdProperty;
     private long _matrixId = DEFAULT_ID__MATRIX_MODEL;
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = COLUMN_NAME__MATRIX_ID)
     public long getMatrixId() {
         if (this.matrixIdProperty == null) {
@@ -110,11 +108,11 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
         }
     }
 
-    public final void setMatrixId(long parentId) {
+    public final void setMatrixId(long matrixId) {
         if (this.matrixIdProperty == null) {
-            _matrixId = parentId;
+            _matrixId = matrixId;
         } else {
-            this.matrixIdProperty.set(parentId);
+            this.matrixIdProperty.set(matrixId);
         }
     }
 
@@ -224,10 +222,10 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("id", this.getId()) // NOI18N
-                .append("matrixId", this.getMatrixId()) // NOI18N
-                .append("title", this.getTitle()) // NOI18N
-                .append("generationTime", this.getGenerationTime()) // NOI18N
+                .append(COLUMN_NAME__ID, this.getId())
+                .append(COLUMN_NAME__MATRIX_ID, this.getMatrixId())
+                .append(COLUMN_NAME__TITLE, this.getTitle())
+                .append(COLUMN_NAME__GENERATION_TIME, this.getGenerationTime())
                 .toString();
     }
     

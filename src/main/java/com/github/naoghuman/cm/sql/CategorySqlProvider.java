@@ -54,7 +54,7 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
     private CategoryModel create(long matrixId, String title) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Create CategoryModel"); // NOI18N
         
-        final CategoryModel categoryModel = ModelFacade.getDefaultCategoryModel(matrixId, title);
+        final CategoryModel categoryModel = ModelFacade.getDefaultCategory(matrixId, title);
         DatabaseFacade.INSTANCE.getCrudService().create(categoryModel);
         
         return categoryModel;

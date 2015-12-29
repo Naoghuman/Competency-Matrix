@@ -53,7 +53,7 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
     private MatrixModel create(String title) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Create MatrixModel"); // NOI18N
         
-        final MatrixModel matrixModel = ModelFacade.getDefaultMatrixModel(title);
+        final MatrixModel matrixModel = ModelFacade.getDefaultMatrix(title);
         DatabaseFacade.INSTANCE.getCrudService().create(matrixModel);
         
         return matrixModel;

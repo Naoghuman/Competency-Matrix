@@ -74,7 +74,7 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
         matrixId = matrixModel.getId();
         lMatrix.setText(matrixModel.getTitle());
         
-        final CategoryModel categoryModel = ModelFacade.getDefaultCategoryModel(matrixId, "dummy"); // NOI18N
+        final CategoryModel categoryModel = ModelFacade.getDefaultCategory(matrixId, "dummy"); // NOI18N
         this.onActionRefreshMatrix(categoryModel);
     }
     

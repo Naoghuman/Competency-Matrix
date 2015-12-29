@@ -20,8 +20,10 @@ import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.CategoryModel;
+import com.github.naoghuman.cm.model.api.LevelModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
+import com.github.naoghuman.cm.sql.api.SqlFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.database.api.DatabaseFacade;
@@ -53,10 +55,19 @@ public class SubCategorySqlProvider implements IActionConfiguration, IEntityConf
     private SubCategorySqlProvider() {}
 
     private SubCategoryModel create(long matrixId, long categoryId, String title) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Create SubCategoryModel"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Create SubCategoryModel with LevelModels"); // NOI18N
         
-        final SubCategoryModel subCategoryModel = ModelFacade.getDefaultSubCategoryModel(matrixId, categoryId, title);
+        // Create SubCategoryModel
+        final SubCategoryModel subCategoryModel = ModelFacade.getDefaultSubCategory(matrixId, categoryId, title);
         DatabaseFacade.INSTANCE.getCrudService().create(subCategoryModel);
+        
+        // Create LevelModels
+        final long id = System.currentTimeMillis();
+        final long subCategoryId = subCategoryModel.getId();
+        SqlFacade.INSTANCE.getLevelSqlProvider().create(id + 0L, matrixId, categoryId, subCategoryId, 1);
+        SqlFacade.INSTANCE.getLevelSqlProvider().create(id + 1L, matrixId, categoryId, subCategoryId, 2);
+        SqlFacade.INSTANCE.getLevelSqlProvider().create(id + 2L, matrixId, categoryId, subCategoryId, 3);
+        SqlFacade.INSTANCE.getLevelSqlProvider().create(id + 3L, matrixId, categoryId, subCategoryId, 4);
         
         return subCategoryModel;
     }

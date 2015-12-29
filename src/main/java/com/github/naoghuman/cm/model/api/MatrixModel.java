@@ -190,9 +190,9 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("id", this.getId()) // NOI18N
-                .append("title", this.getTitle()) // NOI18N
-                .append("generationtime", this.getGenerationTime()) // NOI18N
+                .append(COLUMN_NAME__ID, this.getId())
+                .append(COLUMN_NAME__TITLE, this.getTitle())
+                .append(COLUMN_NAME__GENERATION_TIME, this.getGenerationTime())
                 .toString();
     }
     
