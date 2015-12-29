@@ -212,10 +212,10 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     @Override
     public int compareTo(CategoryModel other) {
         return new CompareToBuilder()
-                .append(other.getTitle(), this.getTitle())
-                .append(other.getGenerationTime(), this.getGenerationTime())
-                .append(other.getMatrixId(), this.getMatrixId())
-                .append(other.getId(), this.getId())
+                .append(this.getTitle(), other.getTitle())
+                .append(this.getGenerationTime(), other.getGenerationTime())
+                .append(this.getMatrixId(), other.getMatrixId())
+                .append(this.getId(), other.getId())
                 .toComparison();
     }
     
