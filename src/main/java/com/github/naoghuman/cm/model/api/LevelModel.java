@@ -307,12 +307,12 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
     @Override
     public int compareTo(LevelModel other) {
         return new CompareToBuilder()
-                .append(other.getMatrixId(), this.getMatrixId())
-                .append(other.getCategoryId(), this.getCategoryId())
-                .append(other.getSubCategoryId(), this.getSubCategoryId())
-                .append(other.getLevel(), this.getLevel())
-                .append(other.getId(), this.getId())
-                .append(other.getGenerationTime(), this.getGenerationTime())
+                .append(this.getMatrixId(), other.getMatrixId())
+                .append(this.getCategoryId(), other.getCategoryId())
+                .append(this.getSubCategoryId(), other.getSubCategoryId())
+                .append(this.getLevel(), other.getLevel())
+                .append(this.getId(), other.getId())
+                .append(this.getGenerationTime(), other.getGenerationTime())
                 .toComparison();
     }
     
