@@ -320,7 +320,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
     }
     
     private void registerOnActionRemoveMatrix() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action close Matrix"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action remove Matrix"); // NOI18N
         
         ActionFacade.INSTANCE.register(
                 ACTION__REMOVE__MATRIX,

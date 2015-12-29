@@ -62,7 +62,7 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
     }
     
     public void delete(long matrixId, long categoryId) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete CategoryModel"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete CategoryModel with all associated Models"); // NOI18N
         
         // Delete CategoryModel
         DatabaseFacade.INSTANCE.getCrudService().delete(CategoryModel.class, categoryId);
@@ -71,21 +71,17 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
         SqlFacade.INSTANCE.getSubCategorySqlProvider().deleteAll(matrixId, categoryId);
     }
     
-    public List<Long> deleteAll(long matrixId) {// XXX List<Long> wird benötigt?
+    public void deleteAll(long matrixId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Delete all CategoryModels from: " + matrixId); // NOI18N
         
-        // Find all from parent
+        // Find all
         final List<CategoryModel> categoryModels = this.findAll(matrixId);
         
         // Delete them
-        final List<Long> categoryModelsIds = FXCollections.observableArrayList();
         for (CategoryModel categoryModel : categoryModels) {
             final long categoryId = categoryModel.getId();
-            categoryModelsIds.add(categoryId);
             this.delete(matrixId, categoryId);
         }
-        
-        return categoryModelsIds;
     }
 
     public List<CategoryModel> findAll(long matrixId) {

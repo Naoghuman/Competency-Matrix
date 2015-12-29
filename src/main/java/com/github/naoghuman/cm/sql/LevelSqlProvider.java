@@ -18,13 +18,9 @@ package com.github.naoghuman.cm.sql;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
-import static com.github.naoghuman.cm.configuration.api.IEntityConfiguration.COLUMN_NAME__CATEGORY_ID;
-import static com.github.naoghuman.cm.configuration.api.IEntityConfiguration.COLUMN_NAME__MATRIX_ID;
-import static com.github.naoghuman.cm.configuration.api.IEntityConfiguration.NAMED_QUERY__NAME__SUBCATEGORY_FIND_ALL;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.LevelModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
-import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import de.pro.lib.database.api.DatabaseFacade;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.util.Collections;
@@ -66,10 +62,13 @@ public class LevelSqlProvider implements IActionConfiguration, IEntityConfigurat
     public void deleteAll(long matrixId, long categoryId, long subCategoryId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Delete all LevelModels"); // NOI18N
         
-        // Find all and delete them
+        // Find all
         final List<LevelModel> levelModels = this.findAll(matrixId, categoryId, subCategoryId);
+        
+        // Delete them
         for (LevelModel levelModel : levelModels) {
-            this.delete(levelModel.getId());
+            final long levelId = levelModel.getId();
+            this.delete(levelId);
         }
     }
 

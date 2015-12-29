@@ -72,7 +72,7 @@ public class SubCategorySqlProvider implements IActionConfiguration, IEntityConf
     }
     
     public void delete(long matrixId, long categoryId, long subCategoryId) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete SubCategoryModel"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Delete SubCategoryModel with all associated Models"); // NOI18N
         
         // Delete SubCategoryModel
         DatabaseFacade.INSTANCE.getCrudService().delete(SubCategoryModel.class, subCategoryId);
@@ -84,8 +84,10 @@ public class SubCategorySqlProvider implements IActionConfiguration, IEntityConf
     public void deleteAll(long matrixId, long categoryId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Delete all SubCategoryModels"); // NOI18N
         
-        // Find all and delete them
+        // Find all
         final List<SubCategoryModel> levelModels = this.findAll(matrixId, categoryId);
+        
+        // Delete them
         for (SubCategoryModel subCategoryModel : levelModels) {
             final long subCategoryId = subCategoryModel.getId();
             this.delete(matrixId, categoryId, subCategoryId);

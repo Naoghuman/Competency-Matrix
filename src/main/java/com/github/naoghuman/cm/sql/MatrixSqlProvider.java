@@ -62,14 +62,11 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
     private void delete(long matrixId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Delete MatrixModel with all associated Models"); // NOI18N
         
+        // Delete MatrixModel
         DatabaseFacade.INSTANCE.getCrudService().delete(MatrixModel.class, matrixId);
         
-        // TODO delete all categories
-        final List<Long> categoryIds = SqlFacade.INSTANCE.getCategorySqlProvider().deleteAll(matrixId);
-        
-        // TODO delete all subcategories from categoryIds with matrixId
-        
-        // TODO delete all levels from subcategory
+        // Delete all CategoryModels
+        SqlFacade.INSTANCE.getCategorySqlProvider().deleteAll(matrixId);
     }
 
     public List<MatrixModel> findAll() {
@@ -129,8 +126,8 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
                 ACTION__DELETE__MATRIX,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
-                    final long matrixModelId = actionTransferModel.getLong();
-                    this.delete(matrixModelId);
+                    final long matrixId = actionTransferModel.getLong();
+                    this.delete(matrixId);
                     
                     final PauseTransition pt = new PauseTransition(Duration.millis(100.0d));
                     pt.setOnFinished((ActionEvent event) -> {
@@ -141,7 +138,7 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
 
                         final ActionTransferModel actionTransferModel3 = new ActionTransferModel();
                         actionTransferModel3.setActionKey(ACTION__REMOVE__MATRIX);
-                        actionTransferModel3.setLong(matrixModelId);
+                        actionTransferModel3.setLong(matrixId);
                         ActionFacade.INSTANCE.handle(actionTransferModel3);
                     });
                     pt.playFromStart();

@@ -17,7 +17,6 @@
 package com.github.naoghuman.cm.matrix;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
-import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__DELETE__MATRIX;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.matrix.category.CategoryPresenter;
@@ -31,11 +30,9 @@ import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
