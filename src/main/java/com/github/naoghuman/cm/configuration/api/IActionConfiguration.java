@@ -30,7 +30,8 @@ public interface IActionConfiguration {
     public static final String ACTION__DELETE__MATRIX = "ACTION__DELETE___MATRIX"; // NOI18N
     public static final String ACTION__DELETE__SUBCATEGORY = "ACTION__DELETE__SUBCATEGORY"; // NOI18N
     
-    public static final String ACTION__OPEN__MATRIX = "ACTION__OPEN__COMPETENCY_MATRIX"; // NOI18N
+    public static final String ACTION__OPEN__LEVEL = "ACTION__OPEN__LEVEL"; // NOI18N
+    public static final String ACTION__OPEN__MATRIX = "ACTION__OPEN__MATRIX"; // NOI18N
     
     public static final String ACTION__REFRESH__CATEGORY = "ACTION__REFRESH__CATEGORY"; // NOI18N
     public static final String ACTION__REFRESH__MATRIX = "ACTION__REFRESH__MATRIX"; // NOI18N

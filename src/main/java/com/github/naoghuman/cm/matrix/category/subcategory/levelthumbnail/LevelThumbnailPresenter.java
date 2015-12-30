@@ -19,6 +19,8 @@ package com.github.naoghuman.cm.matrix.category.subcategory.levelthumbnail;
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.LevelModel;
+import de.pro.lib.action.api.ActionFacade;
+import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,6 +28,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
@@ -33,8 +37,11 @@ import javafx.scene.control.TextArea;
  */
 public class LevelThumbnailPresenter implements Initializable, IActionConfiguration, IRegisterActions {
     
+    @FXML private AnchorPane apMouseClick;
     @FXML private Label lLevel;
     @FXML private TextArea taDescription;
+    
+    private LevelModel levelModel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -43,14 +50,32 @@ public class LevelThumbnailPresenter implements Initializable, IActionConfigurat
         assert (lLevel != null)        : "fx:id=\"lLevel\" was not injected: check your FXML file 'LevelThumbnail.fxml'."; // NOI18N
         assert (taDescription != null) : "fx:id=\"taDescription\" was not injected: check your FXML file 'LevelThumbnail.fxml'."; // NOI18N
         
+        this.initializeMouseClick();
+        
         this.registerActions();
+    }
+    
+    private void initializeMouseClick() {
+        LoggerFacade.INSTANCE.info(this.getClass(), "Initialize MouseClick in LevelThumbnailPresenter"); // NOI18N
+       
+        apMouseClick.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getClickCount() == 2) {
+                final ActionTransferModel actionTransferModel = new ActionTransferModel();
+                actionTransferModel.setActionKey(ACTION__OPEN__LEVEL);
+                actionTransferModel.setObject(levelModel);
+                
+                ActionFacade.INSTANCE.handle(actionTransferModel);
+            }
+        });
     }
     
     public void initialize(LevelModel levelModel) {
         LoggerFacade.INSTANCE.info(this.getClass(), "Initialize LevelModel"); // NOI18N
+        
+        this.levelModel = levelModel;
        
-        lLevel.setText("Level " + levelModel.getLevel()); // NOI18N
-        taDescription.setText(levelModel.getDescription());
+        lLevel.setText("Level " + this.levelModel.getLevel()); // NOI18N
+        taDescription.setText(this.levelModel.getDescription());
     }
 
     @Override

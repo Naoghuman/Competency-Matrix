@@ -21,7 +21,9 @@ import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.matrix.MatrixPresenter;
 import com.github.naoghuman.cm.matrix.MatrixView;
+import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelView;
 import com.github.naoghuman.cm.model.api.CategoryModel;
+import com.github.naoghuman.cm.model.api.LevelModel;
 import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
@@ -37,7 +39,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
@@ -47,6 +51,9 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import javafx.util.Callback;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -60,6 +67,8 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
     @FXML private SplitPane spCompetencyMatrix;
     @FXML private TabPane tpCompetencyMatrix;
     @FXML private VBox vbCompetencyMatrix;
+    
+    private Window owner;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,6 +85,12 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         this.registerActions();
         
         this.onActionRefreshListView(null);
+    }
+    
+    public void initialize(Window owner) {
+        LoggerFacade.INSTANCE.info(this.getClass(), "Initialize ApplicationPresenter with Window owner"); // NOI18N
+        
+        this.owner = owner;
     }
     
     private void initializeSplitPane() {
@@ -177,6 +192,39 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         lvOverview.getSelectionModel().select(matrixModel);
     }
     
+    private void openLevel(LevelModel levelModel) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Show Level: " + levelModel.getId()); // NOI18N
+        
+        // Create dialog
+        final Dialog dialog = new Dialog();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(owner);
+//        dialog.initStyle(StageStyle.DECORATED);
+        dialog.setResizable(false);
+        dialog.setTitle("Level " + levelModel.getLevel()); // NOI18N
+//        dialog.setWidth(1280 - 200);
+//        dialog.setHeight(720 - 100);
+        
+        final LevelView levelView = new LevelView();
+        dialog.getDialogPane().setContent(levelView.getView());
+        
+        final ButtonType buttonTypeOne = new ButtonType(ButtonType.OK.getText(), ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().setAll(buttonTypeOne, ButtonType.CANCEL);
+        
+        // Check answer
+        final Optional<ButtonType> result = dialog.showAndWait();
+        if (!result.isPresent()) {
+            return;
+        }
+        
+        final ButtonType buttonType = result.get();
+        if (!buttonType.getButtonData().equals(ButtonType.OK.getButtonData())) {
+            return;
+        }
+        
+        // TODO save levelModel
+    }
+    
     private void openMatrix(long matrixId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Show Matrix: " + matrixId); // NOI18N
         
@@ -221,6 +269,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         
         SqlFacade.INSTANCE.registerActions();
         
+        this.registerOnActionOpenLevel();
         this.registerOnActionOpenMatrix();
         this.registerOnActionRefreshCategory();
         this.registerOnActionRefreshMatrix();
@@ -230,10 +279,23 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         this.registerOnActionRemoveSubCategory();
     }
     
+    private void registerOnActionOpenLevel() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action open Level"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__OPEN__LEVEL,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final LevelModel levelModel = (LevelModel) actionTransferModel.getObject();
+                    this.openLevel(levelModel);
+                });
+    }
+    
     private void registerOnActionOpenMatrix() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action open Matrix"); // NOI18N
         
-        ActionFacade.INSTANCE.register(ACTION__OPEN__MATRIX,
+        ActionFacade.INSTANCE.register(
+                ACTION__OPEN__MATRIX,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final long matrixId = actionTransferModel.getLong();

@@ -17,6 +17,7 @@
 package com.github.naoghuman.cm;
 
 import com.airhacks.afterburner.injection.Injector;
+import com.github.naoghuman.cm.application.ApplicationPresenter;
 import com.github.naoghuman.cm.application.ApplicationView;
 import com.github.naoghuman.cm.configuration.api.IApplicationConfiguration;
 import de.pro.lib.database.api.DatabaseFacade;
@@ -55,6 +56,9 @@ public class CompetencyMatrix extends Application implements IApplicationConfigu
     @Override
     public void start(Stage primaryStage) throws Exception {
         final ApplicationView applicationView = new ApplicationView();
+        final ApplicationPresenter applicationPresenter = applicationView.getRealPresenter();
+        applicationPresenter.initialize(primaryStage.getOwner());
+        
         final Scene scene = new Scene(applicationView.getView(), 1280, 720);
         primaryStage.setTitle(this.getProperty(KEY__COMPETENCY_MATRIX__TITLE));
         primaryStage.setScene(scene);
