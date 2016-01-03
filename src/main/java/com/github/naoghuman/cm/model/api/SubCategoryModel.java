@@ -35,6 +35,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -268,7 +269,7 @@ public class SubCategoryModel implements Comparable<SubCategoryModel>, Externali
         out.writeLong(this.getMatrixId());
         out.writeLong(this.getCategoryId());
         out.writeLong(this.getGenerationTime());
-        out.writeObject(this.getTitle());
+        out.writeObject(StringEscapeUtils.escapeHtml4(this.getTitle()));
     }
 
     @Override
@@ -277,7 +278,7 @@ public class SubCategoryModel implements Comparable<SubCategoryModel>, Externali
         this.setMatrixId(in.readLong());
         this.setCategoryId(in.readLong());
         this.setGenerationTime(in.readLong());
-        this.setTitle(String.valueOf(in.readObject()));
+        this.setTitle(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
     }
     
 }

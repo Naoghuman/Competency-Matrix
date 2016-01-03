@@ -37,6 +37,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -336,7 +337,7 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
         out.writeLong(this.getSubCategoryId());
         out.writeInt(this.getLevel());
         out.writeLong(this.getGenerationTime());
-        out.writeObject(this.getDescription());
+        out.writeObject(StringEscapeUtils.escapeHtml4(this.getDescription()));
     }
 
     @Override
@@ -347,7 +348,7 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
         this.setSubCategoryId(in.readLong());
         this.setLevel(in.readInt());
         this.setGenerationTime(in.readLong());
-        this.setDescription(String.valueOf(in.readObject()));
+        this.setDescription(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
     }
     
 }

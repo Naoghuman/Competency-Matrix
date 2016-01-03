@@ -35,6 +35,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -200,14 +201,14 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeLong(this.getId());
         out.writeLong(this.getGenerationTime());
-        out.writeObject(this.getTitle());
+        out.writeObject(StringEscapeUtils.escapeHtml4(this.getTitle()));
     }
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         this.setId(in.readLong());
         this.setGenerationTime(in.readLong());
-        this.setTitle(String.valueOf(in.readObject()));
+        this.setTitle(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
     }
     
 }
