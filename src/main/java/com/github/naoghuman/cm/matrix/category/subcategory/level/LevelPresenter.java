@@ -17,6 +17,8 @@
 package com.github.naoghuman.cm.matrix.category.subcategory.level;
 
 import com.github.naoghuman.cm.model.api.LevelModel;
+import com.github.naoghuman.cm.util.api.IDateConverter;
+import com.github.naoghuman.cm.util.api.UtilFacade;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -59,6 +61,13 @@ public class LevelPresenter implements Initializable {
     public void onActionAddDate() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action add Date"); // NOI18N
         
+        final StringBuilder sb = new StringBuilder();
+        sb.append(UtilFacade.INSTANCE.convertLongToDateTime(System.currentTimeMillis(), IDateConverter.PATTERN__GENERATIONTIME));
+        sb.append("\n"); // NOI18N
+        sb.append(taNotes.getText());
+        
+        
+        taNotes.setText(sb.toString());
     }
     
 }
