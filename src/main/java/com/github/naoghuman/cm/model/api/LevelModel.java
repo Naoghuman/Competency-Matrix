@@ -243,7 +243,7 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
     }
     // END  GENERATIONTIME -----------------------------------------------------
     
-    // START  TITLE ------------------------------------------------------------
+    // START  DESCRIPTION ------------------------------------------------------
     private StringProperty descriptionProperty = null;
     private String _description = SIGN__EMPTY;
     
@@ -270,7 +270,37 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
         }
         return descriptionProperty;
     }
-    // END  TITLE --------------------------------------------------------------
+    // END  DESCRIPTION --------------------------------------------------------
+
+    
+    // START  NOTES ------------------------------------------------------------
+    private StringProperty notesProperty = null;
+    private String _notes = SIGN__EMPTY;
+    
+    @Column(name = COLUMN_NAME__NOTES)
+    public String getNotes() {
+        if (this.notesProperty == null) {
+            return _notes;
+        } else {
+            return notesProperty.get();
+        }
+    }
+    
+    public void setNotes(String notes) {
+        if (this.notesProperty == null) {
+            _notes = notes;
+        } else {
+            this.notesProperty.set(notes);
+        }
+    }
+    
+    public StringProperty notesProperty() {
+        if (notesProperty == null) {
+            notesProperty = new SimpleStringProperty(this, COLUMN_NAME__NOTES, _notes);
+        }
+        return notesProperty;
+    }
+    // END  NOETS --------------------------------------------------------------
 
     @Override
     public int hashCode() {
@@ -338,6 +368,7 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
         out.writeInt(this.getLevel());
         out.writeLong(this.getGenerationTime());
         out.writeObject(StringEscapeUtils.escapeHtml4(this.getDescription()));
+        out.writeObject(StringEscapeUtils.escapeHtml4(this.getNotes()));
     }
 
     @Override
@@ -349,6 +380,7 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
         this.setLevel(in.readInt());
         this.setGenerationTime(in.readLong());
         this.setDescription(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
+        this.setNotes(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
     }
     
 }

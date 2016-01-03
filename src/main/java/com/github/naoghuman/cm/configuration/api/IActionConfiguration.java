@@ -41,4 +41,6 @@ public interface IActionConfiguration {
     public static final String ACTION__REMOVE__MATRIX = "ACTION__REMOVE__MATRIX"; // NOI18N
     public static final String ACTION__REMOVE__SUBCATEGORY = "ACTION__REMOVE__SUBCATEGORY"; // NOI18N
     
+    public static final String ACTION__UPDATE__LEVEL = "ACTION__UPDATE__LEVEL"; // NOI18N
+    
 }

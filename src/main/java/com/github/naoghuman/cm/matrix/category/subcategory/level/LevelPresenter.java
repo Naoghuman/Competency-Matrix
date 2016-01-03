@@ -16,18 +16,48 @@
  */
 package com.github.naoghuman.cm.matrix.category.subcategory.level;
 
+import com.github.naoghuman.cm.model.api.LevelModel;
+import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextArea;
 
 /**
  *
  * @author PRo
  */
 public class LevelPresenter implements Initializable {
+    
+    @FXML private TextArea taNotes;
+    
+    private LevelModel levelModel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        LoggerFacade.INSTANCE.info(this.getClass(), "Initialize LevelPresenter"); // NOI18N
+        
+        assert (taNotes != null) : "fx:id=\"lLevel\" was not injected: check your FXML file 'Level.fxml'."; // NOI18N
+        
+    }
+    
+    public void initialize(LevelModel levelModel) {
+        LoggerFacade.INSTANCE.info(this.getClass(), "Initialize LevelModel"); // NOI18N
+        
+        this.levelModel = levelModel;
+       
+        taNotes.setText(this.levelModel.getNotes());
+    }
+    
+    public LevelModel getLevelModel() {
+        levelModel.setNotes(taNotes.getText());
+        
+        return levelModel;
+    }
+    
+    public void onActionAddDate() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action add Date"); // NOI18N
         
     }
     

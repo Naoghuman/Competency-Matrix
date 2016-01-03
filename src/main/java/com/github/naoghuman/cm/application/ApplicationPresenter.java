@@ -21,6 +21,7 @@ import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.matrix.MatrixPresenter;
 import com.github.naoghuman.cm.matrix.MatrixView;
+import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelPresenter;
 import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelView;
 import com.github.naoghuman.cm.model.api.CategoryModel;
 import com.github.naoghuman.cm.model.api.LevelModel;
@@ -183,16 +184,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
-    private void onActionRefreshListView(MatrixModel matrixModel) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh ListView"); // NOI18N
-
-        final List<MatrixModel> matrixModels = SqlFacade.INSTANCE.getMatrixSqlProvider().findAll();
-        lvOverview.getItems().clear();
-        lvOverview.getItems().addAll(matrixModels);
-        lvOverview.getSelectionModel().select(matrixModel);
-    }
-    
-    private void openLevel(LevelModel levelModel) {
+    private void onActionOpenLevel(LevelModel levelModel) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Show Level: " + levelModel.getId()); // NOI18N
         
         // Create dialog
@@ -206,6 +198,8 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
 //        dialog.setHeight(720 - 100);
         
         final LevelView levelView = new LevelView();
+        final LevelPresenter levelPresenter = levelView.getRealPresenter();
+        levelPresenter.initialize(levelModel);
         dialog.getDialogPane().setContent(levelView.getView());
         
         final ButtonType buttonTypeOne = new ButtonType(ButtonType.OK.getText(), ButtonBar.ButtonData.OK_DONE);
@@ -222,10 +216,14 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
             return;
         }
         
-        // TODO save levelModel
+        // Update LevelModel
+        final ActionTransferModel actionTransferModel = new ActionTransferModel();
+        actionTransferModel.setActionKey(ACTION__UPDATE__LEVEL);
+        actionTransferModel.setObject(levelPresenter.getLevelModel());
+        ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
-    private void openMatrix(long matrixId) {
+    private void onActionOpenMatrix(long matrixId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Show Matrix: " + matrixId); // NOI18N
         
         // Check if the CompetencyMatrix is always open
@@ -262,6 +260,15 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         tpCompetencyMatrix.getTabs().add(tab);
         tpCompetencyMatrix.getSelectionModel().select(tab);
     }
+    
+    private void onActionRefreshListView(MatrixModel matrixModel) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh ListView"); // NOI18N
+
+        final List<MatrixModel> matrixModels = SqlFacade.INSTANCE.getMatrixSqlProvider().findAll();
+        lvOverview.getItems().clear();
+        lvOverview.getItems().addAll(matrixModels);
+        lvOverview.getSelectionModel().select(matrixModel);
+    }
 
     @Override
     public void registerActions() {
@@ -287,7 +294,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final LevelModel levelModel = (LevelModel) actionTransferModel.getObject();
-                    this.openLevel(levelModel);
+                    this.onActionOpenLevel(levelModel);
                 });
     }
     
@@ -299,7 +306,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final long matrixId = actionTransferModel.getLong();
-                    this.openMatrix(matrixId);
+                    this.onActionOpenMatrix(matrixId);
                 });
     }
     

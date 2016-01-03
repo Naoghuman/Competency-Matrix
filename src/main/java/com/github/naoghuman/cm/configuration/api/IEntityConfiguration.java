@@ -32,6 +32,7 @@ public interface IEntityConfiguration {
     public static final String COLUMN_NAME__GENERATION_TIME = "generationTime"; // NOI18N
     public static final String COLUMN_NAME__LEVEL = "lvl"; // NOI18N
     public static final String COLUMN_NAME__MATRIX_ID = "matrixId"; // NOI18N
+    public static final String COLUMN_NAME__NOTES = "notes"; // NOI18N
     public static final String COLUMN_NAME__SUBCATEGORY_ID = "subCategoryId"; // NOI18N
     public static final String COLUMN_NAME__TITLE = "title"; // NOI18N
     

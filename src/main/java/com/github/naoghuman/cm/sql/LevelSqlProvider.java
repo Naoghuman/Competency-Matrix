@@ -17,16 +17,25 @@
 package com.github.naoghuman.cm.sql;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
+import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__CREATE__MATRIX;
+import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__OPEN__MATRIX;
+import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__REFRESH__OVERVIEW_MATRIX;
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.LevelModel;
+import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
+import de.pro.lib.action.api.ActionFacade;
+import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.database.api.DatabaseFacade;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.util.Duration;
 
 /**
  *
@@ -91,6 +100,19 @@ public class LevelSqlProvider implements IActionConfiguration, IEntityConfigurat
     public void registerActions() {
         LoggerFacade.INSTANCE.info(this.getClass(), "Register actions in LevelSqlProvider"); // NOI18N
         
+        this.registerActionUpdateLevel();
+    }
+
+    private void registerActionUpdateLevel() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action update LevelModel"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__UPDATE__LEVEL,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final LevelModel levelModel = (LevelModel) actionTransferModel.getObject();
+                    DatabaseFacade.INSTANCE.getCrudService().update(levelModel);
+                });
     }
     
 }

@@ -16,6 +16,8 @@
  */
 package com.github.naoghuman.cm.model.api;
 
+import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
+
 /**
  *
  * @author PRo
@@ -40,6 +42,7 @@ public interface ModelFacade {
         levelModel.setSubCategoryId(subCategoryId);
         levelModel.setGenerationTime(System.currentTimeMillis());
         levelModel.setLevel(level);
+        levelModel.setNotes(IEntityConfiguration.SIGN__EMPTY);
         
         return levelModel;
     }
