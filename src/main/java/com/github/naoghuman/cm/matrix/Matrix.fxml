@@ -18,6 +18,7 @@
                             <items>
                                 <Button mnemonicParsing="false" onAction="#onActionDeleteMatrix" text="- Matrix" />
                                 <Button mnemonicParsing="false" onAction="#onActionCreateCategory" text="+ Category" />
+                        <Button mnemonicParsing="false" onAction="#onActionOpenMatrixFolder" text="Open" />
                             </items>
                         </ToolBar>
                         <HBox mouseTransparent="true" spacing="7.0">

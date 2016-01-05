@@ -26,6 +26,7 @@ import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
+import com.github.naoghuman.cm.util.api.UtilFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;
@@ -53,7 +54,7 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
     @FXML private Label lMatrix;
     @FXML private VBox vbCategories;
     
-    private long matrixId;
+    private MatrixModel matrixModel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -68,10 +69,11 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
     public void initialize(MatrixModel matrixModel) {
         LoggerFacade.INSTANCE.info(this.getClass(), "Initialize MatrixModel"); // NOI18N
         
-        matrixId = matrixModel.getId();
+        this.matrixModel = matrixModel;
+        
         lMatrix.setText(matrixModel.getTitle());
         
-        final CategoryModel categoryModel = ModelFacade.getDefaultCategory(matrixId, "dummy"); // NOI18N
+        final CategoryModel categoryModel = ModelFacade.getDefaultCategory(matrixModel.getId(), "dummy"); // NOI18N
         this.onActionRefreshMatrix(categoryModel);
     }
     
@@ -92,7 +94,7 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
         final ActionTransferModel actionTransferModel = new ActionTransferModel();
         actionTransferModel.setActionKey(ACTION__CREATE__CATEGORY);
         actionTransferModel.setString(name);
-        actionTransferModel.setLong(matrixId);
+        actionTransferModel.setLong(matrixModel.getId());
         ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
@@ -112,8 +114,17 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
         
         final ActionTransferModel actionTransferModel = new ActionTransferModel();
         actionTransferModel.setActionKey(ACTION__DELETE__MATRIX);
-        actionTransferModel.setLong(matrixId);
+        actionTransferModel.setLong(matrixModel.getId());
         ActionFacade.INSTANCE.handle(actionTransferModel);
+    }
+    
+    public void onActionOpenMatrixFolder() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Matrix folder"); // NOI18N
+        
+        final String matrixFolder = matrixModel.getTitle();
+        final String categoryFolder = null;
+        final String subCategoryFolder = null;
+        UtilFacade.INSTANCE.getFolderHelper().open(matrixFolder, categoryFolder, subCategoryFolder);
     }
     
     public void onActionRefreshCategory(SubCategoryModel subCategoryModel) {
@@ -140,7 +151,7 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
     public void onActionRefreshMatrix(CategoryModel categoryModel) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh MatrixModel"); // NOI18N
         
-        final List<CategoryModel> categoryModels = SqlFacade.INSTANCE.getCategorySqlProvider().findAll(matrixId);
+        final List<CategoryModel> categoryModels = SqlFacade.INSTANCE.getCategorySqlProvider().findAll(matrixModel.getId());
         vbCategories.getChildren().clear();
         if (categoryModels.isEmpty()) {
             return;

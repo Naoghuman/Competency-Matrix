@@ -166,7 +166,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         }
         
         // Create folders
-        UtilFacade.INSTANCE.getFolderHelper().createFolder(matrixFolder, categoryFolder, subCategoryFolder);
+        UtilFacade.INSTANCE.getFolderHelper().create(matrixFolder, categoryFolder, subCategoryFolder);
     }
     
     public void onActionCreateMatrix() {

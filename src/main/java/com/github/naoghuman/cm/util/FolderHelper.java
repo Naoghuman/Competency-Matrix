@@ -18,7 +18,11 @@ package com.github.naoghuman.cm.util;
 
 import com.github.naoghuman.cm.util.api.IFolderHelper;
 import de.pro.lib.logger.api.LoggerFacade;
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -45,9 +49,15 @@ public class FolderHelper implements IFolderHelper {
     }
 
     @Override
-    public void createFolder(String matrixFolder, String categoryFolder, String subCategoryFolder) {
+    public void create(String matrixFolder, String categoryFolder, String subCategoryFolder) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Create Folders"); // NOI18N
         
+        final String pathWithFolder = this.createPath(matrixFolder, categoryFolder, subCategoryFolder);
+        final File file = new File(pathWithFolder);
+        file.mkdirs();
+    }
+    
+    private String createPath(String matrixFolder, String categoryFolder, String subCategoryFolder) {
         final StringBuilder pathWithFolder = new StringBuilder();
         pathWithFolder.append(USER_DIR_PATH);
         pathWithFolder.append(matrixFolder);
@@ -62,7 +72,21 @@ public class FolderHelper implements IFolderHelper {
             pathWithFolder.append(subCategoryFolder);
         }
         
-        final File file = new File(pathWithFolder.toString());
-        file.mkdirs();
+        return pathWithFolder.toString();
     }
+
+    @Override
+    public void open(String matrixFolder, String categoryFolder, String subCategoryFolder) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Open Folder"); // NOI18N
+        
+        final Desktop desktop = Desktop.getDesktop();
+        final String pathWithFolder = this.createPath(matrixFolder, categoryFolder, subCategoryFolder);
+        final File folderToOpen = new File(pathWithFolder);
+        try {
+            desktop.open(folderToOpen);
+        } catch (IOException ex) {
+            LoggerFacade.INSTANCE.error(this.getClass(), "Can't open folder: " + folderToOpen.getAbsolutePath(), ex); // NOI18N
+        }
+    }
+    
 }

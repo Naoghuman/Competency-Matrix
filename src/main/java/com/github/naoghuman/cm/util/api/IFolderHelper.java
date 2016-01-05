@@ -22,6 +22,7 @@ package com.github.naoghuman.cm.util.api;
  */
 public interface IFolderHelper {
     
-    public void createFolder(String matrixFolder, String categoryFolder, String subCategoryFolder);
+    public void create(String matrixFolder, String categoryFolder, String subCategoryFolder);
+    public void open(String matrixFolder, String categoryFolder, String subCategoryFolder);
     
 }
