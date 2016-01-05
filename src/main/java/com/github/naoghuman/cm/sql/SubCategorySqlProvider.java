@@ -23,6 +23,7 @@ import com.github.naoghuman.cm.model.api.CategoryModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
+import com.github.naoghuman.cm.util.api.Folder;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.database.api.DatabaseFacade;
@@ -52,24 +53,6 @@ public class SubCategorySqlProvider implements IActionConfiguration, IEntityConf
     }
     
     private SubCategorySqlProvider() {}
-
-    private SubCategoryModel create(long matrixId, long categoryId, String title) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Create SubCategoryModel with LevelModels"); // NOI18N
-        
-        // Create SubCategoryModel
-        final SubCategoryModel subCategoryModel = ModelFacade.getDefaultSubCategory(matrixId, categoryId, title);
-        DatabaseFacade.INSTANCE.getCrudService().create(subCategoryModel);
-        
-        // Create LevelModels
-        final long id = System.currentTimeMillis();
-        final long subCategoryId = subCategoryModel.getId();
-        SqlFacade.INSTANCE.getLevelSqlProvider().create(id + 0L, matrixId, categoryId, subCategoryId, 1);
-        SqlFacade.INSTANCE.getLevelSqlProvider().create(id + 1L, matrixId, categoryId, subCategoryId, 2);
-        SqlFacade.INSTANCE.getLevelSqlProvider().create(id + 2L, matrixId, categoryId, subCategoryId, 3);
-        SqlFacade.INSTANCE.getLevelSqlProvider().create(id + 3L, matrixId, categoryId, subCategoryId, 4);
-        
-        return subCategoryModel;
-    }
     
     public void delete(long matrixId, long categoryId, long subCategoryId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Delete SubCategoryModel with all associated Models"); // NOI18N
@@ -107,6 +90,39 @@ public class SubCategorySqlProvider implements IActionConfiguration, IEntityConf
         
         return subCategoryModels;
     }
+
+    public SubCategoryModel findById(long matrixId, long categoryId, long subCategoryId) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Find by Id SubCategoryModel"); // NOI18N
+        
+        final Map<String, Object> parameters = FXCollections.observableHashMap();
+        parameters.put(COLUMN_NAME__ID, subCategoryId);
+        parameters.put(COLUMN_NAME__MATRIX_ID, matrixId);
+        parameters.put(COLUMN_NAME__CATEGORY_ID, categoryId);
+        
+        final List<SubCategoryModel> subCategoryModels = DatabaseFacade.INSTANCE.getCrudService()
+                .findByNamedQuery(SubCategoryModel.class, NAMED_QUERY__NAME__SUBCATEGORY_FIND_BY_ID, parameters);
+        
+        return subCategoryModels.get(0);
+    }
+
+    private SubCategoryModel onActionCreateSubCategory(long matrixId, long categoryId, String title) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Create SubCategoryModel with LevelModels"); // NOI18N
+        
+        DatabaseFacade.INSTANCE.getCrudService().beginTransaction();
+        
+        // Create SubCategoryModel
+        final SubCategoryModel subCategoryModel = ModelFacade.getDefaultSubCategory(matrixId, categoryId, title);
+        final boolean isSingleTrancation = Boolean.FALSE;
+        DatabaseFacade.INSTANCE.getCrudService().create(subCategoryModel, isSingleTrancation);
+        
+        // Create LevelModels
+        final long subCategoryId = subCategoryModel.getId();
+        SqlFacade.INSTANCE.getLevelSqlProvider().create(matrixId, categoryId, subCategoryId, isSingleTrancation);
+        
+        DatabaseFacade.INSTANCE.getCrudService().commitTransaction();
+        
+        return subCategoryModel;
+    }
     
     @Override
     public void registerActions() {
@@ -127,16 +143,24 @@ public class SubCategorySqlProvider implements IActionConfiguration, IEntityConf
                     final CategoryModel categoryModel = (CategoryModel) actionTransferModel.getObject();
                     final long matrixId = categoryModel.getMatrixId();
                     final long categoryId = categoryModel.getId();
-                    
                     final String title = actionTransferModel.getString();
-                    final SubCategoryModel subCategoryModel = this.create(matrixId, categoryId, title);
+                    final SubCategoryModel subCategoryModel = this.onActionCreateSubCategory(matrixId, categoryId, title);
                     
-                    final PauseTransition pt = new PauseTransition(Duration.millis(50.0d));
+                    final PauseTransition pt = new PauseTransition(Duration.millis(75.0d));
                     pt.setOnFinished((ActionEvent event) -> {
                         final ActionTransferModel actionTransferModel2 = new ActionTransferModel();
                         actionTransferModel2.setActionKey(ACTION__REFRESH__CATEGORY);
                         actionTransferModel2.setObject(subCategoryModel);
                         ActionFacade.INSTANCE.handle(actionTransferModel2);
+                        
+                        final ActionTransferModel actionTransferModel3 = new ActionTransferModel();
+                        actionTransferModel3.setActionKey(ACTION__CREATE__FOLDERS);
+                        final Folder folder = new Folder();
+                        folder.register(Folder.EFolder.MATRIX_ID, subCategoryModel.getMatrixId());
+                        folder.register(Folder.EFolder.CATEGORY_ID, subCategoryModel.getCategoryId());
+                        folder.register(Folder.EFolder.SUBCATEGORY_ID, subCategoryModel.getId());
+                        actionTransferModel3.setObject(folder);
+                        ActionFacade.INSTANCE.handle(actionTransferModel3);
                     });
                     pt.playFromStart();
                 });

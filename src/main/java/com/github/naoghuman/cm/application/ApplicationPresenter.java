@@ -28,8 +28,11 @@ import com.github.naoghuman.cm.model.api.LevelModel;
 import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
+import com.github.naoghuman.cm.util.api.Folder;
+import com.github.naoghuman.cm.util.api.UtilFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
+import de.pro.lib.database.api.DatabaseFacade;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
 import java.util.Iterator;
@@ -53,7 +56,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
-import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.Callback;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -137,6 +139,34 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                 ActionFacade.INSTANCE.handle(transferModel);
             }
         });
+    }
+    
+    private void onActionCreateFolder(Folder folder) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action create Folders"); // NOI18N
+        
+        // Get Matrix title
+        final Long matrixId = folder.getId(Folder.EFolder.MATRIX_ID);
+        final MatrixModel matrixModel = SqlFacade.INSTANCE.getMatrixSqlProvider().findById(matrixId);
+        final String matrixFolder = matrixModel.getTitle();
+        
+        // Get Category title
+        final Long categoryId = folder.getId(Folder.EFolder.CATEGORY_ID);
+        String categoryFolder = null;
+        if (categoryId != null) {
+            final CategoryModel categoryModel = SqlFacade.INSTANCE.getCategorySqlProvider().findById(matrixId, categoryId);
+            categoryFolder = categoryModel.getTitle();
+        }
+        
+        // Get SubCategory title
+        final Long subCategoryId = folder.getId(Folder.EFolder.SUBCATEGORY_ID);
+        String subCategoryFolder = null;
+        if (subCategoryId != null) {
+            final SubCategoryModel subCategoryModel = SqlFacade.INSTANCE.getSubCategorySqlProvider().findById(matrixId, categoryId, subCategoryId);
+            subCategoryFolder = subCategoryModel.getTitle();
+        }
+        
+        // Create folders
+        UtilFacade.INSTANCE.getFolderHelper().createFolder(matrixFolder, categoryFolder, subCategoryFolder);
     }
     
     public void onActionCreateMatrix() {
@@ -276,6 +306,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         
         SqlFacade.INSTANCE.registerActions();
         
+        this.registerOnActionCreateFolders();
         this.registerOnActionOpenLevel();
         this.registerOnActionOpenMatrix();
         this.registerOnActionRefreshCategory();
@@ -284,6 +315,17 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         this.registerOnActionRemoveCategory();
         this.registerOnActionRemoveMatrix();
         this.registerOnActionRemoveSubCategory();
+    }
+    
+    private void registerOnActionCreateFolders() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action create Folders"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(ACTION__CREATE__FOLDERS,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final Folder folder = (Folder) actionTransferModel.getObject();
+                    this.onActionCreateFolder(folder);
+                });
     }
     
     private void registerOnActionOpenLevel() {

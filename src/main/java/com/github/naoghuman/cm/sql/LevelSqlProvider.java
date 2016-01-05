@@ -17,13 +17,9 @@
 package com.github.naoghuman.cm.sql;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
-import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__CREATE__MATRIX;
-import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__OPEN__MATRIX;
-import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__REFRESH__OVERVIEW_MATRIX;
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.LevelModel;
-import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
@@ -32,10 +28,8 @@ import de.pro.lib.logger.api.LoggerFacade;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.util.Duration;
 
 /**
  *
@@ -55,11 +49,21 @@ public class LevelSqlProvider implements IActionConfiguration, IEntityConfigurat
     
     private LevelSqlProvider() {}
     
-    public void create(long id, long matrixId, long categoryId, long subCategoryId, int level) {
+    public void create(long matrixId, long categoryId, long subCategoryId, boolean isSingleTransaction) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Create LevelModel"); // NOI18N
         
-        final LevelModel levelModel = ModelFacade.getDefaultLevel(id, matrixId, categoryId, subCategoryId, level);
-        DatabaseFacade.INSTANCE.getCrudService().create(levelModel);
+        final long id = System.currentTimeMillis();
+        final LevelModel levelModel1 = ModelFacade.getDefaultLevel(id + 0L, matrixId, categoryId, subCategoryId, 1);
+        DatabaseFacade.INSTANCE.getCrudService().create(levelModel1, isSingleTransaction);
+        
+        final LevelModel levelModel2 = ModelFacade.getDefaultLevel(id + 1L, matrixId, categoryId, subCategoryId, 2);
+        DatabaseFacade.INSTANCE.getCrudService().create(levelModel2, isSingleTransaction);
+        
+        final LevelModel levelModel3 = ModelFacade.getDefaultLevel(id + 2L, matrixId, categoryId, subCategoryId, 3);
+        DatabaseFacade.INSTANCE.getCrudService().create(levelModel3, isSingleTransaction);
+        
+        final LevelModel levelModel4 = ModelFacade.getDefaultLevel(id + 3L, matrixId, categoryId, subCategoryId, 4);
+        DatabaseFacade.INSTANCE.getCrudService().create(levelModel4, isSingleTransaction);
     }
     
     public void delete(long levelId) {

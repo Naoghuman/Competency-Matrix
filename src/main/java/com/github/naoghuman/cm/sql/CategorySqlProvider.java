@@ -17,11 +17,13 @@
 package com.github.naoghuman.cm.sql;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
+import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__CREATE__FOLDERS;
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.CategoryModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
+import com.github.naoghuman.cm.util.api.Folder;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.database.api.DatabaseFacade;
@@ -97,6 +99,19 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
         return categoryModels;
     }
 
+    public CategoryModel findById(long matrixId, long categoryId) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Find by Id CategoryModel"); // NOI18N
+        
+        final Map<String, Object> parameters = FXCollections.observableHashMap();
+        parameters.put(COLUMN_NAME__ID, categoryId);
+        parameters.put(COLUMN_NAME__MATRIX_ID, matrixId);
+        
+        final List<CategoryModel> categoryModels = DatabaseFacade.INSTANCE.getCrudService()
+                .findByNamedQuery(CategoryModel.class, NAMED_QUERY__NAME__CATEGORY_FIND_BY_ID, parameters);
+        
+        return categoryModels.get(0);
+    }
+
     @Override
     public void registerActions() {
         LoggerFacade.INSTANCE.info(this.getClass(), "Register actions in CategorySqlProvider"); // NOI18N
@@ -122,6 +137,14 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
                         actionTransferModel2.setActionKey(ACTION__REFRESH__MATRIX);
                         actionTransferModel2.setObject(categoryModel);
                         ActionFacade.INSTANCE.handle(actionTransferModel2);
+                        
+                        final ActionTransferModel actionTransferModel3 = new ActionTransferModel();
+                        actionTransferModel3.setActionKey(ACTION__CREATE__FOLDERS);
+                        final Folder folder = new Folder();
+                        folder.register(Folder.EFolder.MATRIX_ID, categoryModel.getMatrixId());
+                        folder.register(Folder.EFolder.CATEGORY_ID, categoryModel.getId());
+                        actionTransferModel3.setObject(folder);
+                        ActionFacade.INSTANCE.handle(actionTransferModel3);
                     });
                     pt.playFromStart();
                 });

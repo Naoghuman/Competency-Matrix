@@ -16,23 +16,39 @@
  */
 package com.github.naoghuman.cm.util.api;
 
-import com.github.naoghuman.cm.util.DateConverter;
-import com.github.naoghuman.cm.util.FolderHelper;
+import java.util.Map;
+import javafx.collections.FXCollections;
 
 /**
  *
  * @author PRo
  */
-public enum UtilFacade {
+public final class Folder {
     
-    INSTANCE;
+    private final Map<EFolder, Long> folderIds = FXCollections.observableHashMap();
     
-    public IDateConverter getDateConverter() {
-        return DateConverter.getDefault();
+    public Long getId(EFolder folder) {
+        Long folderId = folderIds.get(folder);
+        if (
+                folder.equals(EFolder.MATRIX_ID)
+                && folderId == null
+        ) {
+            throw new IllegalArgumentException("matrixId can't be NULL"); // NOI18N
+        }
+        
+        return folderIds.get(folder);
     }
     
-    public IFolderHelper getFolderHelper() {
-        return FolderHelper.getDefault();
+    public void register(EFolder folder, long folderId) {
+        folderIds.put(folder, folderId);
+    }
+    
+    public enum EFolder {
+        
+        CATEGORY_ID,
+        MATRIX_ID,
+        SUBCATEGORY_ID;
+        
     }
     
 }

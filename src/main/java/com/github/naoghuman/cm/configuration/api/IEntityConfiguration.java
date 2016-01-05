@@ -42,14 +42,18 @@ public interface IEntityConfiguration {
     public static final String ENTITY__TABLE_NAME__SUBCATEGORY_MODEL = "SubCategoryModel"; // NOI18N
     
     public static final String NAMED_QUERY__NAME__CATEGORY_FIND_ALL = "CategoryModel.findAll"; // NOI18N
+    public static final String NAMED_QUERY__NAME__CATEGORY_FIND_BY_ID = "CategoryModel.findById"; // NOI18N
     public static final String NAMED_QUERY__NAME__LEVEL_FIND_ALL = "LevelModel.findAll"; // NOI18N
     public static final String NAMED_QUERY__NAME__MATRIX_FIND_ALL = "MatrixModel.findAll"; // NOI18N
     public static final String NAMED_QUERY__NAME__SUBCATEGORY_FIND_ALL = "SubCategoryModel.findAll"; // NOI18N
+    public static final String NAMED_QUERY__NAME__SUBCATEGORY_FIND_BY_ID = "SubCategoryModel.findById"; // NOI18N
     
     public static final String NAMED_QUERY__QUERY__CATEGORY_FIND_ALL = "SELECT cm FROM CategoryModel cm WHERE cm.matrixId = :matrixId"; // NOI18N
+    public static final String NAMED_QUERY__QUERY__CATEGORY_FIND_BY_ID = "SELECT cm FROM CategoryModel cm WHERE cm.id = :id AND cm.matrixId = :matrixId"; // NOI18N
     public static final String NAMED_QUERY__QUERY__LEVEL_FIND_ALL = "SELECT lm FROM LevelModel lm WHERE lm.matrixId = :matrixId AND lm.categoryId = :categoryId AND lm.subCategoryId = :subCategoryId"; // NOI18N
     public static final String NAMED_QUERY__QUERY__MATRIX_FIND_ALL = "SELECT mm FROM MatrixModel mm"; // NOI18N
     public static final String NAMED_QUERY__QUERY__SUBCATEGORY_FIND_ALL = "SELECT scm FROM SubCategoryModel scm WHERE scm.matrixId = :matrixId AND scm.categoryId = :categoryId"; // NOI18N
+    public static final String NAMED_QUERY__QUERY__SUBCATEGORY_FIND_BY_ID = "SELECT scm FROM SubCategoryModel scm WHERE scm.id = :id AND scm.matrixId = :matrixId AND scm.categoryId = :categoryId"; // NOI18N
     
     public static final String SIGN__EMPTY = ""; // NOI18N
     

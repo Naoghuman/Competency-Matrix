@@ -16,23 +16,12 @@
  */
 package com.github.naoghuman.cm.util.api;
 
-import com.github.naoghuman.cm.util.DateConverter;
-import com.github.naoghuman.cm.util.FolderHelper;
-
 /**
  *
  * @author PRo
  */
-public enum UtilFacade {
+public interface IFolderHelper {
     
-    INSTANCE;
-    
-    public IDateConverter getDateConverter() {
-        return DateConverter.getDefault();
-    }
-    
-    public IFolderHelper getFolderHelper() {
-        return FolderHelper.getDefault();
-    }
+    public void createFolder(String matrixFolder, String categoryFolder, String subCategoryFolder);
     
 }

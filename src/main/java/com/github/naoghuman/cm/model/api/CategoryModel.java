@@ -51,7 +51,10 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @NamedQueries({
     @NamedQuery(
             name = IEntityConfiguration.NAMED_QUERY__NAME__CATEGORY_FIND_ALL,
-            query = IEntityConfiguration.NAMED_QUERY__QUERY__CATEGORY_FIND_ALL)
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__CATEGORY_FIND_ALL),
+    @NamedQuery(
+            name = IEntityConfiguration.NAMED_QUERY__NAME__CATEGORY_FIND_BY_ID,
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__CATEGORY_FIND_BY_ID)
 })
 public class CategoryModel implements Comparable<CategoryModel>, Externalizable, IEntityConfiguration {
 

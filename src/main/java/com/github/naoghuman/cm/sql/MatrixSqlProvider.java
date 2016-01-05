@@ -22,6 +22,7 @@ import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
+import com.github.naoghuman.cm.util.api.Folder;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.database.api.DatabaseFacade;
@@ -114,6 +115,13 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
                         actionTransferModel3.setActionKey(ACTION__OPEN__MATRIX);
                         actionTransferModel3.setLong(matrixModel.getId());
                         ActionFacade.INSTANCE.handle(actionTransferModel3);
+                        
+                        final ActionTransferModel actionTransferModel4 = new ActionTransferModel();
+                        actionTransferModel4.setActionKey(ACTION__CREATE__FOLDERS);
+                        final Folder folder = new Folder();
+                        folder.register(Folder.EFolder.MATRIX_ID, matrixModel.getId());
+                        actionTransferModel4.setObject(folder);
+                        ActionFacade.INSTANCE.handle(actionTransferModel4);
                     });
                     pt.playFromStart();
                 });

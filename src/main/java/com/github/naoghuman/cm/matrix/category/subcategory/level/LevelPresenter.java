@@ -62,10 +62,10 @@ public class LevelPresenter implements Initializable {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action add Date"); // NOI18N
         
         final StringBuilder sb = new StringBuilder();
-        sb.append(UtilFacade.INSTANCE.convertLongToDateTime(System.currentTimeMillis(), IDateConverter.PATTERN__GENERATIONTIME));
+        sb.append(UtilFacade.INSTANCE.getDateConverter().convertLongToDateTime(System.currentTimeMillis(), 
+                IDateConverter.PATTERN__GENERATIONTIME));
         sb.append("\n"); // NOI18N
         sb.append(taNotes.getText());
-        
         
         taNotes.setText(sb.toString());
     }
