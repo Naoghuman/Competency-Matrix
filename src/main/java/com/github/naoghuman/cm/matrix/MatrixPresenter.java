@@ -26,6 +26,7 @@ import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
+import com.github.naoghuman.cm.util.api.Folder;
 import com.github.naoghuman.cm.util.api.UtilFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
@@ -120,11 +121,10 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
     
     public void onActionOpenMatrixFolder() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Matrix folder"); // NOI18N
-        
-        final String matrixFolder = matrixModel.getTitle();
-        final String categoryFolder = null;
-        final String subCategoryFolder = null;
-        UtilFacade.INSTANCE.getFolderHelper().open(matrixFolder, categoryFolder, subCategoryFolder);
+
+        final Folder folder = new Folder();
+        folder.register(Folder.EFolder.MATRIX_ID, matrixModel.getId());
+        UtilFacade.INSTANCE.getFolderHelper().open(folder);
     }
     
     public void onActionRefreshCategory(SubCategoryModel subCategoryModel) {

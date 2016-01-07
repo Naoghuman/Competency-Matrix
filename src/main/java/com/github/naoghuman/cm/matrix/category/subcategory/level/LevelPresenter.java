@@ -17,6 +17,7 @@
 package com.github.naoghuman.cm.matrix.category.subcategory.level;
 
 import com.github.naoghuman.cm.model.api.LevelModel;
+import com.github.naoghuman.cm.util.api.Folder;
 import com.github.naoghuman.cm.util.api.IDateConverter;
 import com.github.naoghuman.cm.util.api.UtilFacade;
 import de.pro.lib.logger.api.LoggerFacade;
@@ -24,6 +25,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
 /**
@@ -32,6 +34,7 @@ import javafx.scene.control.TextArea;
  */
 public class LevelPresenter implements Initializable {
     
+    @FXML private Label lLevel;
     @FXML private TextArea taNotes;
     
     private LevelModel levelModel;
@@ -40,6 +43,7 @@ public class LevelPresenter implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         LoggerFacade.INSTANCE.info(this.getClass(), "Initialize LevelPresenter"); // NOI18N
         
+        assert (taNotes != null) : "fx:id=\"taNotes\" was not injected: check your FXML file 'Level.fxml'."; // NOI18N
         assert (taNotes != null) : "fx:id=\"lLevel\" was not injected: check your FXML file 'Level.fxml'."; // NOI18N
         
     }
@@ -49,6 +53,7 @@ public class LevelPresenter implements Initializable {
         
         this.levelModel = levelModel;
        
+        lLevel.setText(String.valueOf(this.levelModel.getLevel()));
         taNotes.setText(this.levelModel.getNotes());
     }
     
@@ -68,6 +73,17 @@ public class LevelPresenter implements Initializable {
         sb.append(taNotes.getText());
         
         taNotes.setText(sb.toString());
+    }
+    
+    public void onActionOpenLevelFolder() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Category folder"); // NOI18N
+
+        final Folder folder = new Folder();
+        folder.register(Folder.EFolder.MATRIX_ID, levelModel.getMatrixId());
+        folder.register(Folder.EFolder.CATEGORY_ID, levelModel.getCategoryId());
+        folder.register(Folder.EFolder.SUBCATEGORY_ID, levelModel.getSubCategoryId());
+        folder.register(Folder.EFolder.LEVEL_ID, levelModel.getLevel());
+        UtilFacade.INSTANCE.getFolderHelper().open(folder);
     }
     
 }

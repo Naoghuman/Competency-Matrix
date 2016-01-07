@@ -24,6 +24,7 @@ import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
 import com.github.naoghuman.cm.util.api.Folder;
+import com.github.naoghuman.cm.util.api.IFolderHelper;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.database.api.DatabaseFacade;
@@ -154,11 +155,12 @@ public class SubCategorySqlProvider implements IActionConfiguration, IEntityConf
                         ActionFacade.INSTANCE.handle(actionTransferModel2);
                         
                         final ActionTransferModel actionTransferModel3 = new ActionTransferModel();
-                        actionTransferModel3.setActionKey(ACTION__CREATE__FOLDERS);
+                        actionTransferModel3.setActionKey(ACTION__CREATE__FOLDER);
                         final Folder folder = new Folder();
                         folder.register(Folder.EFolder.MATRIX_ID, subCategoryModel.getMatrixId());
                         folder.register(Folder.EFolder.CATEGORY_ID, subCategoryModel.getCategoryId());
                         folder.register(Folder.EFolder.SUBCATEGORY_ID, subCategoryModel.getId());
+                        folder.register(Folder.EFolder.LEVEL_ID, IFolderHelper.LEVEL_ALL);
                         actionTransferModel3.setObject(folder);
                         ActionFacade.INSTANCE.handle(actionTransferModel3);
                     });

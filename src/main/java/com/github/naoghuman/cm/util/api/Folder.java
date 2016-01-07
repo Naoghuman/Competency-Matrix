@@ -46,6 +46,7 @@ public final class Folder {
     public enum EFolder {
         
         CATEGORY_ID,
+        LEVEL_ID,
         MATRIX_ID,
         SUBCATEGORY_ID;
         

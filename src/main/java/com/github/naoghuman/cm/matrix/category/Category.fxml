@@ -12,25 +12,25 @@
     <children>
         <VBox spacing="7.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
             <children>
-                <StackPane>
+                <StackPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0">
                     <children>
                         <ToolBar nodeOrientation="RIGHT_TO_LEFT">
                             <items>
                                 <Button mnemonicParsing="false" onAction="#onActionDeleteCategory" text="- Category" />
                                 <Button mnemonicParsing="false" onAction="#onActionCreateSubCategory" text="+ SubCategory" />
-                        <Button mnemonicParsing="false" onAction="#onActionOpenCategoryFolder" text="Open" />
+                                <Button mnemonicParsing="false" onAction="#onActionOpenCategoryFolder" text="Open" />
                             </items>
                         </ToolBar>
                         <HBox mouseTransparent="true" spacing="7.0">
                             <children>
                                 <Label text="Category:">
                                     <font>
-                                        <Font size="30.0" />
+                                        <Font size="28.0" />
                                     </font>
                                 </Label>
                                 <Label fx:id="lCategory" text="&lt;category&gt;">
                                     <font>
-                                        <Font size="30.0" />
+                                        <Font size="28.0" />
                                     </font>
                                     <StackPane.margin>
                                         <Insets left="14.0" />

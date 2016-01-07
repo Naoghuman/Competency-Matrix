@@ -22,7 +22,6 @@ import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.matrix.category.subcategory.SubCategoryPresenter;
 import com.github.naoghuman.cm.matrix.category.subcategory.SubCategoryView;
 import com.github.naoghuman.cm.model.api.CategoryModel;
-import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
@@ -122,13 +121,10 @@ public class CategoryPresenter implements Initializable, IActionConfiguration, I
     public void onActionOpenCategoryFolder() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Category folder"); // NOI18N
         
-        final long matrixId = categoryModel.getMatrixId();
-        final MatrixModel matrixModel = SqlFacade.INSTANCE.getMatrixSqlProvider().findById(matrixId);
-        final String matrixFolder = matrixModel.getTitle();
-        
-        final String categoryFolder = categoryModel.getTitle();
-        final String subCategoryFolder = null;
-        UtilFacade.INSTANCE.getFolderHelper().open(matrixFolder, categoryFolder, subCategoryFolder);
+        final Folder folder = new Folder();
+        folder.register(Folder.EFolder.MATRIX_ID, categoryModel.getMatrixId());
+        folder.register(Folder.EFolder.CATEGORY_ID, categoryModel.getId());
+        UtilFacade.INSTANCE.getFolderHelper().open(folder);
     }
 
     public void onActionRefreshCategory(SubCategoryModel subCategoryModel) {

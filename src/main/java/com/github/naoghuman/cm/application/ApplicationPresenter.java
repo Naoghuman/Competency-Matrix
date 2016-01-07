@@ -141,34 +141,6 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         });
     }
     
-    private void onActionCreateFolder(Folder folder) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "On action create Folders"); // NOI18N
-        
-        // Get Matrix title
-        final Long matrixId = folder.getId(Folder.EFolder.MATRIX_ID);
-        final MatrixModel matrixModel = SqlFacade.INSTANCE.getMatrixSqlProvider().findById(matrixId);
-        final String matrixFolder = matrixModel.getTitle();
-        
-        // Get Category title
-        final Long categoryId = folder.getId(Folder.EFolder.CATEGORY_ID);
-        String categoryFolder = null;
-        if (categoryId != null) {
-            final CategoryModel categoryModel = SqlFacade.INSTANCE.getCategorySqlProvider().findById(matrixId, categoryId);
-            categoryFolder = categoryModel.getTitle();
-        }
-        
-        // Get SubCategory title
-        final Long subCategoryId = folder.getId(Folder.EFolder.SUBCATEGORY_ID);
-        String subCategoryFolder = null;
-        if (subCategoryId != null) {
-            final SubCategoryModel subCategoryModel = SqlFacade.INSTANCE.getSubCategorySqlProvider().findById(matrixId, categoryId, subCategoryId);
-            subCategoryFolder = subCategoryModel.getTitle();
-        }
-        
-        // Create folders
-        UtilFacade.INSTANCE.getFolderHelper().create(matrixFolder, categoryFolder, subCategoryFolder);
-    }
-    
     public void onActionCreateMatrix() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action create Matrix"); // NOI18N
         
@@ -320,11 +292,12 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
     private void registerOnActionCreateFolders() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action create Folders"); // NOI18N
         
-        ActionFacade.INSTANCE.register(ACTION__CREATE__FOLDERS,
+        ActionFacade.INSTANCE.register(
+                ACTION__CREATE__FOLDER,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final Folder folder = (Folder) actionTransferModel.getObject();
-                    this.onActionCreateFolder(folder);
+                    UtilFacade.INSTANCE.getFolderHelper().create(folder);
                 });
     }
     

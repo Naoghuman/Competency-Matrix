@@ -21,11 +21,10 @@ import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.matrix.category.subcategory.levelthumbnail.LevelThumbnailPresenter;
 import com.github.naoghuman.cm.matrix.category.subcategory.levelthumbnail.LevelThumbnailView;
-import com.github.naoghuman.cm.model.api.CategoryModel;
 import com.github.naoghuman.cm.model.api.LevelModel;
-import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
+import com.github.naoghuman.cm.util.api.Folder;
 import com.github.naoghuman.cm.util.api.UtilFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
@@ -95,17 +94,12 @@ public class SubCategoryPresenter implements Initializable, IActionConfiguration
     
     public void onActionOpenSubCategoryFolder() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Category folder"); // NOI18N
-        
-        final long matrixId = subCategoryModel.getMatrixId();
-        final MatrixModel matrixModel = SqlFacade.INSTANCE.getMatrixSqlProvider().findById(matrixId);
-        final String matrixFolder = matrixModel.getTitle();
-        
-        final long categoryId = subCategoryModel.getCategoryId();
-        final CategoryModel categoryModel = SqlFacade.INSTANCE.getCategorySqlProvider().findById(matrixId, categoryId);
-        final String categoryFolder = categoryModel.getTitle();
-        
-        final String subCategoryFolder = subCategoryModel.getTitle();
-        UtilFacade.INSTANCE.getFolderHelper().open(matrixFolder, categoryFolder, subCategoryFolder);
+
+        final Folder folder = new Folder();
+        folder.register(Folder.EFolder.MATRIX_ID, subCategoryModel.getMatrixId());
+        folder.register(Folder.EFolder.CATEGORY_ID, subCategoryModel.getCategoryId());
+        folder.register(Folder.EFolder.SUBCATEGORY_ID, subCategoryModel.getId());
+        UtilFacade.INSTANCE.getFolderHelper().open(folder);
     }
 
     public void onActionRefreshSubCategory() {

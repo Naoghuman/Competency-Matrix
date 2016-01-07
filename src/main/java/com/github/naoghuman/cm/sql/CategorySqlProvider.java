@@ -17,7 +17,7 @@
 package com.github.naoghuman.cm.sql;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
-import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__CREATE__FOLDERS;
+import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__CREATE__FOLDER;
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.CategoryModel;
@@ -139,7 +139,7 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
                         ActionFacade.INSTANCE.handle(actionTransferModel2);
                         
                         final ActionTransferModel actionTransferModel3 = new ActionTransferModel();
-                        actionTransferModel3.setActionKey(ACTION__CREATE__FOLDERS);
+                        actionTransferModel3.setActionKey(ACTION__CREATE__FOLDER);
                         final Folder folder = new Folder();
                         folder.register(Folder.EFolder.MATRIX_ID, categoryModel.getMatrixId());
                         folder.register(Folder.EFolder.CATEGORY_ID, categoryModel.getId());

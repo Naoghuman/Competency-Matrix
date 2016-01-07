@@ -21,8 +21,14 @@ package com.github.naoghuman.cm.util.api;
  * @author PRo
  */
 public interface IFolderHelper {
+
+    public static final Long LEVEL_1 = 1L;
+    public static final Long LEVEL_2 = 2L;
+    public static final Long LEVEL_3 = 3L;
+    public static final Long LEVEL_4 = 4L;
+    public static final Long LEVEL_ALL = -1L;
     
-    public void create(String matrixFolder, String categoryFolder, String subCategoryFolder);
-    public void open(String matrixFolder, String categoryFolder, String subCategoryFolder);
+    public void create(Folder folder);
+    public void open(Folder folder);
     
 }

@@ -23,7 +23,7 @@ package com.github.naoghuman.cm.configuration.api;
 public interface IActionConfiguration {
     
     public static final String ACTION__CREATE__CATEGORY = "ACTION__CREATE__CATEGORY"; // NOI18N
-    public static final String ACTION__CREATE__FOLDERS = "ACTION__CREATE__FOLDERS"; // NOI18N
+    public static final String ACTION__CREATE__FOLDER = "ACTION__CREATE__FOLDER"; // NOI18N
     public static final String ACTION__CREATE__MATRIX = "ACTION__CREATE__MATRIX"; // NOI18N
     public static final String ACTION__CREATE__SUBCATEGORY = "ACTION__CREATE__SUBCATEGORY"; // NOI18N
     
