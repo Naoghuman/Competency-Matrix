@@ -17,7 +17,7 @@
                         <ToolBar nodeOrientation="RIGHT_TO_LEFT">
                             <items>
                                 <Button mnemonicParsing="false" onAction="#onActionDeleteSubCategory" text="- Subcategory" />
-                        <Button mnemonicParsing="false" onAction="#onActionOpenSubCategoryFolder" text="Open" />
+                                <Button mnemonicParsing="false" onAction="#onActionOpenSubCategoryFolder" text="Open" />
                             </items>
                         </ToolBar>
                         <HBox mouseTransparent="true" spacing="7.0">

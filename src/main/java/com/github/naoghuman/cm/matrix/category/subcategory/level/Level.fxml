@@ -9,54 +9,60 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="400.0" style="-fx-background-color: GOLD;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.matrix.category.subcategory.level.LevelPresenter">
-   <children>
-      <StackPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
-         <children>
-            <ToolBar nodeOrientation="RIGHT_TO_LEFT">
-               <items>
-                  <Button mnemonicParsing="false" onAction="#onActionOpenLevelFolder" text="Open" />
-               </items>
-            </ToolBar>
-            <HBox mouseTransparent="true" spacing="7.0">
-               <children>
-                  <Label text="Level:">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lLevel" text="&lt;level&gt;">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <StackPane.margin>
-                        <Insets left="14.0" />
-                     </StackPane.margin>
-                  </Label>
-               </children>
-            </HBox>
-         </children>
-      </StackPane>
-      <TabPane layoutX="40.0" layoutY="31.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="61.0">
-        <tabs>
-          <Tab closable="false" text="Notes">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+    <children>
+        <StackPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+            <children>
+                <ToolBar nodeOrientation="RIGHT_TO_LEFT">
+                    <items>
+                        <Button mnemonicParsing="false" onAction="#onActionOpenLevelFolder" text="Open" />
+                    </items>
+                </ToolBar>
+                <HBox mouseTransparent="true" spacing="7.0">
+                    <children>
+                        <Label text="Level:">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="lLevel" text="&lt;level&gt;">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                            <StackPane.margin>
+                                <Insets left="14.0" />
+                            </StackPane.margin>
+                        </Label>
+                    </children>
+                </HBox>
+            </children>
+        </StackPane>
+        <TabPane layoutX="40.0" layoutY="31.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="61.0">
+            <tabs>
+            <Tab closable="false" text="Details">
+               <content>
+                  <VBox spacing="2.0">
                      <children>
-                        <VBox layoutX="63.0" layoutY="22.0" spacing="7.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <children>
-                              <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0">
-                                <items>
-                                  <Button mnemonicParsing="false" onAction="#onActionAddDate" text="Date" />
-                                </items>
-                              </ToolBar>
-                              <TextArea fx:id="taNotes" VBox.vgrow="ALWAYS" />
-                           </children>
-                        </VBox>
+                        <Label text="Description" />
+                        <TextArea fx:id="taDescription" wrapText="true" />
                      </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-   </children>
+                  </VBox>
+               </content>
+            </Tab>
+                <Tab closable="false" text="Notes">
+               <content>
+                          <VBox spacing="7.0">
+                              <children>
+                                  <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0">
+                                      <items>
+                                          <Button mnemonicParsing="false" onAction="#onActionAddDate" text="Date" />
+                                      </items>
+                                  </ToolBar>
+                                  <TextArea fx:id="taNotes" wrapText="true" VBox.vgrow="ALWAYS" />
+                              </children>
+                          </VBox>
+               </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
 </AnchorPane>

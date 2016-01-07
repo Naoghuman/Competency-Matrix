@@ -22,6 +22,7 @@ import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.matrix.category.CategoryPresenter;
 import com.github.naoghuman.cm.matrix.category.CategoryView;
 import com.github.naoghuman.cm.model.api.CategoryModel;
+import com.github.naoghuman.cm.model.api.LevelModel;
 import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
@@ -145,6 +146,27 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
             
             final CategoryPresenter categoryPresenter = (CategoryPresenter) view.getUserData();
             categoryPresenter.onActionRefreshCategory(subCategoryModel);
+        }
+    }
+
+    public void onActionRefreshSubCategory(LevelModel levelModel) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh SubCategoryModel"); // NOI18N
+
+        final long categoryId = levelModel.getCategoryId();
+        for (Node children : vbCategories.getChildren()) {
+            if (!(children instanceof Parent)) {
+                continue;
+            }
+            
+            final Parent view = (Parent) children;
+            final String viewCategoryId = view.getId();
+            final boolean isEquals = new EqualsBuilder().append(viewCategoryId, String.valueOf(categoryId)).isEquals();
+            if (!isEquals) {
+                continue;
+            }
+            
+            final CategoryPresenter categoryPresenter = (CategoryPresenter) view.getUserData();
+            categoryPresenter.onActionRefreshSubCategory(levelModel);
         }
     }
     

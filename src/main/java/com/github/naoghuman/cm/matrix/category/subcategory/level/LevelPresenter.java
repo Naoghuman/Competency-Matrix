@@ -16,6 +16,8 @@
  */
 package com.github.naoghuman.cm.matrix.category.subcategory.level;
 
+import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
+import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.LevelModel;
 import com.github.naoghuman.cm.util.api.Folder;
 import com.github.naoghuman.cm.util.api.IDateConverter;
@@ -32,9 +34,10 @@ import javafx.scene.control.TextArea;
  *
  * @author PRo
  */
-public class LevelPresenter implements Initializable {
+public class LevelPresenter implements Initializable, IActionConfiguration, IRegisterActions {
     
     @FXML private Label lLevel;
+    @FXML private TextArea taDescription;
     @FXML private TextArea taNotes;
     
     private LevelModel levelModel;
@@ -43,8 +46,9 @@ public class LevelPresenter implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         LoggerFacade.INSTANCE.info(this.getClass(), "Initialize LevelPresenter"); // NOI18N
         
-        assert (taNotes != null) : "fx:id=\"taNotes\" was not injected: check your FXML file 'Level.fxml'."; // NOI18N
-        assert (taNotes != null) : "fx:id=\"lLevel\" was not injected: check your FXML file 'Level.fxml'."; // NOI18N
+        assert (lLevel != null)        : "fx:id=\"lLevel\" was not injected: check your FXML file 'Level.fxml'."; // NOI18N
+        assert (taDescription != null) : "fx:id=\"taDescription\" was not injected: check your FXML file 'Level.fxml'."; // NOI18N
+        assert (taNotes != null)       : "fx:id=\"taNotes\" was not injected: check your FXML file 'Level.fxml'."; // NOI18N
         
     }
     
@@ -54,10 +58,12 @@ public class LevelPresenter implements Initializable {
         this.levelModel = levelModel;
        
         lLevel.setText(String.valueOf(this.levelModel.getLevel()));
+        taDescription.setText(this.levelModel.getDescription());
         taNotes.setText(this.levelModel.getNotes());
     }
     
     public LevelModel getLevelModel() {
+        levelModel.setDescription(taDescription.getText());
         levelModel.setNotes(taNotes.getText());
         
         return levelModel;
@@ -84,6 +90,12 @@ public class LevelPresenter implements Initializable {
         folder.register(Folder.EFolder.SUBCATEGORY_ID, levelModel.getSubCategoryId());
         folder.register(Folder.EFolder.LEVEL_ID, levelModel.getLevel());
         UtilFacade.INSTANCE.getFolderHelper().open(folder);
+    }
+
+    @Override
+    public void registerActions() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in LevelPresenter"); // NOI18N
+        
     }
     
 }

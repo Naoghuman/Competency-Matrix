@@ -223,6 +223,11 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         actionTransferModel.setActionKey(ACTION__UPDATE__LEVEL);
         actionTransferModel.setObject(levelPresenter.getLevelModel());
         ActionFacade.INSTANCE.handle(actionTransferModel);
+        
+        final ActionTransferModel actionTransferModel2 = new ActionTransferModel();
+        actionTransferModel2.setActionKey(ACTION__REFRESH__SUBCATEGORY);
+        actionTransferModel2.setObject(levelPresenter.getLevelModel());
+        ActionFacade.INSTANCE.handle(actionTransferModel2);
     }
     
     private void onActionOpenMatrix(long matrixId) {
@@ -284,6 +289,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         this.registerOnActionRefreshCategory();
         this.registerOnActionRefreshMatrix();
         this.registerOnActionRefreshOverviewMatrix();
+        this.registerOnActionRefreshSubCategory();
         this.registerOnActionRemoveCategory();
         this.registerOnActionRemoveMatrix();
         this.registerOnActionRemoveSubCategory();
@@ -378,6 +384,28 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final MatrixModel matrixModel = (MatrixModel) actionTransferModel.getObject();
                     this.onActionRefreshListView(matrixModel);
+                });
+    }
+    
+    private void registerOnActionRefreshSubCategory() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action refresh SubCategoryModel"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__REFRESH__SUBCATEGORY,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final LevelModel levelModel = (LevelModel) actionTransferModel.getObject();
+                    final long matrixId = levelModel.getMatrixId();
+                    
+                    for (Tab tab : tpCompetencyMatrix.getTabs()) {
+                        final boolean isEquals = new EqualsBuilder().append(tab.getId(), String.valueOf(matrixId)).isEquals();
+                        if (!isEquals) {
+                            continue;
+                        }
+                        
+                        final MatrixPresenter matrixPresenter = (MatrixPresenter) tab.getUserData();
+                        matrixPresenter.onActionRefreshSubCategory(levelModel); 
+                    }
                 });
     }
 

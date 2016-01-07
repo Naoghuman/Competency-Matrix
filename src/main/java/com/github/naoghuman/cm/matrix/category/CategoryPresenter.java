@@ -22,6 +22,7 @@ import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.matrix.category.subcategory.SubCategoryPresenter;
 import com.github.naoghuman.cm.matrix.category.subcategory.SubCategoryView;
 import com.github.naoghuman.cm.model.api.CategoryModel;
+import com.github.naoghuman.cm.model.api.LevelModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
@@ -36,6 +37,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -156,6 +158,20 @@ public class CategoryPresenter implements Initializable, IActionConfiguration, I
     public void registerActions() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in CategoryPresenter"); // NOI18N
         
+    }
+
+    public void onActionRefreshSubCategory(LevelModel levelModel) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh SubCategoryModel"); // NOI18N
+        
+        for (Node child : vbSubCategories.getChildren()) {
+            if (!(child instanceof Parent)) {
+                continue;
+            }
+            
+            final Parent view = (Parent) child;
+            final SubCategoryPresenter subCategoryPresenter = (SubCategoryPresenter) view.getUserData();
+            subCategoryPresenter.onActionRefreshLevel(levelModel);
+        }
     }
     
 }

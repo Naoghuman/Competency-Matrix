@@ -35,6 +35,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -105,9 +106,9 @@ public class SubCategoryPresenter implements Initializable, IActionConfiguration
     public void onActionRefreshSubCategory() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh SubCategoryModel"); // NOI18N
         
-        final long matrixId = this.subCategoryModel.getMatrixId();
-        final long categoryId = this.subCategoryModel.getCategoryId();
-        final long subCategoryId = this.subCategoryModel.getId();
+        final long matrixId = subCategoryModel.getMatrixId();
+        final long categoryId = subCategoryModel.getCategoryId();
+        final long subCategoryId = subCategoryModel.getId();
         final List<LevelModel> levelModels = SqlFacade.INSTANCE.getLevelSqlProvider().findAll(matrixId, categoryId, subCategoryId);
         
         hbLevels.getChildren().clear();
@@ -132,6 +133,23 @@ public class SubCategoryPresenter implements Initializable, IActionConfiguration
     public void registerActions() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in SubCategoryPresenter"); // NOI18N
         
+    }
+
+    public void onActionRefreshLevel(LevelModel levelModel) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh LevelModel"); // NOI18N
+        
+        for (Node child : hbLevels.getChildren()) {
+            if (!(child instanceof Parent)) {
+                continue;
+            }
+            
+            final Parent view = (Parent) child;
+            if (view.getId().equals(String.valueOf(levelModel.getId()))) {
+                final LevelThumbnailPresenter levelThumbnailPresenter = (LevelThumbnailPresenter) view.getUserData();
+                levelThumbnailPresenter.initialize(levelModel);
+                return;
+            }
+        }
     }
     
 }
