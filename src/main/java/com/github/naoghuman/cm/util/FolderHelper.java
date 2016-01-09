@@ -93,19 +93,19 @@ public class FolderHelper implements IFolderHelper {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Create Folder"); // NOI18N
         
         // Matrix folder
-        final Long matrixId = folder.getId(Folder.EFolder.MATRIX_ID);
+        final Long matrixId = folder.getId(Folder.EPathId.MATRIX_ID);
         final String matrixFolder = this.convertMatrixIdToFolder(matrixId);
         
         // Category folder
-        final Long categoryId = folder.getId(Folder.EFolder.CATEGORY_ID);
+        final Long categoryId = folder.getId(Folder.EPathId.CATEGORY_ID);
         final String categoryFolder = this.convertCategoryIdToFolder(matrixId, categoryId);
         
         // SubCategory folder
-        final Long subCategoryId = folder.getId(Folder.EFolder.SUBCATEGORY_ID);
+        final Long subCategoryId = folder.getId(Folder.EPathId.SUBCATEGORY_ID);
         final String subCategoryFolder = this.convertSubCategoryIdToFolder(matrixId, categoryId, subCategoryId);
         
         // Level folder
-        final Long levelId = folder.getId(Folder.EFolder.LEVEL_ID);
+        final Long levelId = folder.getId(Folder.EPathId.LEVEL_ID);
         if (levelId == null) {
         	// Create the folder
             final String pathWithFolder = this.createPath(matrixFolder, categoryFolder, subCategoryFolder);
@@ -172,19 +172,19 @@ public class FolderHelper implements IFolderHelper {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Open Folder"); // NOI18N
 
         // Matrix folder
-        final Long matrixId = folder.getId(Folder.EFolder.MATRIX_ID);
+        final Long matrixId = folder.getId(Folder.EPathId.MATRIX_ID);
         final String matrixFolder = this.convertMatrixIdToFolder(matrixId);
         
         // Category folder
-        final Long categoryId = folder.getId(Folder.EFolder.CATEGORY_ID);
+        final Long categoryId = folder.getId(Folder.EPathId.CATEGORY_ID);
         final String categoryFolder = this.convertCategoryIdToFolder(matrixId, categoryId);
         
         // SubCategory folder
-        final Long subCategoryId = folder.getId(Folder.EFolder.SUBCATEGORY_ID);
+        final Long subCategoryId = folder.getId(Folder.EPathId.SUBCATEGORY_ID);
         final String subCategoryFolder = this.convertSubCategoryIdToFolder(matrixId, categoryId, subCategoryId);
         
         // Level folder
-        final Long levelId = folder.getId(Folder.EFolder.LEVEL_ID);
+        final Long levelId = folder.getId(Folder.EPathId.LEVEL_ID);
         String levelFolder = this.convertLevelIdToFolder(levelId);
         
         // Open the folder

@@ -124,8 +124,8 @@ public class CategoryPresenter implements Initializable, IActionConfiguration, I
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Category folder"); // NOI18N
         
         final Folder folder = new Folder();
-        folder.register(Folder.EFolder.MATRIX_ID, categoryModel.getMatrixId());
-        folder.register(Folder.EFolder.CATEGORY_ID, categoryModel.getId());
+        folder.register(Folder.EPathId.MATRIX_ID, categoryModel.getMatrixId());
+        folder.register(Folder.EPathId.CATEGORY_ID, categoryModel.getId());
         UtilFacade.INSTANCE.getFolderHelper().open(folder);
     }
 

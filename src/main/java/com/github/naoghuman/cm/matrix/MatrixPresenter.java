@@ -124,7 +124,7 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Matrix folder"); // NOI18N
 
         final Folder folder = new Folder();
-        folder.register(Folder.EFolder.MATRIX_ID, matrixModel.getId());
+        folder.register(Folder.EPathId.MATRIX_ID, matrixModel.getId());
         UtilFacade.INSTANCE.getFolderHelper().open(folder);
     }
     

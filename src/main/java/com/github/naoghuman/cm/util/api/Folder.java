@@ -25,12 +25,12 @@ import javafx.collections.FXCollections;
  */
 public final class Folder {
     
-    private final Map<EFolder, Long> folderIds = FXCollections.observableHashMap();
+    private final Map<EPathId, Long> folderIds = FXCollections.observableHashMap();
     
-    public Long getId(EFolder folder) {
+    public Long getId(EPathId folder) {
         Long folderId = folderIds.get(folder);
         if (
-                folder.equals(EFolder.MATRIX_ID)
+                folder.equals(EPathId.MATRIX_ID)
                 && folderId == null
         ) {
             throw new IllegalArgumentException("matrixId can't be NULL"); // NOI18N
@@ -39,11 +39,11 @@ public final class Folder {
         return folderIds.get(folder);
     }
     
-    public void register(EFolder folder, long folderId) {
+    public void register(EPathId folder, long folderId) {
         folderIds.put(folder, folderId);
     }
     
-    public enum EFolder {
+    public enum EPathId {
         
         CATEGORY_ID,
         LEVEL_ID,

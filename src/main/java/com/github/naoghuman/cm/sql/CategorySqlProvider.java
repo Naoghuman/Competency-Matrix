@@ -141,8 +141,8 @@ public final class CategorySqlProvider implements IActionConfiguration, IEntityC
                         final ActionTransferModel actionTransferModel3 = new ActionTransferModel();
                         actionTransferModel3.setActionKey(ACTION__CREATE__FOLDER);
                         final Folder folder = new Folder();
-                        folder.register(Folder.EFolder.MATRIX_ID, categoryModel.getMatrixId());
-                        folder.register(Folder.EFolder.CATEGORY_ID, categoryModel.getId());
+                        folder.register(Folder.EPathId.MATRIX_ID, categoryModel.getMatrixId());
+                        folder.register(Folder.EPathId.CATEGORY_ID, categoryModel.getId());
                         actionTransferModel3.setObject(folder);
                         ActionFacade.INSTANCE.handle(actionTransferModel3);
                     });

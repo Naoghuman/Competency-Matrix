@@ -119,7 +119,7 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
                         final ActionTransferModel actionTransferModel4 = new ActionTransferModel();
                         actionTransferModel4.setActionKey(ACTION__CREATE__FOLDER);
                         final Folder folder = new Folder();
-                        folder.register(Folder.EFolder.MATRIX_ID, matrixModel.getId());
+                        folder.register(Folder.EPathId.MATRIX_ID, matrixModel.getId());
                         actionTransferModel4.setObject(folder);
                         ActionFacade.INSTANCE.handle(actionTransferModel4);
                     });

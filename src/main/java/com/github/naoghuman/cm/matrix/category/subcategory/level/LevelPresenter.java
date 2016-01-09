@@ -85,10 +85,10 @@ public class LevelPresenter implements Initializable, IActionConfiguration, IReg
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Category folder"); // NOI18N
 
         final Folder folder = new Folder();
-        folder.register(Folder.EFolder.MATRIX_ID, levelModel.getMatrixId());
-        folder.register(Folder.EFolder.CATEGORY_ID, levelModel.getCategoryId());
-        folder.register(Folder.EFolder.SUBCATEGORY_ID, levelModel.getSubCategoryId());
-        folder.register(Folder.EFolder.LEVEL_ID, levelModel.getLevel());
+        folder.register(Folder.EPathId.MATRIX_ID, levelModel.getMatrixId());
+        folder.register(Folder.EPathId.CATEGORY_ID, levelModel.getCategoryId());
+        folder.register(Folder.EPathId.SUBCATEGORY_ID, levelModel.getSubCategoryId());
+        folder.register(Folder.EPathId.LEVEL_ID, levelModel.getLevel());
         UtilFacade.INSTANCE.getFolderHelper().open(folder);
     }
 

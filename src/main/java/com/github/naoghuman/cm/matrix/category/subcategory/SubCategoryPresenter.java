@@ -97,9 +97,9 @@ public class SubCategoryPresenter implements Initializable, IActionConfiguration
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Category folder"); // NOI18N
 
         final Folder folder = new Folder();
-        folder.register(Folder.EFolder.MATRIX_ID, subCategoryModel.getMatrixId());
-        folder.register(Folder.EFolder.CATEGORY_ID, subCategoryModel.getCategoryId());
-        folder.register(Folder.EFolder.SUBCATEGORY_ID, subCategoryModel.getId());
+        folder.register(Folder.EPathId.MATRIX_ID, subCategoryModel.getMatrixId());
+        folder.register(Folder.EPathId.CATEGORY_ID, subCategoryModel.getCategoryId());
+        folder.register(Folder.EPathId.SUBCATEGORY_ID, subCategoryModel.getId());
         UtilFacade.INSTANCE.getFolderHelper().open(folder);
     }
 
