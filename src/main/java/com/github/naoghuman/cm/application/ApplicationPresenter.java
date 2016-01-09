@@ -42,6 +42,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -190,22 +191,14 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         LoggerFacade.INSTANCE.debug(this.getClass(), "Show Level: " + levelModel.getId()); // NOI18N
         
         // Create dialog
-        final Dialog dialog = new Dialog();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(owner);
-//        dialog.initStyle(StageStyle.DECORATED);
-        dialog.setResizable(false);
-        dialog.setTitle("Level " + levelModel.getLevel()); // NOI18N
-//        dialog.setWidth(1280 - 200);
-//        dialog.setHeight(720 - 100);
+        final String title = "Level " + levelModel.getLevel(); // NOI18N
         
         final LevelView levelView = new LevelView();
         final LevelPresenter levelPresenter = levelView.getRealPresenter();
         levelPresenter.initialize(levelModel);
-        dialog.getDialogPane().setContent(levelView.getView());
+        final Parent content = levelView.getView();
         
-        final ButtonType buttonTypeOne = new ButtonType(ButtonType.OK.getText(), ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().setAll(buttonTypeOne, ButtonType.CANCEL);
+        final Dialog dialog = DialogProvider.getOpenLevelDialog(owner, title, content);
         
         // Check answer
         final Optional<ButtonType> result = dialog.showAndWait();

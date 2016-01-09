@@ -16,12 +16,16 @@
  */
 package com.github.naoghuman.cm.dialog.api;
 
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Modality;
+import javafx.stage.Window;
 
 /**
  * TODO use custom dialog / valid input
@@ -95,6 +99,23 @@ public interface DialogProvider {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("New Subcategory"); // NOI18N
         dialog.setHeaderText("New name from the Subcategory"); // NOI18N
+        
+        return dialog;
+    }
+    
+    public static Dialog getOpenLevelDialog(Window owner, String title, Parent content) {
+        final Dialog dialog = new Dialog();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(owner);
+//        dialog.initStyle(StageStyle.DECORATED);
+        dialog.setResizable(false);
+        dialog.setTitle(title);
+//        dialog.setWidth(1280 - 200);
+//        dialog.setHeight(720 - 100);
+        dialog.getDialogPane().setContent(content);
+        
+        final ButtonType buttonTypeOK = new ButtonType(ButtonType.OK.getText(), ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().setAll(buttonTypeOK, ButtonType.CANCEL);
         
         return dialog;
     }
