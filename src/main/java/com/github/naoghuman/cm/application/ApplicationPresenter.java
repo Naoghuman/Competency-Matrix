@@ -69,7 +69,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
     @FXML private ListView lvOverview;
     @FXML private SplitPane spCompetencyMatrix;
     @FXML private TabPane tpCompetencyMatrix;
-    @FXML private VBox vbCompetencyMatrix;
+    @FXML private TabPane tpNavigation;
     
     private Window owner;
 
@@ -80,7 +80,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         assert (lvOverview != null)         : "fx:id=\"lvOverview\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
         assert (spCompetencyMatrix != null) : "fx:id=\"spCompetencyMatrix\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
         assert (tpCompetencyMatrix != null) : "fx:id=\"tpCompetencyMatrix\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
-        assert (vbCompetencyMatrix != null) : "fx:id=\"vbCompetencyMatrix\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
+        assert (tpNavigation != null)       : "fx:id=\"tpNavigation\" was not injected: check your FXML file 'Application.fxml'."; // NOI18N
         
         this.initializeSplitPane();
         this.initializeListView();
@@ -99,7 +99,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
     private void initializeSplitPane() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Initialize SplitPane"); // NOI18N
         
-        SplitPane.setResizableWithParent(vbCompetencyMatrix, Boolean.FALSE);
+        SplitPane.setResizableWithParent(tpNavigation, Boolean.FALSE);
     }
     
     private void initializeListView() {
