@@ -107,7 +107,7 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
                     final PauseTransition pt = new PauseTransition(Duration.millis(50.0d));
                     pt.setOnFinished((ActionEvent event) -> {
                         final ActionTransferModel actionTransferModel2 = new ActionTransferModel();
-                        actionTransferModel2.setActionKey(ACTION__REFRESH__OVERVIEW_MATRIX);
+                        actionTransferModel2.setActionKey(ACTION__REFRESH__MATRIX_NAVIGATION);
                         actionTransferModel2.setObject(matrixModel);
                         ActionFacade.INSTANCE.handle(actionTransferModel2);
 
@@ -140,7 +140,7 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
                     final PauseTransition pt = new PauseTransition(Duration.millis(100.0d));
                     pt.setOnFinished((ActionEvent event) -> {
                         final ActionTransferModel actionTransferModel2 = new ActionTransferModel();
-                        actionTransferModel2.setActionKey(ACTION__REFRESH__OVERVIEW_MATRIX);
+                        actionTransferModel2.setActionKey(ACTION__REFRESH__MATRIX_NAVIGATION);
                         actionTransferModel2.setObject(null);
                         ActionFacade.INSTANCE.handle(actionTransferModel2);
 

@@ -36,7 +36,7 @@ public interface IActionConfiguration {
     
     public static final String ACTION__REFRESH__CATEGORY = "ACTION__REFRESH__CATEGORY"; // NOI18N
     public static final String ACTION__REFRESH__MATRIX = "ACTION__REFRESH__MATRIX"; // NOI18N
-    public static final String ACTION__REFRESH__OVERVIEW_MATRIX = "ACTION__REFRESH__OVERVIEW_MATRIX"; // NOI18N
+    public static final String ACTION__REFRESH__MATRIX_NAVIGATION = "ACTION__REFRESH__MATRIX_NAVIGATION"; // NOI18N
     public static final String ACTION__REFRESH__SUBCATEGORY = "ACTION__REFRESH__SUBCATEGORY"; // NOI18N
     
     public static final String ACTION__REMOVE__CATEGORY = "ACTION__REMOVE__CATEGORY"; // NOI18N

@@ -378,8 +378,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
     private void registerOnActionRefreshOverviewMatrix() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action refresh overview Matrix"); // NOI18N
         
-        ActionFacade.INSTANCE.register(
-                ACTION__REFRESH__OVERVIEW_MATRIX,
+        ActionFacade.INSTANCE.register(ACTION__REFRESH__MATRIX_NAVIGATION,
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final MatrixModel matrixModel = (MatrixModel) actionTransferModel.getObject();
