@@ -19,6 +19,7 @@ package com.github.naoghuman.cm.dialog.api;
 import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelPresenter;
 import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelView;
 import com.github.naoghuman.cm.model.api.LevelModel;
+import de.pro.lib.logger.api.LoggerFacade;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -41,6 +42,8 @@ import javafx.stage.Window;
 public interface DialogProvider {
     
     public static Alert getDeleteCategoryDialog() {
+        LoggerFacade.INSTANCE.debug(DialogProvider.class, "Get delete Category dialog"); // NOI18N
+        
         final Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Delete Category"); // NOI18N
@@ -54,6 +57,8 @@ public interface DialogProvider {
     }
     
     public static Alert getDeleteMatrixDialog() {
+        LoggerFacade.INSTANCE.debug(DialogProvider.class, "Get delete Matrix dialog"); // NOI18N
+        
         final Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Delete Matrix"); // NOI18N
@@ -67,6 +72,8 @@ public interface DialogProvider {
     }
     
     public static Alert getDeleteSubCategoryDialog() {
+        LoggerFacade.INSTANCE.debug(DialogProvider.class, "Get delete SubCategory dialog"); // NOI18N
+        
         final Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.initModality(Modality.APPLICATION_MODAL);
         alert.setTitle("Delete Subcategory"); // NOI18N
@@ -80,6 +87,8 @@ public interface DialogProvider {
     }
     
     public static TextInputDialog getNewCategoryDialog() {
+        LoggerFacade.INSTANCE.debug(DialogProvider.class, "Get new Category dialog"); // NOI18N
+        
         final TextInputDialog dialog = new TextInputDialog(""); // NOI18N
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("New Category"); // NOI18N
@@ -89,6 +98,8 @@ public interface DialogProvider {
     }
     
     public static TextInputDialog getNewMatrixDialog() {
+        LoggerFacade.INSTANCE.debug(DialogProvider.class, "Get new Matrix dialog"); // NOI18N
+        
         final TextInputDialog dialog = new TextInputDialog(""); // NOI18N
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("New Matrix"); // NOI18N
@@ -98,6 +109,8 @@ public interface DialogProvider {
     }
     
     public static TextInputDialog getNewSubCategoryDialog() {
+        LoggerFacade.INSTANCE.debug(DialogProvider.class, "Get new SubCategory dialog"); // NOI18N
+        
         final TextInputDialog dialog = new TextInputDialog(""); // NOI18N
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("New Subcategory"); // NOI18N
@@ -107,7 +120,7 @@ public interface DialogProvider {
     }
     
     public static Dialog getOpenLevelDialog(Window owner, LevelModel levelModel) {
-        
+        LoggerFacade.INSTANCE.debug(DialogProvider.class, "Get open Level dialog"); // NOI18N
         
         final Dialog dialog = new Dialog();
         dialog.initModality(Modality.APPLICATION_MODAL);
