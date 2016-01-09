@@ -16,6 +16,8 @@
  */
 package com.github.naoghuman.cm.dialog.api;
 
+import com.github.naoghuman.cm.dialog.configuration.ConfigurationPresenter;
+import com.github.naoghuman.cm.dialog.configuration.ConfigurationView;
 import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelPresenter;
 import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelView;
 import com.github.naoghuman.cm.model.api.LevelModel;
@@ -115,6 +117,29 @@ public interface DialogProvider {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("New Subcategory"); // NOI18N
         dialog.setHeaderText("New name from the Subcategory"); // NOI18N
+        
+        return dialog;
+    }
+    
+    public static Dialog getOpenConfigurationDialog(Window owner) {
+        LoggerFacade.INSTANCE.debug(DialogProvider.class, "Get show Configuration dialog"); // NOI18N
+        
+        final Dialog dialog = new Dialog();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(owner);
+//        dialog.initStyle(StageStyle.DECORATED);
+        dialog.setResizable(false);
+        
+        dialog.setTitle("Configuration"); // NOI18N
+//        dialog.setWidth(1280 - 200);
+//        dialog.setHeight(720 - 100);
+        
+        final ConfigurationView configurationView = new ConfigurationView();
+        final Parent content = configurationView.getView();
+        dialog.getDialogPane().setContent(content);
+        
+        final ButtonType buttonTypeOK = new ButtonType(ButtonType.OK.getText(), ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().setAll(buttonTypeOK);
         
         return dialog;
     }

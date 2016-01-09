@@ -69,6 +69,8 @@ public class CompetencyMatrix extends Application implements IApplicationConfigu
         });
         
         primaryStage.show();
+        
+        applicationPresenter.postInitialize();
     }
     
     private String getProperty(String propertyKey) {

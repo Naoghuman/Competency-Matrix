@@ -17,6 +17,7 @@
 package com.github.naoghuman.cm.application;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
+import com.github.naoghuman.cm.configuration.api.IPreferencesConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.matrix.MatrixPresenter;
@@ -31,11 +32,13 @@ import com.github.naoghuman.cm.util.api.UtilFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;
+import de.pro.lib.preferences.api.PreferencesFacade;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -52,13 +55,14 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Window;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 /**
  *
  * @author PRo
  */
-public class ApplicationPresenter implements Initializable, IActionConfiguration, IRegisterActions {
+public class ApplicationPresenter implements Initializable, IActionConfiguration, IPreferencesConfiguration, IRegisterActions {
     
     @FXML private ListView lvOverview;
     @FXML private SplitPane spCompetencyMatrix;
@@ -180,8 +184,15 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
-    private void onActionOpenLevel(LevelModel levelModel) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Show Level: " + levelModel.getId()); // NOI18N
+    public void onActionOpenConfigurationDialog() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Configuration dialog"); // NOI18N
+        
+        final Dialog dialog = DialogProvider.getOpenConfigurationDialog(owner);
+        dialog.show();
+    }
+    
+    private void onActionOpenLevelDialog(LevelModel levelModel) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Level dialog"); // NOI18N
         
         // Open dialog
         final Dialog dialog = DialogProvider.getOpenLevelDialog(owner, levelModel);
@@ -208,7 +219,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
     }
     
     private void onActionOpenMatrix(long matrixId) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Show Matrix: " + matrixId); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Matrix"); // NOI18N
         
         // Check if the CompetencyMatrix is always open
         for (Tab tab : tpCompetencyMatrix.getTabs()) {
@@ -229,6 +240,15 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         this.openMatrix(matrixModel);
     }
     
+    private void onActionRefreshListView(MatrixModel matrixModel) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh ListView"); // NOI18N
+
+        final List<MatrixModel> matrixModels = SqlFacade.INSTANCE.getMatrixSqlProvider().findAll();
+        lvOverview.getItems().clear();
+        lvOverview.getItems().addAll(matrixModels);
+        lvOverview.getSelectionModel().select(matrixModel);
+    }
+    
     private void openMatrix(MatrixModel matrixModel) {
         final Tab tab = new Tab();
         tab.setClosable(Boolean.TRUE);
@@ -244,14 +264,23 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         tpCompetencyMatrix.getTabs().add(tab);
         tpCompetencyMatrix.getSelectionModel().select(tab);
     }
-    
-    private void onActionRefreshListView(MatrixModel matrixModel) {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh ListView"); // NOI18N
 
-        final List<MatrixModel> matrixModels = SqlFacade.INSTANCE.getMatrixSqlProvider().findAll();
-        lvOverview.getItems().clear();
-        lvOverview.getItems().addAll(matrixModels);
-        lvOverview.getSelectionModel().select(matrixModel);
+    public void postInitialize() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Post initialize ApplicationPresenter"); // NOI18N
+        
+        final Boolean showConfigurationAtStart = PreferencesFacade.INSTANCE.getBoolean(
+                PREF__SHOW_AT_START__CONFIGURATION_DIALOG,
+                PREF__SHOW_AT_START__CONFIGURATION_DIALOG__DEFAULT_VALUE);
+        if (!showConfigurationAtStart) {
+            return;
+        }
+        
+        final PauseTransition pt = new PauseTransition(Duration.millis(250L));
+        pt.setOnFinished((ActionEvent event) -> {
+            final Dialog dialog = DialogProvider.getOpenConfigurationDialog(owner);
+            dialog.show();
+        });
+        pt.playFromStart();
     }
 
     @Override
@@ -292,7 +321,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                 (ActionEvent ae) -> {
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final LevelModel levelModel = (LevelModel) actionTransferModel.getObject();
-                    this.onActionOpenLevel(levelModel);
+                    this.onActionOpenLevelDialog(levelModel);
                 });
     }
     
