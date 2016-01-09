@@ -55,7 +55,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
             name = IEntityConfiguration.NAMED_QUERY__NAME__LEVEL_FIND_ALL,
             query = IEntityConfiguration.NAMED_QUERY__QUERY__LEVEL_FIND_ALL)
 })
-public class LevelModel implements Comparable<LevelModel>, Externalizable, IEntityConfiguration {
+public class LevelModel implements Comparable<LevelModel>, Externalizable, IEntityConfiguration, IIds {
 
     private static final long serialVersionUID = 1L;
     
@@ -272,7 +272,6 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
     }
     // END  DESCRIPTION --------------------------------------------------------
 
-    
     // START  NOTES ------------------------------------------------------------
     private StringProperty notesProperty = null;
     private String _notes = SIGN__EMPTY;
@@ -300,8 +299,13 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
         }
         return notesProperty;
     }
-    // END  NOETS --------------------------------------------------------------
+    // END  NOTES --------------------------------------------------------------
 
+    @Override
+    public String getIdsAsString() {
+        return UNDERLINE + this.getMatrixId() + POINT + this.getCategoryId() + POINT + this.getSubCategoryId() + POINT + this.getId();
+    }
+    
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)

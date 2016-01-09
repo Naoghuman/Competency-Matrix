@@ -53,7 +53,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
             name = IEntityConfiguration.NAMED_QUERY__NAME__MATRIX_FIND_ALL,
             query = IEntityConfiguration.NAMED_QUERY__QUERY__MATRIX_FIND_ALL)
 })
-public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEntityConfiguration {
+public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEntityConfiguration, IIds {
 
     private static final long serialVersionUID = 1L;
     
@@ -153,6 +153,11 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
         return titleProperty;
     }
     // END  TITLE --------------------------------------------------------------
+    
+    @Override
+    public String getIdsAsString() {
+        return UNDERLINE + this.getId();
+    }
 
     @Override
     public int hashCode() {

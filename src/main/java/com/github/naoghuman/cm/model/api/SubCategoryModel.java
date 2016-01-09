@@ -56,7 +56,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
             name = IEntityConfiguration.NAMED_QUERY__NAME__SUBCATEGORY_FIND_BY_ID,
             query = IEntityConfiguration.NAMED_QUERY__QUERY__SUBCATEGORY_FIND_BY_ID)
 })
-public class SubCategoryModel implements Comparable<SubCategoryModel>, Externalizable, IEntityConfiguration {
+public class SubCategoryModel implements Comparable<SubCategoryModel>, Externalizable, IEntityConfiguration, IIds {
 
     private static final long serialVersionUID = 1L;
     
@@ -214,6 +214,11 @@ public class SubCategoryModel implements Comparable<SubCategoryModel>, Externali
         return titleProperty;
     }
     // END  TITLE --------------------------------------------------------------
+    
+    @Override
+    public String getIdsAsString() {
+        return UNDERLINE + this.getMatrixId() + POINT + this.getCategoryId() + POINT + this.getId();
+    }
 
     @Override
     public int hashCode() {
