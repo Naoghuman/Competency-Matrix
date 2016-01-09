@@ -21,8 +21,6 @@ import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.matrix.MatrixPresenter;
 import com.github.naoghuman.cm.matrix.MatrixView;
-import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelPresenter;
-import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelView;
 import com.github.naoghuman.cm.model.api.CategoryModel;
 import com.github.naoghuman.cm.model.api.LevelModel;
 import com.github.naoghuman.cm.model.api.MatrixModel;
@@ -32,7 +30,6 @@ import com.github.naoghuman.cm.util.api.Folder;
 import com.github.naoghuman.cm.util.api.UtilFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
-import de.pro.lib.database.api.DatabaseFacade;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
 import java.util.Iterator;
@@ -42,9 +39,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ListCell;
@@ -55,8 +50,6 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Window;
 import javafx.util.Callback;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -190,17 +183,8 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
     private void onActionOpenLevel(LevelModel levelModel) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Show Level: " + levelModel.getId()); // NOI18N
         
-        // Create dialog
-        final String title = "Level " + levelModel.getLevel(); // NOI18N
-        
-        final LevelView levelView = new LevelView();
-        final LevelPresenter levelPresenter = levelView.getRealPresenter();
-        levelPresenter.initialize(levelModel);
-        final Parent content = levelView.getView();
-        
-        final Dialog dialog = DialogProvider.getOpenLevelDialog(owner, title, content);
-        
-        // Check answer
+        // Open dialog
+        final Dialog dialog = DialogProvider.getOpenLevelDialog(owner, levelModel);
         final Optional<ButtonType> result = dialog.showAndWait();
         if (!result.isPresent()) {
             return;
@@ -214,12 +198,12 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         // Update LevelModel
         final ActionTransferModel actionTransferModel = new ActionTransferModel();
         actionTransferModel.setActionKey(ACTION__UPDATE__LEVEL);
-        actionTransferModel.setObject(levelPresenter.getLevelModel());
+        actionTransferModel.setObject(levelModel);
         ActionFacade.INSTANCE.handle(actionTransferModel);
         
         final ActionTransferModel actionTransferModel2 = new ActionTransferModel();
         actionTransferModel2.setActionKey(ACTION__REFRESH__SUBCATEGORY);
-        actionTransferModel2.setObject(levelPresenter.getLevelModel());
+        actionTransferModel2.setObject(levelModel);
         ActionFacade.INSTANCE.handle(actionTransferModel2);
     }
     

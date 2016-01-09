@@ -17,7 +17,6 @@
 package com.github.naoghuman.cm.matrix.category.subcategory.levelthumbnail;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
-import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__REFRESH__OVERVIEW_MATRIX;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.LevelModel;
 import de.pro.lib.action.api.ActionFacade;
@@ -25,7 +24,6 @@ import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -88,24 +86,6 @@ public class LevelThumbnailPresenter implements Initializable, IActionConfigurat
     public void registerActions() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in LevelThumbnailPresenter"); // NOI18N
         
-//        this.registerOnActionRefreshLevelThumbnail();
     }
-
-//    private void registerOnActionRefreshLevelThumbnail() {
-//        LoggerFacade.INSTANCE.debug(this.getClass(), "Register action refresh LevelThumbnail"); // NOI18N
-//        
-//        ActionFacade.INSTANCE.register(
-//                ACTION__REFRESH__LEVEL_THUMBNAIL,
-//                (ActionEvent ae) -> {
-//                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
-//                    final LevelModel levelModel2 = (LevelModel) actionTransferModel.getObject();
-//                    System.out.println("org: " + levelModel.toString());
-//                    System.out.println("   : " + levelModel2.toString());
-//                    if (this.levelModel.equals(levelModel2)) {
-//                        
-//                        this.initialize(levelModel2);
-//                    }
-//                });
-//    }
     
 }

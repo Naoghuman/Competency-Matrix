@@ -58,15 +58,12 @@ public class LevelPresenter implements Initializable, IActionConfiguration, IReg
         this.levelModel = levelModel;
        
         lLevel.setText(String.valueOf(this.levelModel.getLevel()));
-        taDescription.setText(this.levelModel.getDescription());
-        taNotes.setText(this.levelModel.getNotes());
-    }
-    
-    public LevelModel getLevelModel() {
-        levelModel.setDescription(taDescription.getText());
-        levelModel.setNotes(taNotes.getText());
         
-        return levelModel;
+        taDescription.setText(this.levelModel.getDescription());
+        levelModel.descriptionProperty().bind(taDescription.textProperty());
+        
+        taNotes.setText(this.levelModel.getNotes());
+        levelModel.notesProperty().bind(taNotes.textProperty());
     }
     
     public void onActionAddDate() {

@@ -16,6 +16,9 @@
  */
 package com.github.naoghuman.cm.dialog.api;
 
+import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelPresenter;
+import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelView;
+import com.github.naoghuman.cm.model.api.LevelModel;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -103,15 +106,24 @@ public interface DialogProvider {
         return dialog;
     }
     
-    public static Dialog getOpenLevelDialog(Window owner, String title, Parent content) {
+    public static Dialog getOpenLevelDialog(Window owner, LevelModel levelModel) {
+        
+        
         final Dialog dialog = new Dialog();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(owner);
 //        dialog.initStyle(StageStyle.DECORATED);
         dialog.setResizable(false);
+        
+        final String title = "Level " + levelModel.getLevel(); // NOI18N
         dialog.setTitle(title);
 //        dialog.setWidth(1280 - 200);
 //        dialog.setHeight(720 - 100);
+        
+        final LevelView levelView = new LevelView();
+        final LevelPresenter levelPresenter = levelView.getRealPresenter();
+        levelPresenter.initialize(levelModel);
+        final Parent content = levelView.getView();
         dialog.getDialogPane().setContent(content);
         
         final ButtonType buttonTypeOK = new ButtonType(ButtonType.OK.getText(), ButtonBar.ButtonData.OK_DONE);
