@@ -16,12 +16,14 @@
  */
 package com.github.naoghuman.cm.dialog.api;
 
-import com.github.naoghuman.cm.dialog.configuration.ConfigurationPresenter;
 import com.github.naoghuman.cm.dialog.configuration.ConfigurationView;
+import com.github.naoghuman.cm.dialog.configuration.progress.ProgressPresenter;
+import com.github.naoghuman.cm.dialog.configuration.progress.ProgressView;
 import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelPresenter;
 import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelView;
 import com.github.naoghuman.cm.model.api.LevelModel;
 import de.pro.lib.logger.api.LoggerFacade;
+import javafx.event.Event;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -31,6 +33,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Modality;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 /**
@@ -139,6 +142,33 @@ public interface DialogProvider {
         dialog.getDialogPane().setContent(content);
         
         final ButtonType buttonTypeOK = new ButtonType(ButtonType.OK.getText(), ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().setAll(buttonTypeOK);
+        
+        return dialog;
+    }
+    
+    public static Dialog getOpenConfigurationProgressDialog(Window owner) {
+        LoggerFacade.INSTANCE.debug(DialogProvider.class, "Get show ConfigurationProgress dialog"); // NOI18N
+        
+        final Dialog dialog = new Dialog();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(owner);
+//        dialog.initStyle(StageStyle.UTILITY);
+        dialog.setResizable(false);
+//        dialog.setOnCloseRequest((Event event2) -> { });
+        
+        dialog.setTitle("Progress"); // NOI18N
+//        dialog.setWidth(1280 - 200);
+//        dialog.setHeight(720 - 100);
+        
+        final ProgressView progressView = new ProgressView();
+        final ProgressPresenter progressPresenter = progressView.getRealPresenter();
+        progressPresenter.initialize(dialog);
+        
+        final Parent content = progressView.getView();
+        dialog.getDialogPane().setContent(content);
+        
+        final ButtonType buttonTypeOK = new ButtonType(ButtonType.OK.getText());
         dialog.getDialogPane().getButtonTypes().setAll(buttonTypeOK);
         
         return dialog;

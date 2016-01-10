@@ -16,21 +16,31 @@
  */
 package com.github.naoghuman.cm.dialog.configuration;
 
+import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
 
 /**
  *
  * @author PRo
  */
 public class ConfigurationPresenter implements Initializable {
+    
+//    @FXML private ListView lvOverview;
 
     private ResourceBundle resources = null;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        LoggerFacade.INSTANCE.info(this.getClass(), "Initialize ConfigurationPresenter"); // NOI18N
+        
         this.resources = resources;
+        
+//        assert (lvOverview != null) : "fx:id=\"lvOverview\" was not injected: check your FXML file 'Configuration.fxml'."; // NOI18N
+        
     }
     
 }

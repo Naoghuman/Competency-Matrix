@@ -40,6 +40,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -188,6 +190,16 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Configuration dialog"); // NOI18N
         
         final Dialog dialog = DialogProvider.getOpenConfigurationDialog(owner);
+        dialog.setOnCloseRequest((Event event) -> {
+            this.onActionOpenConfigurationProgressDialog();
+        });
+        dialog.show();
+    }
+    
+    private void onActionOpenConfigurationProgressDialog() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action open ConfigurationProgress dialog"); // NOI18N
+        
+        final Dialog dialog = DialogProvider.getOpenConfigurationProgressDialog(owner);
         dialog.show();
     }
     
@@ -278,6 +290,9 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         final PauseTransition pt = new PauseTransition(Duration.millis(250L));
         pt.setOnFinished((ActionEvent event) -> {
             final Dialog dialog = DialogProvider.getOpenConfigurationDialog(owner);
+            dialog.setOnCloseRequest((Event event2) -> {
+                this.onActionOpenConfigurationProgressDialog();
+            });
             dialog.show();
         });
         pt.playFromStart();
