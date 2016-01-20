@@ -17,7 +17,6 @@
 package com.github.naoghuman.cm.sql;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
-import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__CREATE__FOLDER;
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.api.CategoryModel;

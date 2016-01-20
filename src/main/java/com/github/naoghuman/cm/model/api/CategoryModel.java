@@ -186,6 +186,35 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     }
     // END  TITLE --------------------------------------------------------------
     
+    // START  NOTES ------------------------------------------------------------
+    private StringProperty notesProperty = null;
+    private String _notes = SIGN__EMPTY;
+    
+    @Column(name = COLUMN_NAME__NOTES)
+    public String getNotes() {
+        if (this.notesProperty == null) {
+            return _notes;
+        } else {
+            return notesProperty.get();
+        }
+    }
+    
+    public void setNotes(String notes) {
+        if (this.notesProperty == null) {
+            _notes = notes;
+        } else {
+            this.notesProperty.set(notes);
+        }
+    }
+    
+    public StringProperty notesProperty() {
+        if (notesProperty == null) {
+            notesProperty = new SimpleStringProperty(this, COLUMN_NAME__NOTES, _notes);
+        }
+        return notesProperty;
+    }
+    // END  NOTES --------------------------------------------------------------
+
     @Override
     public String getIdsAsString() {
         return UNDERLINE + this.getMatrixId() + POINT + this.getId();
@@ -244,6 +273,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
         out.writeLong(this.getMatrixId());
         out.writeLong(this.getGenerationTime());
         out.writeObject(StringEscapeUtils.escapeHtml4(this.getTitle()));
+        out.writeObject(StringEscapeUtils.escapeHtml4(this.getNotes()));
     }
 
     @Override
@@ -252,6 +282,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
         this.setMatrixId(in.readLong());
         this.setGenerationTime(in.readLong());
         this.setTitle(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
+        this.setNotes(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
     }
     
 }
