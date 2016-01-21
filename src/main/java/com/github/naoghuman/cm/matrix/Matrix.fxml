@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" style="-fx-background-color: GREENYELLOW;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.matrix.MatrixPresenter">
+<AnchorPane id="AnchorPane" prefHeight="175.0" prefWidth="323.0" style="-fx-background-color: GREENYELLOW;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.matrix.MatrixPresenter">
     <children>
         <VBox layoutX="14.0" layoutY="14.0" spacing="7.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
             <children>
@@ -18,7 +18,8 @@
                             <items>
                                 <Button mnemonicParsing="false" onAction="#onActionDeleteMatrix" text="- Matrix" />
                                 <Button mnemonicParsing="false" onAction="#onActionCreateCategory" text="+ Category" />
-                                <Button mnemonicParsing="false" onAction="#onActionOpenMatrixFolder" text="Open" />
+                        <Separator orientation="VERTICAL" />
+                                <Button mnemonicParsing="false" onAction="#onActionOpenMatrixFolder" text="Open Folder" />
                             </items>
                         </ToolBar>
                         <HBox mouseTransparent="true" spacing="7.0">
