@@ -45,10 +45,10 @@ public class LevelPresenter implements Initializable, IActionConfiguration, IReg
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        LoggerFacade.INSTANCE.info(this.getClass(), "Initialize LevelThumbnailPresenter"); // NOI18N
+        LoggerFacade.INSTANCE.info(this.getClass(), "Initialize LevelPresenter"); // NOI18N
         
-        assert (lLevel != null)        : "fx:id=\"lLevel\" was not injected: check your FXML file 'LevelThumbnail.fxml'."; // NOI18N
-        assert (taDescription != null) : "fx:id=\"taDescription\" was not injected: check your FXML file 'LevelThumbnail.fxml'."; // NOI18N
+        assert (lLevel != null)        : "fx:id=\"lLevel\" was not injected: check your FXML file 'Level.fxml'."; // NOI18N
+        assert (taDescription != null) : "fx:id=\"taDescription\" was not injected: check your FXML file 'Level.fxml'."; // NOI18N
         
         this.initializeMouseClick();
         
@@ -56,7 +56,7 @@ public class LevelPresenter implements Initializable, IActionConfiguration, IReg
     }
     
     private void initializeMouseClick() {
-        LoggerFacade.INSTANCE.info(this.getClass(), "Initialize MouseClick in LevelThumbnailPresenter"); // NOI18N
+        LoggerFacade.INSTANCE.info(this.getClass(), "Initialize MouseClick in LevelPresenter"); // NOI18N
        
         apMouseClick.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
@@ -84,7 +84,7 @@ public class LevelPresenter implements Initializable, IActionConfiguration, IReg
 
     @Override
     public void registerActions() {
-        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in LevelThumbnailPresenter"); // NOI18N
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register actions in LevelPresenter"); // NOI18N
         
     }
     
