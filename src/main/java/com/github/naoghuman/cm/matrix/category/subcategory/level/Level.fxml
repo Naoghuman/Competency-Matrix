@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="210.0" style="-fx-background-color: FLORALWHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.matrix.category.subcategory.levelthumbnail.LevelThumbnailPresenter">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="210.0" style="-fx-background-color: FLORALWHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.matrix.category.subcategory.level.LevelPresenter">
     <children>
         <VBox alignment="TOP_CENTER" layoutX="85.0" layoutY="26.0" spacing="7.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
             <children>
@@ -23,6 +23,6 @@
                 </TextArea>
             </children>
         </VBox>
-      <AnchorPane fx:id="apMouseClick" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        <AnchorPane fx:id="apMouseClick" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     </children>
 </AnchorPane>

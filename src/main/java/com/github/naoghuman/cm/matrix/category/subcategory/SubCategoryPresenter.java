@@ -19,8 +19,8 @@ package com.github.naoghuman.cm.matrix.category.subcategory;
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.dialog.api.DialogProvider;
-import com.github.naoghuman.cm.matrix.category.subcategory.levelthumbnail.LevelThumbnailPresenter;
-import com.github.naoghuman.cm.matrix.category.subcategory.levelthumbnail.LevelThumbnailView;
+import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelPresenter;
+import com.github.naoghuman.cm.matrix.category.subcategory.level.LevelView;
 import com.github.naoghuman.cm.model.api.LevelModel;
 import com.github.naoghuman.cm.model.api.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
@@ -117,11 +117,11 @@ public class SubCategoryPresenter implements Initializable, IActionConfiguration
         }
         
         levelModels.stream().forEach((levelModel) -> {
-            final LevelThumbnailView levelThumbnailView = new LevelThumbnailView();
-            final LevelThumbnailPresenter levelThumbnailPresenter = levelThumbnailView.getRealPresenter();
+            final LevelView levelView = new LevelView();
+            final LevelPresenter levelThumbnailPresenter = levelView.getRealPresenter();
             levelThumbnailPresenter.initialize(levelModel);
             
-            final Parent view = levelThumbnailView.getView();
+            final Parent view = levelView.getView();
             view.setId(String.valueOf(levelModel.getId()));
             view.setUserData(levelThumbnailPresenter);
             
@@ -145,7 +145,7 @@ public class SubCategoryPresenter implements Initializable, IActionConfiguration
             
             final Parent view = (Parent) child;
             if (view.getId().equals(String.valueOf(levelModel.getId()))) {
-                final LevelThumbnailPresenter levelThumbnailPresenter = (LevelThumbnailPresenter) view.getUserData();
+                final LevelPresenter levelThumbnailPresenter = (LevelPresenter) view.getUserData();
                 levelThumbnailPresenter.initialize(levelModel);
                 return;
             }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.naoghuman.cm.matrix.category.subcategory.levelthumbnail;
+package com.github.naoghuman.cm.matrix.category.subcategory.level;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
@@ -35,7 +35,7 @@ import javafx.scene.layout.AnchorPane;
  *
  * @author PRo
  */
-public class LevelThumbnailPresenter implements Initializable, IActionConfiguration, IRegisterActions {
+public class LevelPresenter implements Initializable, IActionConfiguration, IRegisterActions {
     
     @FXML private AnchorPane apMouseClick;
     @FXML private Label lLevel;

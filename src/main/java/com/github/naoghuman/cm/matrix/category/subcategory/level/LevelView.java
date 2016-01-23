@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.naoghuman.cm.matrix.category.subcategory.levelthumbnail;
+package com.github.naoghuman.cm.matrix.category.subcategory.level;
 
 import com.airhacks.afterburner.views.FXMLView;
 
@@ -22,10 +22,10 @@ import com.airhacks.afterburner.views.FXMLView;
  *
  * @author PRo
  */
-public class LevelThumbnailView extends FXMLView {
+public class LevelView extends FXMLView {
     
-    public LevelThumbnailPresenter getRealPresenter() {
-        return (LevelThumbnailPresenter) super.getPresenter();
+    public LevelPresenter getRealPresenter() {
+        return (LevelPresenter) super.getPresenter();
     }
     
 }
