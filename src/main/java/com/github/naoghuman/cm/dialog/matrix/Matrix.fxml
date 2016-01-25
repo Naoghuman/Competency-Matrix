@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.dialog.matrix.MatrixPresenter">
+    <children>
+        <StackPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+            <children>
+                <ToolBar nodeOrientation="RIGHT_TO_LEFT">
+                    <items>
+                        <Button mnemonicParsing="false" onAction="#onActionOpenMatrixFolder" text="Open" />
+                    </items>
+                </ToolBar>
+                <HBox mouseTransparent="true" spacing="7.0">
+                    <children>
+                        <Label text="Matrix:">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="lMatrix" text="&lt;matrix&gt;">
+                            <font>
+                                <Font size="24.0" />
+                            </font>
+                            <StackPane.margin>
+                                <Insets left="14.0" />
+                            </StackPane.margin>
+                        </Label>
+                    </children>
+                </HBox>
+            </children>
+        </StackPane>
+        <TabPane layoutX="40.0" layoutY="31.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="61.0">
+            <tabs>
+                <Tab closable="false" text="Details">
+                    <content>
+                        <VBox spacing="2.0">
+                            <children>
+                                <Label text="Description" />
+                                <TextArea fx:id="taDescription" wrapText="true" />
+                            </children>
+                        </VBox>
+                    </content>
+                </Tab>
+                <Tab closable="false" text="Notes">
+                    <content>
+                        <VBox spacing="7.0">
+                            <children>
+                                <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0">
+                                    <items>
+                                        <Button mnemonicParsing="false" onAction="#onActionAddDate" text="Date" />
+                                    </items>
+                                </ToolBar>
+                                <TextArea fx:id="taNotes" wrapText="true" VBox.vgrow="ALWAYS" />
+                            </children>
+                        </VBox>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>

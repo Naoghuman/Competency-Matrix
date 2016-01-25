@@ -38,29 +38,29 @@
         </StackPane>
         <TabPane layoutX="40.0" layoutY="31.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="61.0">
             <tabs>
-            <Tab closable="false" text="Details">
-               <content>
-                  <VBox spacing="2.0">
-                     <children>
-                        <Label text="Description" />
-                        <TextArea fx:id="taDescription" wrapText="true" />
-                     </children>
-                  </VBox>
-               </content>
-            </Tab>
+                <Tab closable="false" text="Details">
+                    <content>
+                        <VBox spacing="2.0">
+                            <children>
+                                <Label text="Description" />
+                                <TextArea fx:id="taDescription" wrapText="true" />
+                            </children>
+                        </VBox>
+                    </content>
+                </Tab>
                 <Tab closable="false" text="Notes">
-               <content>
-                          <VBox spacing="7.0">
-                              <children>
-                                  <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0">
-                                      <items>
-                                          <Button mnemonicParsing="false" onAction="#onActionAddDate" text="Date" />
-                                      </items>
-                                  </ToolBar>
-                                  <TextArea fx:id="taNotes" wrapText="true" VBox.vgrow="ALWAYS" />
-                              </children>
-                          </VBox>
-               </content>
+                    <content>
+                        <VBox spacing="7.0">
+                            <children>
+                                <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0">
+                                    <items>
+                                        <Button mnemonicParsing="false" onAction="#onActionAddDate" text="Date" />
+                                    </items>
+                                </ToolBar>
+                                <TextArea fx:id="taNotes" wrapText="true" VBox.vgrow="ALWAYS" />
+                            </children>
+                        </VBox>
+                    </content>
                 </Tab>
             </tabs>
         </TabPane>

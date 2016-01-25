@@ -104,10 +104,10 @@ public class LevelSqlProvider implements IActionConfiguration, IEntityConfigurat
     public void registerActions() {
         LoggerFacade.INSTANCE.info(this.getClass(), "Register actions in LevelSqlProvider"); // NOI18N
         
-        this.registerActionUpdateLevel();
+        this.registerOnActionUpdateLevel();
     }
 
-    private void registerActionUpdateLevel() {
+    private void registerOnActionUpdateLevel() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action update LevelModel"); // NOI18N
         
         ActionFacade.INSTANCE.register(

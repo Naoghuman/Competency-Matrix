@@ -154,6 +154,35 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
     }
     // END  TITLE --------------------------------------------------------------
     
+    // START  DESCRIPTION ------------------------------------------------------
+    private StringProperty descriptionProperty = null;
+    private String _description = SIGN__EMPTY;
+    
+    @Column(name = COLUMN_NAME__DESCRIPTION)
+    public String getDescription() {
+        if (this.descriptionProperty == null) {
+            return _description;
+        } else {
+            return descriptionProperty.get();
+        }
+    }
+    
+    public void setDescription(String description) {
+        if (this.descriptionProperty == null) {
+            _description = description;
+        } else {
+            this.descriptionProperty.set(description);
+        }
+    }
+    
+    public StringProperty descriptionProperty() {
+        if (descriptionProperty == null) {
+            descriptionProperty = new SimpleStringProperty(this, COLUMN_NAME__DESCRIPTION, _description);
+        }
+        return descriptionProperty;
+    }
+    // END  DESCRIPTION --------------------------------------------------------
+    
     // START  NOTES ------------------------------------------------------------
     private StringProperty notesProperty = null;
     private String _notes = SIGN__EMPTY;
@@ -236,6 +265,7 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
         out.writeLong(this.getId());
         out.writeLong(this.getGenerationTime());
         out.writeObject(StringEscapeUtils.escapeHtml4(this.getTitle()));
+        out.writeObject(StringEscapeUtils.escapeHtml4(this.getDescription()));
         out.writeObject(StringEscapeUtils.escapeHtml4(this.getNotes()));
     }
 
@@ -244,6 +274,7 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
         this.setId(in.readLong());
         this.setGenerationTime(in.readLong());
         this.setTitle(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
+        this.setDescription(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
         this.setNotes(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
     }
     

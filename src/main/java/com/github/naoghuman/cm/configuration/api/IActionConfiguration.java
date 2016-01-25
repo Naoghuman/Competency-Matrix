@@ -33,6 +33,7 @@ public interface IActionConfiguration {
     
     public static final String ACTION__OPEN__LEVEL = "ACTION__OPEN__LEVEL"; // NOI18N
     public static final String ACTION__OPEN__MATRIX = "ACTION__OPEN__MATRIX"; // NOI18N
+    public static final String ACTION__OPEN__MATRIX_DETAILS = "ACTION__OPEN__MATRIX_DETAILS"; // NOI18N
     
     public static final String ACTION__REFRESH__CATEGORY = "ACTION__REFRESH__CATEGORY"; // NOI18N
     public static final String ACTION__REFRESH__MATRIX = "ACTION__REFRESH__MATRIX"; // NOI18N
@@ -44,5 +45,6 @@ public interface IActionConfiguration {
     public static final String ACTION__REMOVE__SUBCATEGORY = "ACTION__REMOVE__SUBCATEGORY"; // NOI18N
     
     public static final String ACTION__UPDATE__LEVEL = "ACTION__UPDATE__LEVEL"; // NOI18N
+    public static final String ACTION__UPDATE__MATRIX = "ACTION__UPDATE__MATRIX"; // NOI18N
     
 }

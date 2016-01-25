@@ -252,6 +252,33 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         this.openMatrix(matrixModel);
     }
     
+    private void onActionOpenMatrixDialog(MatrixModel matrixModel) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Matrix dialog"); // NOI18N
+        
+        // Open dialog
+        final Dialog dialog = DialogProvider.getOpenMatrixDialog(owner, matrixModel);
+        final Optional<ButtonType> result = dialog.showAndWait();
+        if (!result.isPresent()) {
+            return;
+        }
+        
+        final ButtonType buttonType = result.get();
+        if (!buttonType.getButtonData().equals(ButtonType.OK.getButtonData())) {
+            return;
+        }
+        
+        // Update LevelModel
+        final ActionTransferModel actionTransferModel = new ActionTransferModel();
+        actionTransferModel.setActionKey(ACTION__UPDATE__MATRIX);
+        actionTransferModel.setObject(matrixModel);
+        ActionFacade.INSTANCE.handle(actionTransferModel);
+        
+//        final ActionTransferModel actionTransferModel2 = new ActionTransferModel();
+//        actionTransferModel2.setActionKey(ACTION__REFRESH__SUBCATEGORY);
+//        actionTransferModel2.setObject(levelModel);
+//        ActionFacade.INSTANCE.handle(actionTransferModel2);
+    }
+    
     private void onActionRefreshListView(MatrixModel matrixModel) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action refresh ListView"); // NOI18N
 
@@ -307,6 +334,7 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
         this.registerOnActionCreateFolders();
         this.registerOnActionOpenLevel();
         this.registerOnActionOpenMatrix();
+        this.registerOnActionOpenMatrixDialog();
         this.registerOnActionRefreshCategory();
         this.registerOnActionRefreshMatrix();
         this.registerOnActionRefreshOverviewMatrix();
@@ -349,6 +377,17 @@ public class ApplicationPresenter implements Initializable, IActionConfiguration
                     final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
                     final long matrixId = actionTransferModel.getLong();
                     this.onActionOpenMatrix(matrixId);
+                });
+    }
+    
+    private void registerOnActionOpenMatrixDialog() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action open Matrix dialog"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(ACTION__OPEN__MATRIX_DETAILS,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final MatrixModel matrixModel = (MatrixModel) actionTransferModel.getObject();
+                    this.onActionOpenMatrixDialog(matrixModel);
                 });
     }
     

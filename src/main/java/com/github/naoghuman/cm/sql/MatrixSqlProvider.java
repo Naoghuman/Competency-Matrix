@@ -92,6 +92,7 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
         
         this.registerOnActionCreateMatrix();
         this.registerOnActionDeleteMatrix();
+        this.registerOnActionUpdateMatrix();
     }
 
     private void registerOnActionCreateMatrix() {
@@ -150,6 +151,18 @@ public final class MatrixSqlProvider implements IActionConfiguration, IEntityCon
                         ActionFacade.INSTANCE.handle(actionTransferModel3);
                     });
                     pt.playFromStart();
+                });
+    }
+
+    private void registerOnActionUpdateMatrix() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action update MatrixModel"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__UPDATE__MATRIX,
+                (ActionEvent ae) -> {
+                    final ActionTransferModel actionTransferModel = (ActionTransferModel) ae.getSource();
+                    final MatrixModel matrixModel = (MatrixModel) actionTransferModel.getObject();
+                    DatabaseFacade.INSTANCE.getCrudService().update(matrixModel);
                 });
     }
     

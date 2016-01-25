@@ -19,9 +19,12 @@ package com.github.naoghuman.cm.dialog.api;
 import com.github.naoghuman.cm.dialog.configuration.ConfigurationView;
 import com.github.naoghuman.cm.dialog.configuration.progress.ProgressPresenter;
 import com.github.naoghuman.cm.dialog.configuration.progress.ProgressView;
+import com.github.naoghuman.cm.dialog.matrix.MatrixPresenter;
+import com.github.naoghuman.cm.dialog.matrix.MatrixView;
 import com.github.naoghuman.cm.dialog.matrix.category.subcategory.level.LevelPresenter;
 import com.github.naoghuman.cm.dialog.matrix.category.subcategory.level.LevelView;
 import com.github.naoghuman.cm.model.api.LevelModel;
+import com.github.naoghuman.cm.model.api.MatrixModel;
 import de.pro.lib.logger.api.LoggerFacade;
 import javafx.event.Event;
 import javafx.scene.Parent;
@@ -183,7 +186,7 @@ public interface DialogProvider {
 //        dialog.initStyle(StageStyle.DECORATED);
         dialog.setResizable(false);
         
-        final String title = "Level " + levelModel.getLevel(); // NOI18N
+        final String title = "Level: " + levelModel.getLevel(); // NOI18N
         dialog.setTitle(title);
 //        dialog.setWidth(1280 - 200);
 //        dialog.setHeight(720 - 100);
@@ -192,6 +195,32 @@ public interface DialogProvider {
         final LevelPresenter levelPresenter = levelView.getRealPresenter();
         levelPresenter.initialize(levelModel);
         final Parent content = levelView.getView();
+        dialog.getDialogPane().setContent(content);
+        
+        final ButtonType buttonTypeOK = new ButtonType(ButtonType.OK.getText(), ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().setAll(buttonTypeOK, ButtonType.CANCEL);
+        
+        return dialog;
+    }
+    
+    public static Dialog getOpenMatrixDialog(Window owner, MatrixModel matrixModel) {
+        LoggerFacade.INSTANCE.debug(DialogProvider.class, "Get open Matrix dialog"); // NOI18N
+        
+        final Dialog dialog = new Dialog();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(owner);
+//        dialog.initStyle(StageStyle.DECORATED);
+        dialog.setResizable(false);
+        
+        final String title = "Matrix: " + matrixModel.getTitle(); // NOI18N
+        dialog.setTitle(title);
+//        dialog.setWidth(1280 - 200);
+//        dialog.setHeight(720 - 100);
+        
+        final MatrixView matrixView = new MatrixView();
+        final MatrixPresenter matrixPresenter = matrixView.getRealPresenter();
+        matrixPresenter.initialize(matrixModel);
+        final Parent content = matrixView.getView();
         dialog.getDialogPane().setContent(content);
         
         final ButtonType buttonTypeOK = new ButtonType(ButtonType.OK.getText(), ButtonBar.ButtonData.OK_DONE);

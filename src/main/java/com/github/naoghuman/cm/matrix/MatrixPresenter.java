@@ -120,6 +120,15 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
         ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
+    public void onActionOpenMatrixDetails() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Matrix Details"); // NOI18N
+
+        final ActionTransferModel actionTransferModel = new ActionTransferModel();
+        actionTransferModel.setActionKey(ACTION__OPEN__MATRIX_DETAILS);
+        actionTransferModel.setObject(matrixModel);
+        ActionFacade.INSTANCE.handle(actionTransferModel);
+    }
+    
     public void onActionOpenMatrixFolder() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action open Matrix folder"); // NOI18N
 
