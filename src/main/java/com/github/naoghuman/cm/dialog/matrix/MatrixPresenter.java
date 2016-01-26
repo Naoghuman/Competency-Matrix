@@ -17,18 +17,24 @@
 package com.github.naoghuman.cm.dialog.matrix;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
+import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__CREATE__MATRIX;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
+import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.model.api.MatrixModel;
 import com.github.naoghuman.cm.util.api.Folder;
 import com.github.naoghuman.cm.util.api.IDateConverter;
 import com.github.naoghuman.cm.util.api.UtilFacade;
+import de.pro.lib.action.api.ActionFacade;
+import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 
 /**
  *
@@ -76,6 +82,26 @@ public class MatrixPresenter implements Initializable, IActionConfiguration, IRe
         sb.append(taNotes.getText());
         
         taNotes.setText(sb.toString());
+    }
+    
+    public void onActionCreateTopic() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "On action create Topic"); // NOI18N
+        
+        final TextInputDialog dialog = DialogProvider.getNewTopicDialog();
+        final Optional<String> result = dialog.showAndWait();
+        if (!result.isPresent()) {
+            return;
+        }
+        
+        final String name = result.get().trim();
+        if (name.isEmpty()) {
+            return;
+        }
+
+//        final ActionTransferModel actionTransferModel = new ActionTransferModel();
+//        actionTransferModel.setActionKey(ACTION__CREATE__MATRIX);
+//        actionTransferModel.setString(name);
+//        ActionFacade.INSTANCE.handle(actionTransferModel);
     }
     
     public void onActionOpenMatrixFolder() {

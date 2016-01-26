@@ -14,7 +14,9 @@
             <children>
                 <ToolBar nodeOrientation="RIGHT_TO_LEFT">
                     <items>
-                        <Button mnemonicParsing="false" onAction="#onActionOpenMatrixFolder" text="Open" />
+                        <Button mnemonicParsing="false" onAction="#onActionCreateTopic" text="+ Topic" />
+                        <Separator orientation="VERTICAL" />
+                        <Button mnemonicParsing="false" onAction="#onActionOpenMatrixFolder" text="Open Folder" />
                     </items>
                 </ToolBar>
                 <HBox mouseTransparent="true" spacing="7.0">

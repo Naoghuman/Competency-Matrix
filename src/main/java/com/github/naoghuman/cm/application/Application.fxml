@@ -12,8 +12,8 @@
             <items>
                 <Button mnemonicParsing="false" onAction="#onActionCreateMatrix" text="+ Matrix" />
                 <Button mnemonicParsing="false" onAction="#onActionDeleteMatrix" text="- Matrix" />
-            <Separator orientation="VERTICAL" />
-            <Button mnemonicParsing="false" onAction="#onActionOpenConfigurationDialog" text="Configuration" />
+                <Separator orientation="VERTICAL" />
+                <Button mnemonicParsing="false" onAction="#onActionOpenConfigurationDialog" text="Configuration" />
             </items>
         </ToolBar>
         <SplitPane fx:id="spCompetencyMatrix" dividerPositions="0.22" layoutX="14.0" layoutY="14.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="66.0">

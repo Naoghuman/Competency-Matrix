@@ -26,7 +26,6 @@ import com.github.naoghuman.cm.dialog.matrix.category.subcategory.level.LevelVie
 import com.github.naoghuman.cm.model.api.LevelModel;
 import com.github.naoghuman.cm.model.api.MatrixModel;
 import de.pro.lib.logger.api.LoggerFacade;
-import javafx.event.Event;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -36,7 +35,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Modality;
-import javafx.stage.StageStyle;
 import javafx.stage.Window;
 
 /**
@@ -123,6 +121,17 @@ public interface DialogProvider {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("New Subcategory"); // NOI18N
         dialog.setHeaderText("New name from the Subcategory"); // NOI18N
+        
+        return dialog;
+    }
+    
+    public static TextInputDialog getNewTopicDialog() {
+        LoggerFacade.INSTANCE.debug(DialogProvider.class, "Get new Topic dialog"); // NOI18N
+        
+        final TextInputDialog dialog = new TextInputDialog(""); // NOI18N
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setTitle("New Topic"); // NOI18N
+        dialog.setHeaderText("New name from the Topic"); // NOI18N
         
         return dialog;
     }
