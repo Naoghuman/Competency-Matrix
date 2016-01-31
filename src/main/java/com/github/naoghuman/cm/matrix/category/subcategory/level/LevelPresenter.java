@@ -18,7 +18,7 @@ package com.github.naoghuman.cm.matrix.category.subcategory.level;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
-import com.github.naoghuman.cm.model.api.LevelModel;
+import com.github.naoghuman.cm.model.matrix.category.subcategory.level.LevelModel;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;
 import de.pro.lib.logger.api.LoggerFacade;

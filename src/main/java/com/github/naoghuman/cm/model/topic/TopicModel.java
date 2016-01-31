@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 PRo
+ * Copyright (C) 2016 PRo
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.naoghuman.cm.model.api;
+package com.github.naoghuman.cm.model.topic;
 
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import java.io.Externalizable;
@@ -47,17 +47,29 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 @Entity
 @Access(AccessType.PROPERTY)
-@Table(name = IEntityConfiguration.ENTITY__TABLE_NAME__MATRIX_MODEL)
+@Table(name = IEntityConfiguration.ENTITY__TABLE_NAME__TOPIC_MODEL)
 @NamedQueries({
     @NamedQuery(
-            name = IEntityConfiguration.NAMED_QUERY__NAME__MATRIX_FIND_ALL,
-            query = IEntityConfiguration.NAMED_QUERY__QUERY__MATRIX_FIND_ALL)
+            name = IEntityConfiguration.NAMED_QUERY__NAME__TOPIC_FIND_BY_CATEGORY,
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__TOPIC_FIND_BY_CATEGORY),
+    @NamedQuery(
+            name = IEntityConfiguration.NAMED_QUERY__NAME__TOPIC_FIND_BY_ID,
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__TOPIC_FIND_BY_ID),
+    @NamedQuery(
+            name = IEntityConfiguration.NAMED_QUERY__NAME__TOPIC_FIND_BY_LEVEL,
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__TOPIC_FIND_BY_LEVEL),
+    @NamedQuery(
+            name = IEntityConfiguration.NAMED_QUERY__NAME__TOPIC_FIND_BY_MATRIX,
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__TOPIC_FIND_BY_MATRIX),
+    @NamedQuery(
+            name = IEntityConfiguration.NAMED_QUERY__NAME__TOPIC_FIND_BY_SUBCATEGORY,
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__TOPIC_FIND_BY_SUBCATEGORY)
 })
-public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEntityConfiguration, IIds {
+public class TopicModel implements Comparable<TopicModel>, Externalizable, IEntityConfiguration {
 
     private static final long serialVersionUID = 1L;
     
-    public MatrixModel() {
+    public TopicModel() {
         this.initialize();
     }
     
@@ -67,7 +79,7 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
     
     // START  ID ---------------------------------------------------------------
     private LongProperty idProperty;
-    private long _id = DEFAULT_ID__MATRIX_MODEL;
+    private long _id = DEFAULT_ID__TOPIC_MODEL;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -125,35 +137,6 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
     }
     // END  GENERATIONTIME -----------------------------------------------------
     
-    // START  TITLE ------------------------------------------------------------
-    private StringProperty titleProperty = null;
-    private String _title = SIGN__EMPTY;
-    
-    @Column(name = COLUMN_NAME__TITLE)
-    public String getTitle() {
-        if (this.titleProperty == null) {
-            return _title;
-        } else {
-            return titleProperty.get();
-        }
-    }
-    
-    public void setTitle(String title) {
-        if (this.titleProperty == null) {
-            _title = title;
-        } else {
-            this.titleProperty.set(title);
-        }
-    }
-    
-    public StringProperty titleProperty() {
-        if (titleProperty == null) {
-            titleProperty = new SimpleStringProperty(this, COLUMN_NAME__TITLE, _title);
-        }
-        return titleProperty;
-    }
-    // END  TITLE --------------------------------------------------------------
-    
     // START  DESCRIPTION ------------------------------------------------------
     private StringProperty descriptionProperty = null;
     private String _description = SIGN__EMPTY;
@@ -183,40 +166,35 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
     }
     // END  DESCRIPTION --------------------------------------------------------
     
-    // START  NOTES ------------------------------------------------------------
-    private StringProperty notesProperty = null;
-    private String _notes = SIGN__EMPTY;
+    // START  TITLE ------------------------------------------------------------
+    private StringProperty titleProperty = null;
+    private String _title = SIGN__EMPTY;
     
-    @Column(name = COLUMN_NAME__NOTES)
-    public String getNotes() {
-        if (this.notesProperty == null) {
-            return _notes;
+    @Column(name = COLUMN_NAME__TITLE)
+    public String getTitle() {
+        if (this.titleProperty == null) {
+            return _title;
         } else {
-            return notesProperty.get();
+            return titleProperty.get();
         }
     }
     
-    public void setNotes(String notes) {
-        if (this.notesProperty == null) {
-            _notes = notes;
+    public void setTitle(String title) {
+        if (this.titleProperty == null) {
+            _title = title;
         } else {
-            this.notesProperty.set(notes);
+            this.titleProperty.set(title);
         }
     }
     
-    public StringProperty notesProperty() {
-        if (notesProperty == null) {
-            notesProperty = new SimpleStringProperty(this, COLUMN_NAME__NOTES, _notes);
+    public StringProperty titleProperty() {
+        if (titleProperty == null) {
+            titleProperty = new SimpleStringProperty(this, COLUMN_NAME__TITLE, _title);
         }
-        return notesProperty;
+        return titleProperty;
     }
-    // END  NOTES --------------------------------------------------------------
-
-    @Override
-    public String getIdsAsString() {
-        return UNDERLINE + this.getId();
-    }
-
+    // END  TITLE --------------------------------------------------------------
+    
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
@@ -235,7 +213,7 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
             return false;
         }
         
-        final MatrixModel other = (MatrixModel) obj;
+        final TopicModel other = (TopicModel) obj;
         return new EqualsBuilder()
                 .append(this.getId(), other.getId())
                 .append(this.getGenerationTime(), other.getGenerationTime())
@@ -243,10 +221,10 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
     }
     
     @Override
-    public int compareTo(MatrixModel other) {
+    public int compareTo(TopicModel other) {
         return new CompareToBuilder()
-                .append(this.getGenerationTime(), other.getGenerationTime())
                 .append(this.getTitle(), other.getTitle())
+                .append(this.getGenerationTime(), other.getGenerationTime())
                 .append(this.getId(), other.getId())
                 .toComparison();
     }
@@ -265,8 +243,6 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
         out.writeLong(this.getId());
         out.writeLong(this.getGenerationTime());
         out.writeObject(StringEscapeUtils.escapeHtml4(this.getTitle()));
-        out.writeObject(StringEscapeUtils.escapeHtml4(this.getDescription()));
-        out.writeObject(StringEscapeUtils.escapeHtml4(this.getNotes()));
     }
 
     @Override
@@ -274,8 +250,6 @@ public class MatrixModel implements Comparable<MatrixModel>, Externalizable, IEn
         this.setId(in.readLong());
         this.setGenerationTime(in.readLong());
         this.setTitle(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
-        this.setDescription(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
-        this.setNotes(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
     }
     
 }

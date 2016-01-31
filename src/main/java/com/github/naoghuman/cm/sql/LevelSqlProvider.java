@@ -19,7 +19,7 @@ package com.github.naoghuman.cm.sql;
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
-import com.github.naoghuman.cm.model.api.LevelModel;
+import com.github.naoghuman.cm.model.matrix.category.subcategory.level.LevelModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import de.pro.lib.action.api.ActionFacade;
 import de.pro.lib.action.api.ActionTransferModel;

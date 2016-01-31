@@ -19,7 +19,7 @@ package com.github.naoghuman.cm.sql;
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
-import com.github.naoghuman.cm.model.api.MatrixModel;
+import com.github.naoghuman.cm.model.matrix.MatrixModel;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
 import com.github.naoghuman.cm.util.api.Folder;

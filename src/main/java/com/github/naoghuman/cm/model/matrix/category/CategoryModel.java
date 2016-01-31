@@ -14,16 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.naoghuman.cm.model.api;
+package com.github.naoghuman.cm.model.matrix.category;
 
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
+import com.github.naoghuman.cm.model.api.IIds;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -49,17 +48,20 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 @Entity
 @Access(AccessType.PROPERTY)
-@Table(name = IEntityConfiguration.ENTITY__TABLE_NAME__LEVEL_MODEL)
+@Table(name = IEntityConfiguration.ENTITY__TABLE_NAME__CATEGORY_MODEL)
 @NamedQueries({
     @NamedQuery(
-            name = IEntityConfiguration.NAMED_QUERY__NAME__LEVEL_FIND_ALL,
-            query = IEntityConfiguration.NAMED_QUERY__QUERY__LEVEL_FIND_ALL)
+            name = IEntityConfiguration.NAMED_QUERY__NAME__CATEGORY_FIND_ALL,
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__CATEGORY_FIND_ALL),
+    @NamedQuery(
+            name = IEntityConfiguration.NAMED_QUERY__NAME__CATEGORY_FIND_BY_ID,
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__CATEGORY_FIND_BY_ID)
 })
-public class LevelModel implements Comparable<LevelModel>, Externalizable, IEntityConfiguration, IIds {
+public class CategoryModel implements Comparable<CategoryModel>, Externalizable, IEntityConfiguration, IIds {
 
     private static final long serialVersionUID = 1L;
     
-    public LevelModel() {
+    public CategoryModel() {
         this.initialize();
     }
     
@@ -69,7 +71,7 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
     
     // START  ID ---------------------------------------------------------------
     private LongProperty idProperty;
-    private long _id = DEFAULT_ID__SUBCATEGORY_MODEL;
+    private long _id = DEFAULT_ID__CATEGORY_MODEL;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -111,11 +113,11 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
         }
     }
 
-    public final void setMatrixId(long categoryId) {
+    public final void setMatrixId(long matrixId) {
         if (this.matrixIdProperty == null) {
-            _matrixId = categoryId;
+            _matrixId = matrixId;
         } else {
-            this.matrixIdProperty.set(categoryId);
+            this.matrixIdProperty.set(matrixId);
         }
     }
 
@@ -127,93 +129,6 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
     }
     // END  MATRIX-ID ----------------------------------------------------------
     
-    // START  CATEGORY-ID ------------------------------------------------------
-    private LongProperty categoryIdProperty;
-    private long _categoryId = DEFAULT_ID__CATEGORY_MODEL;
-
-    @Column(name = COLUMN_NAME__CATEGORY_ID)
-    public long getCategoryId() {
-        if (this.categoryIdProperty == null) {
-            return _categoryId;
-        } else {
-            return categoryIdProperty.get();
-        }
-    }
-
-    public final void setCategoryId(long categoryId) {
-        if (this.categoryIdProperty == null) {
-            _categoryId = categoryId;
-        } else {
-            this.categoryIdProperty.set(categoryId);
-        }
-    }
-
-    public LongProperty categoryIdProperty() {
-        if (categoryIdProperty == null) {
-            categoryIdProperty = new SimpleLongProperty(this, COLUMN_NAME__CATEGORY_ID, _categoryId);
-        }
-        return categoryIdProperty;
-    }
-    // END  CATEGORY-ID --------------------------------------------------------
-    
-    // START  SUBCATEGORY-ID ---------------------------------------------------
-    private LongProperty subCategoryIdProperty;
-    private long _subCategoryId = DEFAULT_ID__SUBCATEGORY_MODEL;
-
-    @Column(name = COLUMN_NAME__SUBCATEGORY_ID)
-    public long getSubCategoryId() {
-        if (this.subCategoryIdProperty == null) {
-            return _subCategoryId;
-        } else {
-            return subCategoryIdProperty.get();
-        }
-    }
-
-    public final void setSubCategoryId(long subCategoryId) {
-        if (this.subCategoryIdProperty == null) {
-            _subCategoryId = subCategoryId;
-        } else {
-            this.subCategoryIdProperty.set(subCategoryId);
-        }
-    }
-
-    public LongProperty subCategoryIdProperty() {
-        if (subCategoryIdProperty == null) {
-            subCategoryIdProperty = new SimpleLongProperty(this, COLUMN_NAME__SUBCATEGORY_ID, _subCategoryId);
-        }
-        return subCategoryIdProperty;
-    }
-    // END  SUBCATEGORY-ID -----------------------------------------------------
-    
-    // START  LEVEL ------------------------------------------------------------
-    private IntegerProperty levelProperty;
-    private int _level = 1;
-
-    @Column(name = COLUMN_NAME__LEVEL)
-    public int getLevel() {
-        if (this.levelProperty == null) {
-            return _level;
-        } else {
-            return levelProperty.get();
-        }
-    }
-
-    public final void setLevel(int level) {
-        if (this.levelProperty == null) {
-            _level = level;
-        } else {
-            this.levelProperty.set(level);
-        }
-    }
-
-    public IntegerProperty levelProperty() {
-        if (levelProperty == null) {
-            levelProperty = new SimpleIntegerProperty(this, COLUMN_NAME__LEVEL, _level);
-        }
-        return levelProperty;
-    }
-    // END  LEVEL --------------------------------------------------------------
-
     // START  GENERATIONTIME ---------------------------------------------------
     private LongProperty generationTimeProperty;
     private long _generationTime = System.currentTimeMillis();
@@ -243,35 +158,35 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
     }
     // END  GENERATIONTIME -----------------------------------------------------
     
-    // START  DESCRIPTION ------------------------------------------------------
-    private StringProperty descriptionProperty = null;
-    private String _description = SIGN__EMPTY;
+    // START  TITLE ------------------------------------------------------------
+    private StringProperty titleProperty = null;
+    private String _title = SIGN__EMPTY;
     
-    @Column(name = COLUMN_NAME__DESCRIPTION)
-    public String getDescription() {
-        if (this.descriptionProperty == null) {
-            return _description;
+    @Column(name = COLUMN_NAME__TITLE)
+    public String getTitle() {
+        if (this.titleProperty == null) {
+            return _title;
         } else {
-            return descriptionProperty.get();
+            return titleProperty.get();
         }
     }
     
-    public void setDescription(String description) {
-        if (this.descriptionProperty == null) {
-            _description = description;
+    public void setTitle(String title) {
+        if (this.titleProperty == null) {
+            _title = title;
         } else {
-            this.descriptionProperty.set(description);
+            this.titleProperty.set(title);
         }
     }
     
-    public StringProperty descriptionProperty() {
-        if (descriptionProperty == null) {
-            descriptionProperty = new SimpleStringProperty(this, COLUMN_NAME__DESCRIPTION, _description);
+    public StringProperty titleProperty() {
+        if (titleProperty == null) {
+            titleProperty = new SimpleStringProperty(this, COLUMN_NAME__TITLE, _title);
         }
-        return descriptionProperty;
+        return titleProperty;
     }
-    // END  DESCRIPTION --------------------------------------------------------
-
+    // END  TITLE --------------------------------------------------------------
+    
     // START  NOTES ------------------------------------------------------------
     private StringProperty notesProperty = null;
     private String _notes = SIGN__EMPTY;
@@ -303,17 +218,14 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
 
     @Override
     public String getIdsAsString() {
-        return UNDERLINE + this.getMatrixId() + POINT + this.getCategoryId() + POINT + this.getSubCategoryId() + POINT + this.getId();
+        return UNDERLINE + this.getMatrixId() + POINT + this.getId();
     }
-    
+
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(this.getId())
                 .append(this.getMatrixId())
-                .append(this.getCategoryId())
-                .append(this.getSubCategoryId())
-                .append(this.getLevel())
                 .append(this.getGenerationTime())
                 .toHashCode();
     }
@@ -328,26 +240,21 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
             return false;
         }
         
-        final LevelModel other = (LevelModel) obj;
+        final CategoryModel other = (CategoryModel) obj;
         return new EqualsBuilder()
                 .append(this.getId(), other.getId())
                 .append(this.getMatrixId(), other.getMatrixId())
-                .append(this.getCategoryId(), other.getCategoryId())
-                .append(this.getSubCategoryId(), other.getSubCategoryId())
-                .append(this.getLevel(), other.getLevel())
                 .append(this.getGenerationTime(), other.getGenerationTime())
                 .isEquals();
     }
     
     @Override
-    public int compareTo(LevelModel other) {
+    public int compareTo(CategoryModel other) {
         return new CompareToBuilder()
-                .append(this.getMatrixId(), other.getMatrixId())
-                .append(this.getCategoryId(), other.getCategoryId())
-                .append(this.getSubCategoryId(), other.getSubCategoryId())
-                .append(this.getLevel(), other.getLevel())
-                .append(this.getId(), other.getId())
+                .append(this.getTitle(), other.getTitle())
                 .append(this.getGenerationTime(), other.getGenerationTime())
+                .append(this.getMatrixId(), other.getMatrixId())
+                .append(this.getId(), other.getId())
                 .toComparison();
     }
     
@@ -356,9 +263,7 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
         return new ToStringBuilder(this)
                 .append(COLUMN_NAME__ID, this.getId())
                 .append(COLUMN_NAME__MATRIX_ID, this.getMatrixId())
-                .append(COLUMN_NAME__CATEGORY_ID, this.getCategoryId())
-                .append(COLUMN_NAME__SUBCATEGORY_ID, this.getSubCategoryId())
-                .append(COLUMN_NAME__LEVEL, this.getLevel())
+                .append(COLUMN_NAME__TITLE, this.getTitle())
                 .append(COLUMN_NAME__GENERATION_TIME, this.getGenerationTime())
                 .toString();
     }
@@ -367,11 +272,8 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeLong(this.getId());
         out.writeLong(this.getMatrixId());
-        out.writeLong(this.getCategoryId());
-        out.writeLong(this.getSubCategoryId());
-        out.writeInt(this.getLevel());
         out.writeLong(this.getGenerationTime());
-        out.writeObject(StringEscapeUtils.escapeHtml4(this.getDescription()));
+        out.writeObject(StringEscapeUtils.escapeHtml4(this.getTitle()));
         out.writeObject(StringEscapeUtils.escapeHtml4(this.getNotes()));
     }
 
@@ -379,11 +281,8 @@ public class LevelModel implements Comparable<LevelModel>, Externalizable, IEnti
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         this.setId(in.readLong());
         this.setMatrixId(in.readLong());
-        this.setCategoryId(in.readLong());
-        this.setSubCategoryId(in.readLong());
-        this.setLevel(in.readInt());
         this.setGenerationTime(in.readLong());
-        this.setDescription(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
+        this.setTitle(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
         this.setNotes(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
     }
     

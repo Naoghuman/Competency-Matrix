@@ -18,7 +18,7 @@ package com.github.naoghuman.cm.dialog.matrix.category.subcategory.level;
 
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
-import com.github.naoghuman.cm.model.api.LevelModel;
+import com.github.naoghuman.cm.model.matrix.category.subcategory.level.LevelModel;
 import com.github.naoghuman.cm.util.api.Folder;
 import com.github.naoghuman.cm.util.api.IDateConverter;
 import com.github.naoghuman.cm.util.api.UtilFacade;

@@ -14,14 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.naoghuman.cm.model.api;
+package com.github.naoghuman.cm.model.matrix.category.subcategory.level;
 
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
+import com.github.naoghuman.cm.model.api.IIds;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -47,20 +50,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 @Entity
 @Access(AccessType.PROPERTY)
-@Table(name = IEntityConfiguration.ENTITY__TABLE_NAME__SUBCATEGORY_MODEL)
+@Table(name = IEntityConfiguration.ENTITY__TABLE_NAME__LEVEL_MODEL)
 @NamedQueries({
     @NamedQuery(
-            name = IEntityConfiguration.NAMED_QUERY__NAME__SUBCATEGORY_FIND_ALL,
-            query = IEntityConfiguration.NAMED_QUERY__QUERY__SUBCATEGORY_FIND_ALL),
-    @NamedQuery(
-            name = IEntityConfiguration.NAMED_QUERY__NAME__SUBCATEGORY_FIND_BY_ID,
-            query = IEntityConfiguration.NAMED_QUERY__QUERY__SUBCATEGORY_FIND_BY_ID)
+            name = IEntityConfiguration.NAMED_QUERY__NAME__LEVEL_FIND_ALL,
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__LEVEL_FIND_ALL)
 })
-public class SubCategoryModel implements Comparable<SubCategoryModel>, Externalizable, IEntityConfiguration, IIds {
+public class LevelModel implements Comparable<LevelModel>, Externalizable, IEntityConfiguration, IIds {
 
     private static final long serialVersionUID = 1L;
     
-    public SubCategoryModel() {
+    public LevelModel() {
         this.initialize();
     }
     
@@ -112,11 +112,11 @@ public class SubCategoryModel implements Comparable<SubCategoryModel>, Externali
         }
     }
 
-    public final void setMatrixId(long matrixId) {
+    public final void setMatrixId(long categoryId) {
         if (this.matrixIdProperty == null) {
-            _matrixId = matrixId;
+            _matrixId = categoryId;
         } else {
-            this.matrixIdProperty.set(matrixId);
+            this.matrixIdProperty.set(categoryId);
         }
     }
 
@@ -157,6 +157,64 @@ public class SubCategoryModel implements Comparable<SubCategoryModel>, Externali
     }
     // END  CATEGORY-ID --------------------------------------------------------
     
+    // START  SUBCATEGORY-ID ---------------------------------------------------
+    private LongProperty subCategoryIdProperty;
+    private long _subCategoryId = DEFAULT_ID__SUBCATEGORY_MODEL;
+
+    @Column(name = COLUMN_NAME__SUBCATEGORY_ID)
+    public long getSubCategoryId() {
+        if (this.subCategoryIdProperty == null) {
+            return _subCategoryId;
+        } else {
+            return subCategoryIdProperty.get();
+        }
+    }
+
+    public final void setSubCategoryId(long subCategoryId) {
+        if (this.subCategoryIdProperty == null) {
+            _subCategoryId = subCategoryId;
+        } else {
+            this.subCategoryIdProperty.set(subCategoryId);
+        }
+    }
+
+    public LongProperty subCategoryIdProperty() {
+        if (subCategoryIdProperty == null) {
+            subCategoryIdProperty = new SimpleLongProperty(this, COLUMN_NAME__SUBCATEGORY_ID, _subCategoryId);
+        }
+        return subCategoryIdProperty;
+    }
+    // END  SUBCATEGORY-ID -----------------------------------------------------
+    
+    // START  LEVEL ------------------------------------------------------------
+    private IntegerProperty levelProperty;
+    private int _level = 1;
+
+    @Column(name = COLUMN_NAME__LEVEL)
+    public int getLevel() {
+        if (this.levelProperty == null) {
+            return _level;
+        } else {
+            return levelProperty.get();
+        }
+    }
+
+    public final void setLevel(int level) {
+        if (this.levelProperty == null) {
+            _level = level;
+        } else {
+            this.levelProperty.set(level);
+        }
+    }
+
+    public IntegerProperty levelProperty() {
+        if (levelProperty == null) {
+            levelProperty = new SimpleIntegerProperty(this, COLUMN_NAME__LEVEL, _level);
+        }
+        return levelProperty;
+    }
+    // END  LEVEL --------------------------------------------------------------
+
     // START  GENERATIONTIME ---------------------------------------------------
     private LongProperty generationTimeProperty;
     private long _generationTime = System.currentTimeMillis();
@@ -186,35 +244,35 @@ public class SubCategoryModel implements Comparable<SubCategoryModel>, Externali
     }
     // END  GENERATIONTIME -----------------------------------------------------
     
-    // START  TITLE ------------------------------------------------------------
-    private StringProperty titleProperty = null;
-    private String _title = SIGN__EMPTY;
+    // START  DESCRIPTION ------------------------------------------------------
+    private StringProperty descriptionProperty = null;
+    private String _description = SIGN__EMPTY;
     
-    @Column(name = COLUMN_NAME__TITLE)
-    public String getTitle() {
-        if (this.titleProperty == null) {
-            return _title;
+    @Column(name = COLUMN_NAME__DESCRIPTION)
+    public String getDescription() {
+        if (this.descriptionProperty == null) {
+            return _description;
         } else {
-            return titleProperty.get();
+            return descriptionProperty.get();
         }
     }
     
-    public void setTitle(String title) {
-        if (this.titleProperty == null) {
-            _title = title;
+    public void setDescription(String description) {
+        if (this.descriptionProperty == null) {
+            _description = description;
         } else {
-            this.titleProperty.set(title);
+            this.descriptionProperty.set(description);
         }
     }
     
-    public StringProperty titleProperty() {
-        if (titleProperty == null) {
-            titleProperty = new SimpleStringProperty(this, COLUMN_NAME__TITLE, _title);
+    public StringProperty descriptionProperty() {
+        if (descriptionProperty == null) {
+            descriptionProperty = new SimpleStringProperty(this, COLUMN_NAME__DESCRIPTION, _description);
         }
-        return titleProperty;
+        return descriptionProperty;
     }
-    // END  TITLE --------------------------------------------------------------
-    
+    // END  DESCRIPTION --------------------------------------------------------
+
     // START  NOTES ------------------------------------------------------------
     private StringProperty notesProperty = null;
     private String _notes = SIGN__EMPTY;
@@ -246,15 +304,17 @@ public class SubCategoryModel implements Comparable<SubCategoryModel>, Externali
 
     @Override
     public String getIdsAsString() {
-        return UNDERLINE + this.getMatrixId() + POINT + this.getCategoryId() + POINT + this.getId();
+        return UNDERLINE + this.getMatrixId() + POINT + this.getCategoryId() + POINT + this.getSubCategoryId() + POINT + this.getId();
     }
-
+    
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(this.getId())
                 .append(this.getMatrixId())
                 .append(this.getCategoryId())
+                .append(this.getSubCategoryId())
+                .append(this.getLevel())
                 .append(this.getGenerationTime())
                 .toHashCode();
     }
@@ -269,23 +329,26 @@ public class SubCategoryModel implements Comparable<SubCategoryModel>, Externali
             return false;
         }
         
-        final SubCategoryModel other = (SubCategoryModel) obj;
+        final LevelModel other = (LevelModel) obj;
         return new EqualsBuilder()
                 .append(this.getId(), other.getId())
                 .append(this.getMatrixId(), other.getMatrixId())
                 .append(this.getCategoryId(), other.getCategoryId())
+                .append(this.getSubCategoryId(), other.getSubCategoryId())
+                .append(this.getLevel(), other.getLevel())
                 .append(this.getGenerationTime(), other.getGenerationTime())
                 .isEquals();
     }
     
     @Override
-    public int compareTo(SubCategoryModel other) {
+    public int compareTo(LevelModel other) {
         return new CompareToBuilder()
-                .append(this.getTitle(), other.getTitle())
-                .append(this.getGenerationTime(), other.getGenerationTime())
-                .append(this.getId(), other.getId())
                 .append(this.getMatrixId(), other.getMatrixId())
                 .append(this.getCategoryId(), other.getCategoryId())
+                .append(this.getSubCategoryId(), other.getSubCategoryId())
+                .append(this.getLevel(), other.getLevel())
+                .append(this.getId(), other.getId())
+                .append(this.getGenerationTime(), other.getGenerationTime())
                 .toComparison();
     }
     
@@ -295,7 +358,8 @@ public class SubCategoryModel implements Comparable<SubCategoryModel>, Externali
                 .append(COLUMN_NAME__ID, this.getId())
                 .append(COLUMN_NAME__MATRIX_ID, this.getMatrixId())
                 .append(COLUMN_NAME__CATEGORY_ID, this.getCategoryId())
-                .append(COLUMN_NAME__TITLE, this.getTitle())
+                .append(COLUMN_NAME__SUBCATEGORY_ID, this.getSubCategoryId())
+                .append(COLUMN_NAME__LEVEL, this.getLevel())
                 .append(COLUMN_NAME__GENERATION_TIME, this.getGenerationTime())
                 .toString();
     }
@@ -305,8 +369,10 @@ public class SubCategoryModel implements Comparable<SubCategoryModel>, Externali
         out.writeLong(this.getId());
         out.writeLong(this.getMatrixId());
         out.writeLong(this.getCategoryId());
+        out.writeLong(this.getSubCategoryId());
+        out.writeInt(this.getLevel());
         out.writeLong(this.getGenerationTime());
-        out.writeObject(StringEscapeUtils.escapeHtml4(this.getTitle()));
+        out.writeObject(StringEscapeUtils.escapeHtml4(this.getDescription()));
         out.writeObject(StringEscapeUtils.escapeHtml4(this.getNotes()));
     }
 
@@ -315,8 +381,10 @@ public class SubCategoryModel implements Comparable<SubCategoryModel>, Externali
         this.setId(in.readLong());
         this.setMatrixId(in.readLong());
         this.setCategoryId(in.readLong());
+        this.setSubCategoryId(in.readLong());
+        this.setLevel(in.readInt());
         this.setGenerationTime(in.readLong());
-        this.setTitle(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
+        this.setDescription(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
         this.setNotes(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
     }
     

@@ -16,9 +16,9 @@
  */
 package com.github.naoghuman.cm.util;
 
-import com.github.naoghuman.cm.model.api.CategoryModel;
-import com.github.naoghuman.cm.model.api.MatrixModel;
-import com.github.naoghuman.cm.model.api.SubCategoryModel;
+import com.github.naoghuman.cm.model.matrix.category.CategoryModel;
+import com.github.naoghuman.cm.model.matrix.MatrixModel;
+import com.github.naoghuman.cm.model.matrix.category.subcategory.SubCategoryModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
 import com.github.naoghuman.cm.util.api.Folder;
 import com.github.naoghuman.cm.util.api.IFolderHelper;

@@ -20,7 +20,7 @@ import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import static com.github.naoghuman.cm.configuration.api.IActionConfiguration.ACTION__CREATE__MATRIX;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.dialog.api.DialogProvider;
-import com.github.naoghuman.cm.model.api.MatrixModel;
+import com.github.naoghuman.cm.model.matrix.MatrixModel;
 import com.github.naoghuman.cm.util.api.Folder;
 import com.github.naoghuman.cm.util.api.IDateConverter;
 import com.github.naoghuman.cm.util.api.UtilFacade;

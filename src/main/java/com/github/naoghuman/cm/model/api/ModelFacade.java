@@ -16,6 +16,10 @@
  */
 package com.github.naoghuman.cm.model.api;
 
+import com.github.naoghuman.cm.model.matrix.category.subcategory.level.LevelModel;
+import com.github.naoghuman.cm.model.matrix.category.subcategory.SubCategoryModel;
+import com.github.naoghuman.cm.model.matrix.category.CategoryModel;
+import com.github.naoghuman.cm.model.matrix.MatrixModel;
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 
 /**

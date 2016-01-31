@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.github.naoghuman.cm.model.api;
+package com.github.naoghuman.cm.model.matrix.category.subcategory;
 
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
+import com.github.naoghuman.cm.model.api.IIds;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -47,20 +48,20 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  */
 @Entity
 @Access(AccessType.PROPERTY)
-@Table(name = IEntityConfiguration.ENTITY__TABLE_NAME__CATEGORY_MODEL)
+@Table(name = IEntityConfiguration.ENTITY__TABLE_NAME__SUBCATEGORY_MODEL)
 @NamedQueries({
     @NamedQuery(
-            name = IEntityConfiguration.NAMED_QUERY__NAME__CATEGORY_FIND_ALL,
-            query = IEntityConfiguration.NAMED_QUERY__QUERY__CATEGORY_FIND_ALL),
+            name = IEntityConfiguration.NAMED_QUERY__NAME__SUBCATEGORY_FIND_ALL,
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__SUBCATEGORY_FIND_ALL),
     @NamedQuery(
-            name = IEntityConfiguration.NAMED_QUERY__NAME__CATEGORY_FIND_BY_ID,
-            query = IEntityConfiguration.NAMED_QUERY__QUERY__CATEGORY_FIND_BY_ID)
+            name = IEntityConfiguration.NAMED_QUERY__NAME__SUBCATEGORY_FIND_BY_ID,
+            query = IEntityConfiguration.NAMED_QUERY__QUERY__SUBCATEGORY_FIND_BY_ID)
 })
-public class CategoryModel implements Comparable<CategoryModel>, Externalizable, IEntityConfiguration, IIds {
+public class SubCategoryModel implements Comparable<SubCategoryModel>, Externalizable, IEntityConfiguration, IIds {
 
     private static final long serialVersionUID = 1L;
     
-    public CategoryModel() {
+    public SubCategoryModel() {
         this.initialize();
     }
     
@@ -70,7 +71,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     
     // START  ID ---------------------------------------------------------------
     private LongProperty idProperty;
-    private long _id = DEFAULT_ID__CATEGORY_MODEL;
+    private long _id = DEFAULT_ID__SUBCATEGORY_MODEL;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -127,6 +128,35 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
         return matrixIdProperty;
     }
     // END  MATRIX-ID ----------------------------------------------------------
+    
+    // START  CATEGORY-ID ------------------------------------------------------
+    private LongProperty categoryIdProperty;
+    private long _categoryId = DEFAULT_ID__CATEGORY_MODEL;
+
+    @Column(name = COLUMN_NAME__CATEGORY_ID)
+    public long getCategoryId() {
+        if (this.categoryIdProperty == null) {
+            return _categoryId;
+        } else {
+            return categoryIdProperty.get();
+        }
+    }
+
+    public final void setCategoryId(long categoryId) {
+        if (this.categoryIdProperty == null) {
+            _categoryId = categoryId;
+        } else {
+            this.categoryIdProperty.set(categoryId);
+        }
+    }
+
+    public LongProperty categoryIdProperty() {
+        if (categoryIdProperty == null) {
+            categoryIdProperty = new SimpleLongProperty(this, COLUMN_NAME__CATEGORY_ID, _categoryId);
+        }
+        return categoryIdProperty;
+    }
+    // END  CATEGORY-ID --------------------------------------------------------
     
     // START  GENERATIONTIME ---------------------------------------------------
     private LongProperty generationTimeProperty;
@@ -217,7 +247,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
 
     @Override
     public String getIdsAsString() {
-        return UNDERLINE + this.getMatrixId() + POINT + this.getId();
+        return UNDERLINE + this.getMatrixId() + POINT + this.getCategoryId() + POINT + this.getId();
     }
 
     @Override
@@ -225,6 +255,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
         return new HashCodeBuilder(17, 37)
                 .append(this.getId())
                 .append(this.getMatrixId())
+                .append(this.getCategoryId())
                 .append(this.getGenerationTime())
                 .toHashCode();
     }
@@ -239,21 +270,23 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
             return false;
         }
         
-        final CategoryModel other = (CategoryModel) obj;
+        final SubCategoryModel other = (SubCategoryModel) obj;
         return new EqualsBuilder()
                 .append(this.getId(), other.getId())
                 .append(this.getMatrixId(), other.getMatrixId())
+                .append(this.getCategoryId(), other.getCategoryId())
                 .append(this.getGenerationTime(), other.getGenerationTime())
                 .isEquals();
     }
     
     @Override
-    public int compareTo(CategoryModel other) {
+    public int compareTo(SubCategoryModel other) {
         return new CompareToBuilder()
                 .append(this.getTitle(), other.getTitle())
                 .append(this.getGenerationTime(), other.getGenerationTime())
-                .append(this.getMatrixId(), other.getMatrixId())
                 .append(this.getId(), other.getId())
+                .append(this.getMatrixId(), other.getMatrixId())
+                .append(this.getCategoryId(), other.getCategoryId())
                 .toComparison();
     }
     
@@ -262,6 +295,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
         return new ToStringBuilder(this)
                 .append(COLUMN_NAME__ID, this.getId())
                 .append(COLUMN_NAME__MATRIX_ID, this.getMatrixId())
+                .append(COLUMN_NAME__CATEGORY_ID, this.getCategoryId())
                 .append(COLUMN_NAME__TITLE, this.getTitle())
                 .append(COLUMN_NAME__GENERATION_TIME, this.getGenerationTime())
                 .toString();
@@ -271,6 +305,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeLong(this.getId());
         out.writeLong(this.getMatrixId());
+        out.writeLong(this.getCategoryId());
         out.writeLong(this.getGenerationTime());
         out.writeObject(StringEscapeUtils.escapeHtml4(this.getTitle()));
         out.writeObject(StringEscapeUtils.escapeHtml4(this.getNotes()));
@@ -280,6 +315,7 @@ public class CategoryModel implements Comparable<CategoryModel>, Externalizable,
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         this.setId(in.readLong());
         this.setMatrixId(in.readLong());
+        this.setCategoryId(in.readLong());
         this.setGenerationTime(in.readLong());
         this.setTitle(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
         this.setNotes(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
