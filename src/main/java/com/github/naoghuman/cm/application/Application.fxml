@@ -6,29 +6,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: MINTCREAM;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.application.ApplicationPresenter">
-    <children>
-        <ToolBar AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
-            <items>
-                <Button mnemonicParsing="false" onAction="#onActionCreateMatrix" text="+ Matrix" />
-                <Button mnemonicParsing="false" onAction="#onActionDeleteMatrix" text="- Matrix" />
-                <Separator orientation="VERTICAL" />
-                <Button mnemonicParsing="false" onAction="#onActionOpenConfigurationDialog" text="Configuration" />
-            </items>
-        </ToolBar>
-        <SplitPane fx:id="spCompetencyMatrix" dividerPositions="0.22" layoutX="14.0" layoutY="14.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="66.0">
-            <items>
-                <TabPane fx:id="tpNavigation">
-                    <tabs>
-                        <Tab closable="false" text="Navigation">
-                            <content>
-                                <ListView fx:id="lvOverview" />
-                            </content>
-                        </Tab>
-                    </tabs>
-                </TabPane>
-                <TabPane fx:id="tpCompetencyMatrix" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" />
-            </items>
-        </SplitPane>
-    </children>
+   <children>
+      <SplitPane fx:id="spCompetencyMatrix" dividerPositions="0.25" layoutX="100.0" layoutY="69.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <items>
+            <TreeView fx:id="tvNavigation" prefHeight="200.0" prefWidth="200.0" />
+            <BorderPane prefHeight="200.0" prefWidth="200.0" />
+         </items>
+      </SplitPane>
+   </children>
 </AnchorPane>

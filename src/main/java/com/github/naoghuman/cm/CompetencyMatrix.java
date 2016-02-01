@@ -57,7 +57,6 @@ public class CompetencyMatrix extends Application implements IApplicationConfigu
     public void start(Stage primaryStage) throws Exception {
         final ApplicationView applicationView = new ApplicationView();
         final ApplicationPresenter applicationPresenter = applicationView.getRealPresenter();
-        applicationPresenter.initialize(primaryStage.getOwner());
         
         final Scene scene = new Scene(applicationView.getView(), 1280, 720);
         primaryStage.setTitle(this.getProperty(KEY__COMPETENCY_MATRIX__TITLE));
@@ -69,8 +68,6 @@ public class CompetencyMatrix extends Application implements IApplicationConfigu
         });
         
         primaryStage.show();
-        
-        applicationPresenter.postInitialize();
     }
     
     private String getProperty(String propertyKey) {
@@ -78,14 +75,19 @@ public class CompetencyMatrix extends Application implements IApplicationConfigu
     }
     
     private void onCloseRequest() {
-        Injector.forgetAll();
-        DatabaseFacade.INSTANCE.shutdown();
-        
+        // Message
         final char borderSign = this.getProperty(KEY__COMPETENCY_MATRIX__BORDER_SIGN).charAt(0);
         final String message = this.getProperty(KEY__COMPETENCY_MATRIX__MESSAGE_STOP);
         final String title = this.getProperty(KEY__COMPETENCY_MATRIX__TITLE);
         LoggerFacade.INSTANCE.message(borderSign, 80, String.format(message, title));
         
+        // afterburner.fx
+        Injector.forgetAll();
+        
+        // Database
+        DatabaseFacade.INSTANCE.shutdown();
+        
+        // Timer
         final PauseTransition pt = new PauseTransition(CM__DURATION__125);
         pt.setOnFinished((ActionEvent event) -> {
             Platform.exit();
