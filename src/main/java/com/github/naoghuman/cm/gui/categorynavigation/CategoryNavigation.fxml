@@ -22,7 +22,7 @@
                 <Button disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionShowResources" text="Resources" />
                 <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionShowFolder" text="Folder" />
                 <Separator prefWidth="200.0" />
-                <Button disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionShowNotes" text="Notes" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionShowNotes" text="Notes" />
                 <Button disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionShowGlossary" text="Glossary" />
                 <Button disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Translation" />
             </children>

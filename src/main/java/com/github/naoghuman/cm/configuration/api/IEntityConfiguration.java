@@ -70,7 +70,7 @@ public interface IEntityConfiguration {
     public static final String NAMED_QUERY__QUERY__CATEGORY_FIND_BY_ID = "SELECT cm FROM CategoryModel cm WHERE cm.id = :id AND cm.matrixId = :matrixId"; // NOI18N
     public static final String NAMED_QUERY__QUERY__LEVEL_FIND_ALL = "SELECT lm FROM LevelModel lm WHERE lm.matrixId = :matrixId AND lm.categoryId = :categoryId AND lm.subCategoryId = :subCategoryId"; // NOI18N
     public static final String NAMED_QUERY__QUERY__MATRIX_FIND_ALL = "SELECT mm FROM MatrixModel mm"; // NOI18N
-    public static final String NAMED_QUERY__QUERY__NOTES_FIND_BY_ID = "SELECT nm FROM NotesModel nm WHERE nm.id = :id"; // NOI18N
+    public static final String NAMED_QUERY__QUERY__NOTES_FIND_BY_ID = "SELECT nm FROM NotesModel nm WHERE nm.matrixId = :matrixId"; // NOI18N
     public static final String NAMED_QUERY__QUERY__SUBCATEGORY_FIND_ALL = "SELECT scm FROM SubCategoryModel scm WHERE scm.matrixId = :matrixId AND scm.categoryId = :categoryId"; // NOI18N
     public static final String NAMED_QUERY__QUERY__SUBCATEGORY_FIND_BY_ID = "SELECT scm FROM SubCategoryModel scm WHERE scm.id = :id AND scm.matrixId = :matrixId AND scm.categoryId = :categoryId"; // NOI18N
     

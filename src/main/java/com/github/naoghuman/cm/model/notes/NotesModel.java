@@ -96,6 +96,64 @@ public class NotesModel implements Comparable<NotesModel>, Externalizable, IEnti
     }
     // END  ID -----------------------------------------------------------------
     
+    // START  MATRIX-ID --------------------------------------------------------
+    private LongProperty matrixIdProperty;
+    private long _matrixId = DEFAULT_ID__MATRIX_MODEL;
+
+    @Column(name = COLUMN_NAME__MATRIX_ID)
+    public long getMatrixId() {
+        if (this.matrixIdProperty == null) {
+            return _matrixId;
+        } else {
+            return matrixIdProperty.get();
+        }
+    }
+
+    public final void setMatrixId(long matrixId) {
+        if (this.matrixIdProperty == null) {
+            _matrixId = matrixId;
+        } else {
+            this.matrixIdProperty.set(matrixId);
+        }
+    }
+
+    public LongProperty matrixIdProperty() {
+        if (matrixIdProperty == null) {
+            matrixIdProperty = new SimpleLongProperty(this, COLUMN_NAME__MATRIX_ID, _matrixId);
+        }
+        return matrixIdProperty;
+    }
+    // END  MATRIX-ID ----------------------------------------------------------
+    
+    // START  GENERATIONTIME ---------------------------------------------------
+    private LongProperty generationTimeProperty;
+    private long _generationTime = System.currentTimeMillis();
+
+    @Column(name = COLUMN_NAME__GENERATION_TIME)
+    public long getGenerationTime() {
+        if (this.generationTimeProperty == null) {
+            return _generationTime;
+        } else {
+            return generationTimeProperty.get();
+        }
+    }
+
+    public final void setGenerationTime(long generationTime) {
+        if (this.generationTimeProperty == null) {
+            _generationTime = generationTime;
+        } else {
+            this.generationTimeProperty.set(generationTime);
+        }
+    }
+
+    public LongProperty generationTimeProperty() {
+        if (generationTimeProperty == null) {
+            generationTimeProperty = new SimpleLongProperty(this, COLUMN_NAME__GENERATION_TIME, _generationTime);
+        }
+        return generationTimeProperty;
+    }
+    // END  GENERATIONTIME -----------------------------------------------------
+    
     // START  NOTES ------------------------------------------------------------
     private StringProperty notesProperty = null;
     private String _notes = SIGN__EMPTY;
@@ -129,6 +187,8 @@ public class NotesModel implements Comparable<NotesModel>, Externalizable, IEnti
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(this.getId())
+                .append(this.getMatrixId())
+                .append(this.getGenerationTime())
                 .toHashCode();
     }
 
@@ -145,6 +205,8 @@ public class NotesModel implements Comparable<NotesModel>, Externalizable, IEnti
         final NotesModel other = (NotesModel) obj;
         return new EqualsBuilder()
                 .append(this.getId(), other.getId())
+                .append(this.getMatrixId(), other.getMatrixId())
+                .append(this.getGenerationTime(), other.getGenerationTime())
                 .isEquals();
     }
     
@@ -152,6 +214,8 @@ public class NotesModel implements Comparable<NotesModel>, Externalizable, IEnti
     public int compareTo(NotesModel other) {
         return new CompareToBuilder()
                 .append(this.getId(), other.getId())
+                .append(this.getMatrixId(), other.getMatrixId())
+                .append(this.getGenerationTime(), other.getGenerationTime())
                 .toComparison();
     }
     
@@ -159,18 +223,24 @@ public class NotesModel implements Comparable<NotesModel>, Externalizable, IEnti
     public String toString() {
         return new ToStringBuilder(this)
                 .append(COLUMN_NAME__ID, this.getId())
+                .append(COLUMN_NAME__MATRIX_ID, this.getMatrixId())
+                .append(COLUMN_NAME__GENERATION_TIME, this.getGenerationTime())
                 .toString();
     }
     
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeLong(this.getId());
+        out.writeLong(this.getMatrixId());
+        out.writeLong(this.getGenerationTime());
         out.writeObject(StringEscapeUtils.escapeHtml4(this.getNotes()));
     }
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         this.setId(in.readLong());
+        this.setMatrixId(in.readLong());
+        this.setGenerationTime(in.readLong());
         this.setNotes(StringEscapeUtils.unescapeHtml4(String.valueOf(in.readObject())));
     }
     

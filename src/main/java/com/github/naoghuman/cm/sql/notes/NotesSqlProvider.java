@@ -61,10 +61,13 @@ public class NotesSqlProvider implements IActionConfiguration, IEntityConfigurat
         final Map<String, Object> parameters = FXCollections.observableHashMap();
         parameters.put(COLUMN_NAME__MATRIX_ID, matrixId);
         
-        final List<NotesModel> categoryModels = DatabaseFacade.INSTANCE.getCrudService()
+        final List<NotesModel> notesModels = DatabaseFacade.INSTANCE.getCrudService()
                 .findByNamedQuery(NotesModel.class, NAMED_QUERY__NAME__NOTES_FIND_BY_ID, parameters);
+        if (notesModels.isEmpty()) {
+            return null;
+        }
         
-        return categoryModels.get(0);
+        return notesModels.get(0);
     }
 
     @Override

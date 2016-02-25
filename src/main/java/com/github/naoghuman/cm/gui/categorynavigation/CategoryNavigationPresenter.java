@@ -19,6 +19,8 @@ package com.github.naoghuman.cm.gui.categorynavigation;
 import com.github.naoghuman.cm.application.api.EMoveTo;
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.dialog.api.DialogProvider;
+import com.github.naoghuman.cm.gui.notes.NotesPresenter;
+import com.github.naoghuman.cm.gui.notes.NotesView;
 import com.github.naoghuman.cm.model.api.ModelFacade;
 import com.github.naoghuman.cm.model.notes.NotesModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
@@ -31,6 +33,8 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.TextInputDialog;
 
 /**
@@ -119,22 +123,36 @@ public class CategoryNavigationPresenter implements Initializable, IActionConfig
     
     public void onActionShowNotes() {
         LoggerFacade.INSTANCE.debug(this.getClass(), "On action show Notes"); // NOI18N
-        
-        /*
-        TODO
-         - Load Notes from DB with parentId=Matrix.id
-         - Extend NotesModel
-            - Add parameter title
-         - Add title to NotesModel
-         - Initialize NotesPresenter with NotesModel
-         - Show NotesView in dialog
-        */
+
+        // Notes
         NotesModel notesModel = SqlFacade.INSTANCE.getNotesSqlProvider().findById(matrixId);
         if (notesModel == null) {
             notesModel = ModelFacade.getDefaultNotes();
         }
         
+        final NotesView notesView = new NotesView();
+        final NotesPresenter notesPresenter = notesView.getRealPresenter();
+        notesPresenter.initialize(notesModel);
         
+        // Open dialog
+        final Dialog dialog = DialogProvider.getDialogOpenNotes(notesView.getView());
+        final Optional<ButtonType> result = dialog.showAndWait();
+        if (!result.isPresent()) {
+            return;
+        }
+        
+        final ButtonType buttonType = result.get();
+        if (!buttonType.getButtonData().equals(ButtonType.OK.getButtonData())) {
+            return;
+        }
+        
+        LoggerFacade.INSTANCE.debug(this.getClass(), "TODO On action update Notes"); // NOI18N
+
+        // Update NotesModel
+//        final TransferData ransferData = new TransferData();
+//        ransferData.setActionKey(ACTION__UPDATE__NOTES);
+//        ransferData.setObject(notesModel);
+//        ActionFacade.INSTANCE.handle(transferData);
     }
     
     

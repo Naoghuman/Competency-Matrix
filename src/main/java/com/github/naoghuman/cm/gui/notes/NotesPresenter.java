@@ -16,6 +16,8 @@
  */
 package com.github.naoghuman.cm.gui.notes;
 
+import com.github.naoghuman.cm.model.notes.NotesModel;
+import com.github.naoghuman.lib.logger.api.LoggerFacade;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
@@ -28,6 +30,12 @@ public class NotesPresenter implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Initialize(URL, ResourceBundle) NotesPresenter"); // NOI18N
+        
+    }
+
+    public void initialize(NotesModel notesModel) {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Initialize(NotesModel) NotesPresenter"); // NOI18N
         
     }
     
