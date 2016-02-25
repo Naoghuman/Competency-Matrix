@@ -20,10 +20,10 @@ import com.airhacks.afterburner.injection.Injector;
 import com.github.naoghuman.cm.application.ApplicationPresenter;
 import com.github.naoghuman.cm.application.ApplicationView;
 import com.github.naoghuman.cm.configuration.api.IApplicationConfiguration;
-import de.pro.lib.database.api.DatabaseFacade;
-import de.pro.lib.logger.api.LoggerFacade;
-import de.pro.lib.preferences.api.PreferencesFacade;
-import de.pro.lib.properties.api.PropertiesFacade;
+import com.github.naoghuman.lib.database.api.DatabaseFacade;
+import com.github.naoghuman.lib.logger.api.LoggerFacade;
+import com.github.naoghuman.lib.preferences.api.PreferencesFacade;
+import com.github.naoghuman.lib.properties.api.PropertiesFacade;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -60,6 +60,7 @@ public class CompetencyMatrix extends Application implements IApplicationConfigu
         
         final Scene scene = new Scene(applicationView.getView(), 1280, 720);
         primaryStage.setTitle(this.getProperty(KEY__COMPETENCY_MATRIX__TITLE));
+        primaryStage.setResizable(Boolean.FALSE);
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest((WindowEvent we) -> {
            we.consume();
@@ -68,6 +69,8 @@ public class CompetencyMatrix extends Application implements IApplicationConfigu
         });
         
         primaryStage.show();
+        
+        applicationPresenter.initialize();
     }
     
     private String getProperty(String propertyKey) {
@@ -75,17 +78,17 @@ public class CompetencyMatrix extends Application implements IApplicationConfigu
     }
     
     private void onCloseRequest() {
-        // Message
-        final char borderSign = this.getProperty(KEY__COMPETENCY_MATRIX__BORDER_SIGN).charAt(0);
-        final String message = this.getProperty(KEY__COMPETENCY_MATRIX__MESSAGE_STOP);
-        final String title = this.getProperty(KEY__COMPETENCY_MATRIX__TITLE);
-        LoggerFacade.INSTANCE.message(borderSign, 80, String.format(message, title));
-        
         // afterburner.fx
         Injector.forgetAll();
         
         // Database
         DatabaseFacade.INSTANCE.shutdown();
+        
+        // Message
+        final char borderSign = this.getProperty(KEY__COMPETENCY_MATRIX__BORDER_SIGN).charAt(0);
+        final String message = this.getProperty(KEY__COMPETENCY_MATRIX__MESSAGE_STOP);
+        final String title = this.getProperty(KEY__COMPETENCY_MATRIX__TITLE);
+        LoggerFacade.INSTANCE.message(borderSign, 80, String.format(message, title));
         
         // Timer
         final PauseTransition pt = new PauseTransition(CM__DURATION__125);

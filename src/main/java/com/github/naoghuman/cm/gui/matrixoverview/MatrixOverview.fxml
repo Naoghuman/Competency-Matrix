@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="apOverview" prefHeight="120.0" prefWidth="181.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.gui.matrixoverview.MatrixOverviewPresenter">
+    <children>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <items>
+            <Label text="Overview: All matrixs">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </items>
+      </ToolBar>
+        <FlowPane fx:id="fpOverview" hgap="7.0" layoutX="-53.0" layoutY="-56.0" style="-fx-background-color: GOLD;" vgap="7.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="54.0" />
+    </children>
+</AnchorPane>

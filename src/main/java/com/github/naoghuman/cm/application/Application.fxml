@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
+<?import javafx.geometry.Insets?>
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: MINTCREAM;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.application.ApplicationPresenter">
-   <children>
-      <SplitPane fx:id="spCompetencyMatrix" dividerPositions="0.25" layoutX="100.0" layoutY="69.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
-         <items>
-            <TreeView fx:id="tvNavigation" prefHeight="200.0" prefWidth="200.0" />
-            <BorderPane prefHeight="200.0" prefWidth="200.0" />
-         </items>
-      </SplitPane>
-   </children>
+    <children>
+        <AnchorPane fx:id="apView" layoutX="178.0" layoutY="14.0" style="-fx-background-color: BEIGE;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="178.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+      <BorderPane fx:id="bpNavigation" layoutX="23.0" layoutY="7.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: DARKSLATEBLUE;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+    </children>
 </AnchorPane>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="265.0" prefWidth="237.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.gui.matrixnavigation.MatrixNavigationPresenter">
+    <children>
+        <VBox layoutX="14.0" layoutY="-43.0" spacing="7.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionCreateNewMatrix" text="+ Matrix" />
+                <Separator prefWidth="200.0" />
+                <Button disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionShowNotes" text="Notes" />
+                <Button disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionShowGlossary" text="Glossary" />
+                <Button disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onActionShowTranslation" text="Translations" />
+            </children>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+    </padding>
+</AnchorPane>
