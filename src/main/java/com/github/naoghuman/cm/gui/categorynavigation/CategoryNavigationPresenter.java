@@ -19,6 +19,9 @@ package com.github.naoghuman.cm.gui.categorynavigation;
 import com.github.naoghuman.cm.application.api.EMoveTo;
 import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.dialog.api.DialogProvider;
+import com.github.naoghuman.cm.model.api.ModelFacade;
+import com.github.naoghuman.cm.model.notes.NotesModel;
+import com.github.naoghuman.cm.sql.api.SqlFacade;
 import com.github.naoghuman.cm.util.api.Folder;
 import com.github.naoghuman.cm.util.api.UtilFacade;
 import com.github.naoghuman.lib.action.api.ActionFacade;
@@ -126,6 +129,12 @@ public class CategoryNavigationPresenter implements Initializable, IActionConfig
          - Initialize NotesPresenter with NotesModel
          - Show NotesView in dialog
         */
+        NotesModel notesModel = SqlFacade.INSTANCE.getNotesSqlProvider().findById(matrixId);
+        if (notesModel == null) {
+            notesModel = ModelFacade.getDefaultNotes();
+        }
+        
+        
     }
     
     
