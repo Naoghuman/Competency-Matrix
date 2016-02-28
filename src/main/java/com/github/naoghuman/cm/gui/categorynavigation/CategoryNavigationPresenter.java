@@ -22,6 +22,7 @@ import com.github.naoghuman.cm.dialog.api.DialogProvider;
 import com.github.naoghuman.cm.gui.notes.NotesPresenter;
 import com.github.naoghuman.cm.gui.notes.NotesView;
 import com.github.naoghuman.cm.model.api.ModelFacade;
+import com.github.naoghuman.cm.model.matrix.MatrixModel;
 import com.github.naoghuman.cm.model.notes.NotesModel;
 import com.github.naoghuman.cm.sql.api.SqlFacade;
 import com.github.naoghuman.cm.util.api.Folder;
@@ -128,6 +129,7 @@ public class CategoryNavigationPresenter implements Initializable, IActionConfig
         NotesModel notesModel = SqlFacade.INSTANCE.getNotesSqlProvider().findById(matrixId);
         if (notesModel == null) {
             notesModel = ModelFacade.getDefaultNotes();
+            notesModel.setMatrixId(matrixId);
         }
         
         final NotesView notesView = new NotesView();
@@ -135,7 +137,8 @@ public class CategoryNavigationPresenter implements Initializable, IActionConfig
         notesPresenter.initialize(notesModel);
         
         // Open dialog
-        final Dialog dialog = DialogProvider.getDialogOpenNotes(notesView.getView());
+        final MatrixModel matrixModel = SqlFacade.INSTANCE.getMatrixSqlProvider().findById(matrixId);
+        final Dialog dialog = DialogProvider.getDialogOpenNotes(matrixModel.getTitle(), notesView.getView());
         final Optional<ButtonType> result = dialog.showAndWait();
         if (!result.isPresent()) {
             return;
@@ -149,10 +152,11 @@ public class CategoryNavigationPresenter implements Initializable, IActionConfig
         LoggerFacade.INSTANCE.debug(this.getClass(), "TODO On action update Notes"); // NOI18N
 
         // Update NotesModel
-//        final TransferData ransferData = new TransferData();
-//        ransferData.setActionKey(ACTION__UPDATE__NOTES);
-//        ransferData.setObject(notesModel);
-//        ActionFacade.INSTANCE.handle(transferData);
+        final TransferData transferData = new TransferData();
+        transferData.setActionId(ACTION__UPDATE__NOTES);
+        notesModel.setNotes(notesPresenter.getNotes());
+        transferData.setObject(notesModel);
+        ActionFacade.INSTANCE.handle(transferData);
     }
     
     

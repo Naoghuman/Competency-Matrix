@@ -6,7 +6,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="85.0" prefWidth="102.0" style="-fx-background-color: CORNSILK;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="com.github.naoghuman.cm.gui.notes.NotesPresenter">
-
+<AnchorPane id="AnchorPane" prefHeight="85.0" prefWidth="102.0" style="-fx-background-color: CORNSILK;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.naoghuman.cm.gui.notes.NotesPresenter">
+   <children>
+      <TextArea fx:id="taNotes" layoutX="-63.0" layoutY="-71.0" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   </children>
 </AnchorPane>

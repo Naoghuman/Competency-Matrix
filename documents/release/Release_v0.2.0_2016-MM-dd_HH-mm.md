@@ -9,6 +9,7 @@ Welcome to `Competency-Matrix` with the new release `v0.2.0`.
 
 
 #### New
+#2 [Notes] A Matrix can have own global Notes.
 
 
 

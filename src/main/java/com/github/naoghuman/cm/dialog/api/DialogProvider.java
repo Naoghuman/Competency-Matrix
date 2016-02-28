@@ -92,14 +92,14 @@ public interface DialogProvider {
         return dialog;
     }
     
-    public static Dialog getDialogOpenNotes(Parent content) {
+    public static Dialog getDialogOpenNotes(String matrixTitle, Parent content) {
         LoggerFacade.INSTANCE.debug(DialogProvider.class, "Get dialog open Notes"); // NOI18N
         
         final Dialog dialog = new Dialog();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.getDialogPane().setContent(content);
         dialog.getDialogPane().setPrefSize(1280.0d - 200.0d, 720.0d - 200.0d);
-        dialog.setTitle("Notes"); // NOI18N
+        dialog.setTitle(matrixTitle + " Notes"); // NOI18N
         
         final ButtonType buttonTypeOK = new ButtonType(ButtonType.OK.getText(), ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().setAll(buttonTypeOK, ButtonType.CANCEL);

@@ -58,6 +58,7 @@ public interface ModelFacade extends IEntityConfiguration {
         
         final NotesModel notesModel = new NotesModel();
         notesModel.setId(System.currentTimeMillis());
+        notesModel.setGenerationTime(System.currentTimeMillis());
         notesModel.setNotes(SIGN__EMPTY);
         
         return notesModel;

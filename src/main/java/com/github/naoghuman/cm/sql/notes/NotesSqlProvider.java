@@ -20,11 +20,14 @@ import com.github.naoghuman.cm.configuration.api.IActionConfiguration;
 import com.github.naoghuman.cm.configuration.api.IEntityConfiguration;
 import com.github.naoghuman.cm.configuration.api.IRegisterActions;
 import com.github.naoghuman.cm.model.notes.NotesModel;
+import com.github.naoghuman.lib.action.api.ActionFacade;
+import com.github.naoghuman.lib.action.api.TransferData;
 import com.github.naoghuman.lib.database.api.DatabaseFacade;
 import com.github.naoghuman.lib.logger.api.LoggerFacade;
 import java.util.List;
 import java.util.Map;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 
 /**
  *
@@ -45,15 +48,6 @@ public class NotesSqlProvider implements IActionConfiguration, IEntityConfigurat
     private NotesSqlProvider() {
         
     }
-    
-//    private CategoryModel create(long matrixId, String title) {
-//        LoggerFacade.INSTANCE.debug(this.getClass(), "Create NotesModel"); // NOI18N
-//        
-//        final CategoryModel categoryModel = ModelFacade.getDefaultCategory(matrixId, title);
-//        DatabaseFacade.INSTANCE.getCrudService().create(categoryModel);
-//        
-//        return categoryModel;
-//    }
 
     public NotesModel findById(long matrixId) {
         LoggerFacade.INSTANCE.debug(this.getClass(), "FindById NotesModel"); // NOI18N
@@ -74,34 +68,24 @@ public class NotesSqlProvider implements IActionConfiguration, IEntityConfigurat
     public void registerActions() {
         LoggerFacade.INSTANCE.info(this.getClass(), "Register actions in NotesSqlProvider"); // NOI18N
         
-//        this.registerOnActionCreateCategory();
+        this.registerOnActionUpdateNotes();
     }
 
-//    private void registerOnActionCreateCategory() {
-//        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action Create NotesModel"); // NOI18N
-//        
-//        ActionFacade.INSTANCE.register(
-//                ACTION__CREATE__CATEGORY,
-//                (ActionEvent ae) -> {
-//                    final TransferData transferData = (TransferData) ae.getSource();
-//                    final String title = transferData.getString();
-//                    final Long matrixId = transferData.getLong();
-//                    final CategoryModel categoryModel = this.create(matrixId, title);
-//                    
-//                    final PauseTransition pt = new PauseTransition(Duration.millis(50.0d));
-//                    pt.setOnFinished((ActionEvent event) -> {
-//                        ActionFacade.INSTANCE.handle(ACTION__REFRESH__CATEGORY_OVERVIEW);
-//                        
-//                        final TransferData transferData2 = new TransferData();
-//                        transferData2.setActionId(ACTION__CREATE__FOLDER);
-//                        final Folder folder = UtilFacade.INSTANCE.getDefaultFolder();
-//                        folder.register(Folder.EPath.MATRIX, matrixId);
-//                        folder.register(Folder.EPath.CATEGORY, categoryModel.getId());
-//                        transferData2.setObject(folder);
-//                        ActionFacade.INSTANCE.handle(transferData2);
-//                    });
-//                    pt.playFromStart();
-//                });
-//    }
+    private void registerOnActionUpdateNotes() {
+        LoggerFacade.INSTANCE.debug(this.getClass(), "Register on action Update NotesModel"); // NOI18N
+        
+        ActionFacade.INSTANCE.register(
+                ACTION__UPDATE__NOTES,
+                (ActionEvent ae) -> {
+                    final TransferData transferData = (TransferData) ae.getSource();
+                    final NotesModel notesModel = (NotesModel) transferData.getObject();
+                    if (notesModel.getId() == IEntityConfiguration.DEFAULT_ID__NOTES_MODEL) {
+                        notesModel.setId(System.currentTimeMillis());
+                        DatabaseFacade.INSTANCE.getCrudService().create(notesModel);
+                    } else {
+                        DatabaseFacade.INSTANCE.getCrudService().update(notesModel);
+                    }
+                });
+    }
     
 }

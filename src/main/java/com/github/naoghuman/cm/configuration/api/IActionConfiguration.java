@@ -33,4 +33,6 @@ public interface IActionConfiguration {
     public static final String ACTION__REFRESH__CATEGORY_OVERVIEW = "ACTION__REFRESH__CATEGORY_OVERVIEW"; // NOI18N
     public static final String ACTION__REFRESH__MATRIX_OVERVIEW = "ACTION__REFRESH__MATRIX_OVERVIEW"; // NOI18N
     
+    public static final String ACTION__UPDATE__NOTES = "ACTION__UPDATE__NOTES"; // NOI18N
+    
 }
